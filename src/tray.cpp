@@ -67,6 +67,15 @@ RadioTrayLite::RadioTrayLite(int argc, char** argv)
     }
 }
 
+RadioTrayLite::~RadioTrayLite()
+{
+    clear_menu();
+
+    if (indicator != nullptr) {
+        g_object_unref(G_OBJECT(indicator));
+    }
+}
+
 void
 RadioTrayLite::run()
 {

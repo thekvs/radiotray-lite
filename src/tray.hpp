@@ -20,6 +20,7 @@ public:
     RadioTrayLite(const RadioTrayLite&) = delete;
 
     RadioTrayLite(int argc, char** argv);
+    ~RadioTrayLite();
 
     void run();
 
