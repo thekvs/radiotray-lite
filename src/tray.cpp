@@ -1,4 +1,5 @@
 #include "tray.hpp"
+#include "constants.hpp"
 
 namespace radiotray {
 
@@ -52,12 +53,13 @@ RadioTrayLite::BookmarksWalker::for_each(pugi::xml_node& node)
 
 RadioTrayLite::RadioTrayLite(int argc, char** argv)
 {
-    app = Gtk::Application::create(argc, argv, "com.ubuntu.laptop-brightness-indicator");
+    app = Gtk::Application::create(argc, argv, "github.com.thekvs.radiotray-lite");
     menu = std::make_shared<Gtk::Menu>();
-    indicator = app_indicator_new("laptop-brightness-indicator", "indicator-messages", APP_INDICATOR_CATEGORY_HARDWARE);
+    indicator = app_indicator_new_with_path("Radio Tray Lite", "radiotray_off",
+        APP_INDICATOR_CATEGORY_APPLICATION_STATUS, kImagePath);
 
     app_indicator_set_status(indicator, APP_INDICATOR_STATUS_ACTIVE);
-    app_indicator_set_attention_icon(indicator, "indicator-messages-new");
+    app_indicator_set_attention_icon(indicator, "radiotray_on");
     app_indicator_set_menu(indicator, menu->gobj());
 
     if (argc > 1) {
