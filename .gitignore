@@ -1,0 +1,6 @@
+*.sublime*
+.tags*
+tags
+.ycm_extra_conf.*
+*.swp
+.Rhistory

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<bookmarks>
+  <group name="root">
+    <group name="Modern">
+      <bookmark name="Radio Paradise" url="https://www.radioparadise.com/m3u/aac-320.m3u"/>
+      <bookmark name="RNE Radio 3" url="http://radio3.rtveradio.cires21.com/radio3.mp3"/>
+      <group name="Rock">
+        <bookmark name="Rock 181" url="http://listen.181fm.com/181-rock_64k.aac"/>
+        <bookmark name="Rock Antenne" url="http://www.rockantenne.de/webradio/rockantenne.aac.pls"/>
+        <bookmark name=".977 Classic Rock" url="http://www.977music.com/tunein/web/classicrock.asx"/>
+      </group>
+    </group>
+    <group name="Classical">
+      <bookmark name="KDFC" url="http://provisioning.streamtheworld.com/pls/KDFCFMAAC.pls"/>
+      <bookmark name="Classic FM" url="http://media-ice.musicradio.com/ClassicFMMP3.m3u"/>
+      <bookmark name="WCPE" url="http://audio-ogg.ibiblio.org:8000/wcpe.ogg.m3u"/>
+      <bookmark name="Radioswissclassic" url="http://www.radioswissclassic.ch/de/live/aacp.m3u"/>
+      <bookmark name="Radio Orfey" url="http://icecast.orpheus.cdnvideo.ru/orpheus_192"/>
+      <bookmark name="Radio Classique" url="http://players.creacast.com/creacast/classique/playlist.pls"/>
+      <bookmark name="Classical Public Radio (wdav.org)" url="http://audio-mp3.ibiblio.org:8000/wdav-112k"/>
+      <bookmark name="Classical 102" url="http://tuner.classical102.com:80"/>
+      <bookmark name="RNE Radio Clasica" url="http://radioclasica.rtveradio.cires21.com/radioclasica.mp3"/>
+      <bookmark name="Classic FM Nederland" url="http://www.classicfm.nl/player/classicfm.pls"/>
+    </group>
+    <group name="Soundtracks">
+      <bookmark name="Classic FM soundtracks" url="http://www.classicfm.nl/player/classicfm-soundtracks.pls"/>
+    </group>
+    <group name="Espanol">
+      <bookmark name="RNE Radio Exterior" url="http://radioexterior.rtveradio.cires21.com/radioexterior.mp3"/>
+      <bookmark name="RNE Radio 5" url="http://radio5.rtveradio.cires21.com/radio5.mp3"/>
+      <bookmark name="Cadena COPE" url="http://195.55.74.206/cope/net1-low.mp3?GKID=05173568868211e6822f00163ea2c744"/>
+      <bookmark name="Cadena SER" url="http://10883.live.streamtheworld.com/CADENASER_SC"/>
+      <bookmark name="Onda Cero" url="http://icecast-streaming.nice264.com/ondacero"/>
+      <bookmark name="Euronews" url="http://euronews-04.ice.infomaniak.ch/euronews-04.aac"/>
+      <bookmark name="Radio Sputnik" url="http://icecast.rian.cdnvideo.ru/rian.voicespa"/>
+      <bookmark name="RFI" url="http://live02.rfi.fr/rfienespagnol-64.mp3"/>
+      <bookmark name="Radio Uruguay" url="http://radio.sodreuruguay.com:9120/"/>
+      <bookmark name="Radio Espectador" url="http://streaming.espectador.com/envivoaac"/>
+    </group>
+    <group name="English">
+      <bookmark name="BBC World Service" url="http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk"/>
+      <bookmark name="NPR (US)" url="http://www.npr.org/streams/mp3/nprlive24.m3u"/>
+      <bookmark name="Euronews" url="http://euronews-02.ice.infomaniak.ch/euronews-02.mp3"/>
+      <bookmark name="RFI" url="http://live02.rfi.fr/rfienanglais-64.mp3"/>
+      <bookmark name="LBC London" url="http://media-the.musicradio.com/LBCLondon"/>
+      <!-- <bookmark name="FOX News" url="http://tunein.streamguys1.com/secure&#45;foxnews?key=9f712433d2cf05432ee622f72af4d7fc3068237e5d5d90c686af667d4fe1f033"/> -->
+      <bookmark name="Chicago Public Radio" url="http://wbez.ord.streamguys1.com/wbez64.mp3"/>
+    </group>
+  </group>
+</bookmarks>
