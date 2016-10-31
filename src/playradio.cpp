@@ -16,17 +16,68 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+#include <thread>
+#include <iostream>
+
 #include <gstreamermm.h>
 #include <glibmm.h>
-#include <iostream>
+
 #include <stdlib.h>
+#include <termios.h>
 
 #include "playlist.hpp"
 
-namespace
-{
-
 Glib::RefPtr<Glib::MainLoop> mainloop;
+
+static const int kPauseCommand = ' ';
+static bool paused = false;
+
+class KeyboardInputThread
+{
+public:
+    KeyboardInputThread(Glib::RefPtr<Gst::PlayBin2> pb)
+        : playbin(pb)
+    {
+    }
+
+    KeyboardInputThread() = delete;
+    KeyboardInputThread(const KeyboardInputThread&) = delete;
+
+    void operator()()
+    {
+        std::cout << "Press <space> to stop/resume playing" << std::endl;
+
+        while (true) {
+            int c = getch();
+            if (c == kPauseCommand) {
+                if (paused) {
+                    playbin->set_state(Gst::STATE_PLAYING);
+                } else {
+                    playbin->set_state(Gst::STATE_NULL);
+                }
+                paused = not paused;
+            }
+        }
+    }
+
+private:
+    Glib::RefPtr<Gst::PlayBin2> playbin;
+
+    int getch()
+    {
+        static struct termios oldt, newt;
+        tcgetattr(STDIN_FILENO, &oldt); // save old settings
+        newt = oldt;
+        newt.c_lflag &= ~(ICANON);               // disable buffering
+        newt.c_lflag &= ~(ECHO);                 // disable echo
+        tcsetattr(STDIN_FILENO, TCSANOW, &newt); // apply new settings
+
+        int c = getchar();                       // read character
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt); // restore old settings
+
+        return c;
+    }
+};
 
 // This function is used to receive asynchronous messages in the main loop.
 bool
@@ -65,15 +116,17 @@ on_bus_message(const Glib::RefPtr<Gst::Bus>& /* bus */, const Glib::RefPtr<Gst::
                 std::cerr << "Playing: " << v << std::endl;
             }
         }
-    }; break;
+        break;
+    }
+    // case Gst::MESSAGE_STATE_CHANGED:
+    //     std::cout << (paused ? "Paused" : "Continue playing") << std::endl;
+    //     break;
     default:
         break;
     }
 
     return true;
 }
-
-} // anonymous namespace
 
 int
 play(std::string u)
@@ -108,6 +161,11 @@ play(std::string u)
 
     // Now set the playbin to the PLAYING state and start the main loop:
     playbin->set_state(Gst::STATE_PLAYING);
+
+    KeyboardInputThread keyboard_io(playbin);
+    std::thread t(std::ref(keyboard_io));
+    t.detach();
+
     mainloop->run();
 
     // cleanup
