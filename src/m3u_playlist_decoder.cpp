@@ -1,6 +1,6 @@
 #include "m3u_playlist_decoder.hpp"
 
-namespace playradio
+namespace radiotray
 {
 
 bool
@@ -42,4 +42,4 @@ M3UPlaylistDecoder::desc() const
     return std::string("M3U playlist decoder");
 }
 
-} // namespace playradio
+} // namespace radiotray

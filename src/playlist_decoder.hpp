@@ -12,7 +12,7 @@
 
 #include "easyloggingpp/easylogging++.h"
 
-namespace playradio
+namespace radiotray
 {
 using MediaStreams = std::vector<std::string>;
 
@@ -34,6 +34,6 @@ protected:
     }
 };
 
-} // namespace playradio
+} // namespace radiotray
 
 #endif

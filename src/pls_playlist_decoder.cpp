@@ -1,6 +1,6 @@
 #include "pls_playlist_decoder.hpp"
 
-namespace playradio
+namespace radiotray
 {
 
 bool
@@ -51,4 +51,4 @@ PlsPlaylistDecoder::desc() const
     return std::string("PLS playlist decoder");
 }
 
-} // namespace playradio
+} // namespace radiotray

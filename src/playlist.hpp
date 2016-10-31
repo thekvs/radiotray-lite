@@ -12,7 +12,7 @@
 #include "pls_playlist_decoder.hpp"
 #include "asx_playlist_decoder.hpp"
 
-namespace playradio
+namespace radiotray
 {
 
 class Playlist
@@ -41,6 +41,6 @@ private:
 
     static size_t write_memory_cb(void* ptr, size_t size, size_t nmemb, void* data);
 };
-} // namespace playradio
+} // namespace radiotray
 
 #endif

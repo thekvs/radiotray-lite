@@ -1,6 +1,6 @@
 #include "asx_playlist_decoder.hpp"
 
-namespace playradio
+namespace radiotray
 {
 
 AsxPlaylistDecoder::AsxPlaylistDecoder()
@@ -82,4 +82,4 @@ AsxPlaylistDecoder::desc() const
     return std::string("ASX playlist decoder");
 }
 
-} // namespace playradio
+} // namespace radiotray

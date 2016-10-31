@@ -1,6 +1,6 @@
 #include "playlist.hpp"
 
-namespace playradio
+namespace radiotray
 {
 
 static const char* kUserAgent = "PlayRadio";
@@ -163,4 +163,4 @@ Playlist::write_memory_cb(void* ptr, size_t size, size_t nmemb, void* data)
     return realsize;
 }
 
-} // namespace playradio
+} // namespace radiotray

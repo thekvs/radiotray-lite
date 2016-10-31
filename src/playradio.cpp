@@ -81,7 +81,7 @@ private:
 
 // This function is used to receive asynchronous messages in the main loop.
 bool
-on_bus_message(const Glib::RefPtr<Gst::Bus>& /* bus */, const Glib::RefPtr<Gst::Message>& message)
+on_bus_message(const Glib::RefPtr<Gst::Bus>& bus, const Glib::RefPtr<Gst::Message>& message)
 {
     switch (message->get_message_type()) {
     case Gst::MESSAGE_EOS:
@@ -195,8 +195,8 @@ main(int argc, char** argv)
     // default logger uses default configurations
     el::Loggers::reconfigureLogger("default", defaultConf);
 
-    playradio::Playlist plist;
-    playradio::MediaStreams streams;
+    radiotray::Playlist plist;
+    radiotray::MediaStreams streams;
     bool ok;
 
     std::tie(ok, streams) = plist.get_streams(argv[1]);

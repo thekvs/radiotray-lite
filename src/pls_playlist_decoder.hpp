@@ -5,7 +5,7 @@
 
 #include "playlist_decoder.hpp"
 
-namespace playradio
+namespace radiotray
 {
 class PlsPlaylistDecoder : public PlaylistDecoder
 {
@@ -19,6 +19,6 @@ public:
 private:
 };
 
-} // namespace playradio
+} // namespace radiotray
 
 #endif

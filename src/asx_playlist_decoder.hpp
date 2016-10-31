@@ -7,7 +7,7 @@
 
 #include "playlist_decoder.hpp"
 
-namespace playradio
+namespace radiotray
 {
 class AsxPlaylistDecoder : public PlaylistDecoder
 {
@@ -22,6 +22,6 @@ public:
 private:
 };
 
-} // namespace playradio
+} // namespace radiotray
 
 #endif
