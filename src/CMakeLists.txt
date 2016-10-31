@@ -18,6 +18,7 @@ set_target_properties(radiotray-lite PROPERTIES COMPILE_FLAGS "-std=c++11")
 add_executable(
     playradio
     playradio.cpp
+    player.cpp
     playlist.cpp
     m3u_playlist_decoder.cpp
     pls_playlist_decoder.cpp
