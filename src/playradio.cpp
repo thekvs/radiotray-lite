@@ -9,8 +9,11 @@
 
 #include "playlist.hpp"
 #include "player.hpp"
+#include "keyboard_io.hpp"
 
 INITIALIZE_EASYLOGGINGPP
+
+using namespace radiotray;
 
 int
 main(int argc, char** argv)
@@ -23,10 +26,13 @@ main(int argc, char** argv)
     // default logger uses default configurations
     el::Loggers::reconfigureLogger("default", defaultConf);
 
-    radiotray::Player player;
+    Player player;
 
     auto ok = player.init(argc, argv);
     if (ok) {
+        KeyboardInputThread keyboard_io(player.get_playbin());
+        std::thread t(std::ref(keyboard_io));
+
         player.play();
     }
 

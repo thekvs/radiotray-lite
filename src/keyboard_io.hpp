@@ -11,7 +11,7 @@ namespace radiotray {
 class KeyboardInputThread
 {
 public:
-    KeyboardInputThread(Glib::RefPtr<Gst::PlayBin2>& pb)
+    KeyboardInputThread(Glib::RefPtr<Gst::PlayBin2> pb)
         : playbin(pb)
     {
     }
@@ -37,7 +37,7 @@ public:
     }
 
 private:
-    Glib::RefPtr<Gst::PlayBin2>& playbin;
+    Glib::RefPtr<Gst::PlayBin2> playbin;
 
     static const int kPauseCommand = ' ';
     bool paused = false;

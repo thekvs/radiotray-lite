@@ -7,7 +7,6 @@
 #include <glibmm.h>
 
 #include "playlist.hpp"
-#include "keyboard_io.hpp"
 
 namespace radiotray {
 
@@ -19,6 +18,7 @@ public:
 
     bool init(int argc, char **argv);
     void play();
+    Glib::RefPtr<Gst::PlayBin2> get_playbin();
 
 private:
     Glib::RefPtr<Glib::MainLoop> mainloop;

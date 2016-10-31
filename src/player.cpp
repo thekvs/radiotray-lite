@@ -26,7 +26,7 @@ Player::init(int argc, char **argv)
 
     playbin = Gst::PlayBin2::create();
     if (!playbin) {
-        std::cerr << "The playbin2 element could not be created." << std::endl;
+        LOG(ERROR) << "The playbin2 element could not be created.";
         return false;
     }
     playbin->property_buffer_size() = 1024 * 100;
@@ -47,14 +47,16 @@ Player::play()
     playbin->property_uri() = uri;
     playbin->set_state(Gst::STATE_PLAYING);
 
-    KeyboardInputThread keyboard_io(playbin);
-    std::thread t(std::ref(keyboard_io));
-    t.detach();
-
     mainloop->run();
 
     // cleanup
     playbin->set_state(Gst::STATE_NULL);
+}
+
+Glib::RefPtr<Gst::PlayBin2>
+Player::get_playbin()
+{
+    return playbin;
 }
 
 bool
