@@ -25,5 +25,16 @@ pkg_check_modules(GLIB2 REQUIRED glib-2.0)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
 pkg_check_modules(APPINDICATOR REQUIRED appindicator3-0.1>=12.10)
+pkg_check_modules(CURL REQUIRED libcurl)
+
+pkg_check_modules(GSTREAMER QUIET gstreamer-0.10)
+if (NOT GSTREAMER_FOUND)
+    pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
+endif()
+
+pkg_check_modules(GSTREAMERMM QUIET gstreamermm-0.10)
+if (NOT GSTREAMERMM_FOUND)
+    pkg_check_modules(GSTREAMERMM REQUIRED gstreamermm-1.0)
+endif()
 
 add_subdirectory(src)
