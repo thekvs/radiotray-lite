@@ -27,9 +27,16 @@ public:
 private:
     Glib::RefPtr<Gtk::Application> app;
     std::shared_ptr<Gtk::Menu> menu;
+
+    Gtk::MenuItem* current_station_menu_entry = nullptr;
+    Gtk::MenuItem* current_composition_menu_entry = nullptr;
+
     AppIndicator* indicator = nullptr;
+
     std::string bookmarks_file;
     pugi::xml_document bookmarks_doc;
+
+    Glib::ustring current_station;
 
     int counter = 1; // TODO: for debug, remove.
 
@@ -51,7 +58,7 @@ private:
 
     void on_quit_button();
     void on_about_button();
-    void on_station_button(Glib::ustring group_name, Glib::ustring station_url);
+    void on_station_button(Glib::ustring group_name, Glib::ustring station_name, Glib::ustring station_url);
     void on_reload_button();
     void build_menu();
     void rebuild_menu();

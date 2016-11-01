@@ -40,8 +40,8 @@ RadioTrayLite::BookmarksWalker::for_each(pugi::xml_node& node)
         auto station_group_name = node.parent().attribute("name").as_string();
         auto station_url = attr_url.as_string();
         auto sub_item = Gtk::manage(new Gtk::MenuItem(station_name));
-        sub_item->signal_activate().connect(sigc::bind<Glib::ustring, Glib::ustring>(
-                sigc::mem_fun(radiotray, &RadioTrayLite::on_station_button), station_group_name, station_url));
+        sub_item->signal_activate().connect(sigc::bind<Glib::ustring, Glib::ustring, Glib::ustring>(
+                sigc::mem_fun(radiotray, &RadioTrayLite::on_station_button), station_group_name, station_name, station_url));
         menus.top()->append(*sub_item);
         std::cout << "Bookmark depth: " << depth() << ", level: " << level << ", #menus: " << menus.size() <<  ", station: " << station_name << ", group: " << station_group_name << std::endl;
     }
@@ -101,8 +101,20 @@ RadioTrayLite::on_about_button()
 }
 
 void
-RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station_url)
+RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station_name, Glib::ustring station_url)
 {
+    current_station = station_name;
+
+    if (current_station_menu_entry == nullptr) {
+        auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
+        menu->prepend(*separator_item);
+        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(current_station));
+        menu->prepend(*current_station_menu_entry);
+        menu->show_all();
+    } else {
+        current_station_menu_entry->set_label(current_station);
+    }
+
     std::cout << "'" << station_url << "'" << "(group: " << group_name << ")" << " button was pressed." << std::endl;
 }
 
@@ -126,11 +138,11 @@ RadioTrayLite::build_menu()
 
     Glib::ustring name;
 
-    auto menu_item = Gtk::manage(new Gtk::MenuItem()); // separator
-    menu->append(*menu_item);
+    auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
+    menu->append(*separator_item);
 
     name = mk_name("Reload Bookmarks");
-    menu_item = Gtk::manage(new Gtk::MenuItem(name));
+    auto menu_item = Gtk::manage(new Gtk::MenuItem(name));
     menu_item->signal_activate().connect(sigc::mem_fun(*this, &RadioTrayLite::on_reload_button));
     menu->append(*menu_item);
 
@@ -143,6 +155,13 @@ RadioTrayLite::build_menu()
     menu_item = Gtk::manage(new Gtk::MenuItem(name));
     menu_item->signal_activate().connect(sigc::mem_fun(*this, &RadioTrayLite::on_quit_button));
     menu->append(*menu_item);
+
+    if (not current_station.empty()) {
+        auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
+        menu->prepend(*separator_item);
+        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(current_station));
+        menu->prepend(*current_station_menu_entry);
+    }
 
     menu->show_all();
 }
