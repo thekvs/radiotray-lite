@@ -112,9 +112,10 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
 
         if (not stream_found) {
             mainloop->quit();
+            return false;
         }
 
-        return false;
+        return true;
     }
     case Gst::MESSAGE_TAG: {
         Glib::RefPtr<Gst::MessageTag> msg_tag = Glib::RefPtr<Gst::MessageTag>::cast_dynamic(message);

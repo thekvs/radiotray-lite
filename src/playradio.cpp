@@ -32,14 +32,17 @@ main(int argc, char** argv)
     // default logger uses default configurations
     el::Loggers::reconfigureLogger("default", defaultConf);
 
-    Player player;
+    std::vector<std::string> stations;
+    for (int i = 1; i < argc; i++) {
+        stations.push_back(argv[i]);
+    }
 
-    auto ok = player.init(argc, argv);
+    auto player = std::make_shared<Player>();
+    auto ok = player->init(argc, argv);
+
     if (ok) {
-        KeyboardInputThread keyboard_io(player.get_playbin());
-        std::thread t(std::ref(keyboard_io));
-
-        player.play(argv[1]);
+        KeyboardControl keyboard(player, stations);
+        std::thread t(std::ref(keyboard));
 
         while (true) {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));

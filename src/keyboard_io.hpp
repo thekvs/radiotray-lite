@@ -1,6 +1,10 @@
 #ifndef __KEYBOARD_IO_HPP_INCLUDED__
 #define __KEYBOARD_IO_HPP_INCLUDED__
 
+#include <memory>
+#include <vector>
+#include <string>
+
 #include <stdlib.h>
 #include <termios.h>
 
@@ -8,38 +12,66 @@
 
 namespace radiotray {
 
-class KeyboardInputThread
+class Player;
+
+class KeyboardControl
 {
 public:
-    KeyboardInputThread(Glib::RefPtr<Gst::PlayBin2> pb)
-        : playbin(pb)
+    KeyboardControl(std::shared_ptr<Player> player, std::vector<std::string> stations)
+        : player(player)
+        , stations(stations)
     {
     }
 
-    KeyboardInputThread() = delete;
-    KeyboardInputThread(const KeyboardInputThread&) = delete;
+    KeyboardControl() = delete;
+    KeyboardControl(const KeyboardControl&) = delete;
 
     void operator()()
     {
-        std::cout << "Press <space> to stop/resume playing" << std::endl;
+        std::cout << "Press <space> to stop/resume playing." << std::endl;
+        std::cout << "Press n/p to play next/previous station." << std::endl;
+
+        size_t index = 0;
+        auto stations_count = stations.size();
+
+        player->play(stations[index]);
 
         while (true) {
-            int c = getch();
+            auto c = getch();
+
             if (c == kPauseCommand) {
                 if (paused) {
-                    playbin->set_state(Gst::STATE_PLAYING);
+                    player->start();
                 } else {
-                    playbin->set_state(Gst::STATE_NULL);
+                    player->stop();
                 }
                 paused = not paused;
+            } else if (c == kNextStationCommand) {
+                auto new_index = (stations_count > 1 ? (index + 1) % stations_count : index);
+                if (new_index != index) {
+                    player->play(stations[new_index]);
+                    index = new_index;
+                }
+            } else if (c == kPreviousStationCommand) {
+                if (stations_count > 1) {
+                    auto new_index = (index == 0 ? stations_count - 1 : (index - 1) % stations_count);
+                    if (new_index != index) {
+                        player->play(stations[new_index]);
+                        index = new_index;
+                    }
+                }
             }
         }
     }
 
 private:
-    Glib::RefPtr<Gst::PlayBin2> playbin;
+    std::shared_ptr<Player> player;
+    std::vector<std::string> stations;
 
     static const int kPauseCommand = ' ';
+    static const int kNextStationCommand = 'n';
+    static const int kPreviousStationCommand = 'p';
+
     bool paused = false;
 
     int getch()
