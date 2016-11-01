@@ -180,6 +180,7 @@ RadioTrayLite::clear_menu()
 {
     for (auto &e : menu->get_children()) {
         menu->remove(*e);
+        delete e;
     }
 }
 
