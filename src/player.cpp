@@ -9,20 +9,7 @@ Player::Player()
 bool
 Player::init(int argc, char **argv)
 {
-    if (argc < 2) {
-        std::cout << "Usage: " << argv[0] << " <uri>" << std::endl;
-        return false;
-    }
-
     Gst::init(argc, argv);
-
-    bool ok;
-    std::tie(ok, streams) = playlist.get_streams(argv[1]);
-    if ((not ok) or streams.empty()) {
-        LOG(ERROR) << "Couldn't get audio streams!";
-        return false;
-    }
-    next_stream = streams.begin();
 
     playbin = Gst::PlayBin2::create();
     if (!playbin) {
@@ -39,12 +26,20 @@ Player::init(int argc, char **argv)
 }
 
 void
-Player::play()
+Player::play(Glib::ustring data_url)
 {
-    Glib::ustring uri = *next_stream;
+    bool ok;
+    std::tie(ok, streams) = playlist.get_streams(data_url);
+    if ((not ok) or streams.empty()) {
+        LOG(ERROR) << "Couldn't get audio streams!";
+        return;
+    }
+    next_stream = streams.begin();
+
+    Glib::ustring stream_url = *next_stream;
     next_stream++;
 
-    playbin->property_uri() = uri;
+    playbin->property_uri() = stream_url;
     playbin->set_state(Gst::STATE_PLAYING);
 
     mainloop->run();

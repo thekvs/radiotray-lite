@@ -17,7 +17,7 @@ public:
     Player(const Player&) = delete;
 
     bool init(int argc, char **argv);
-    void play();
+    void play(Glib::ustring url);
     Glib::RefPtr<Gst::PlayBin2> get_playbin();
 
 private:

@@ -18,6 +18,11 @@ using namespace radiotray;
 int
 main(int argc, char** argv)
 {
+    if (argc < 2) {
+        std::cout << "Usage: " << argv[0] << " <uri>" << std::endl;
+        return EXIT_FAILURE;
+    }
+
     el::Configurations defaultConf;
     defaultConf.setToDefault();
     // Values are always std::string
@@ -33,7 +38,7 @@ main(int argc, char** argv)
         KeyboardInputThread keyboard_io(player.get_playbin());
         std::thread t(std::ref(keyboard_io));
 
-        player.play();
+        player.play(argv[1]);
     }
 
     return EXIT_SUCCESS;
