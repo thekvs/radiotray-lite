@@ -34,10 +34,9 @@ Player::play(Glib::ustring data_url)
         LOG(ERROR) << "Couldn't get audio streams!";
         return;
     }
-    next_stream = streams.begin();
 
-    Glib::ustring stream_url = *next_stream;
-    next_stream++;
+    Glib::ustring stream_url = streams.front();
+    next_stream = std::next(streams.begin());
 
     playbin->property_uri() = stream_url;
     playbin->set_state(Gst::STATE_PLAYING);
