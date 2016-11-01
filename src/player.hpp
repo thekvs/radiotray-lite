@@ -18,6 +18,8 @@ public:
 
     bool init(int argc, char **argv);
     void play(Glib::ustring url);
+    void stop();
+    void start();
     Glib::RefPtr<Gst::PlayBin2> get_playbin();
 
 private:
@@ -28,7 +30,10 @@ private:
     MediaStreams streams;
     MediaStreams::iterator next_stream;
 
+    std::thread mainloop_thr;
+
     bool on_bus_message(const Glib::RefPtr<Gst::Bus>& bus, const Glib::RefPtr<Gst::Message>& message);
+    void set_stream(Glib::ustring url);
 };
 
 } // namespace radiotray

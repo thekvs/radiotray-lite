@@ -22,6 +22,11 @@ Player::init(int argc, char **argv)
     Glib::RefPtr<Gst::Bus> bus = playbin->get_bus();
     bus->add_watch(sigc::mem_fun(*this, &Player::on_bus_message));
 
+    mainloop_thr = std::thread([this](){
+        mainloop->run();
+        stop(); // cleanup
+    });
+
     return true;
 }
 
@@ -38,19 +43,33 @@ Player::play(Glib::ustring data_url)
     Glib::ustring stream_url = streams.front();
     next_stream = std::next(streams.begin());
 
-    playbin->property_uri() = stream_url;
-    playbin->set_state(Gst::STATE_PLAYING);
+    stop();
+    set_stream(stream_url);
+    start();
+}
 
-    mainloop->run();
-
-    // cleanup
+void
+Player::stop()
+{
     playbin->set_state(Gst::STATE_NULL);
+}
+
+void
+Player::start()
+{
+    playbin->set_state(Gst::STATE_PLAYING);
 }
 
 Glib::RefPtr<Gst::PlayBin2>
 Player::get_playbin()
 {
     return playbin;
+}
+
+void
+Player::set_stream(Glib::ustring url)
+{
+    playbin->property_uri() = url;
 }
 
 bool

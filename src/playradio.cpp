@@ -1,4 +1,5 @@
 #include <thread>
+#include <chrono>
 #include <iostream>
 
 #include <gstreamermm.h>
@@ -39,6 +40,10 @@ main(int argc, char** argv)
         std::thread t(std::ref(keyboard_io));
 
         player.play(argv[1]);
+
+        while (true) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     return EXIT_SUCCESS;
