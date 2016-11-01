@@ -1,5 +1,5 @@
-#ifndef __KEYBOARD_IO_HPP_INCLUDED__
-#define __KEYBOARD_IO_HPP_INCLUDED__
+#ifndef __KEYBOARD_CONTROL_HPP_INCLUDED__
+#define __KEYBOARD_CONTROL_HPP_INCLUDED__
 
 #include <memory>
 #include <vector>

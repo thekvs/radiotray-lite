@@ -10,7 +10,7 @@
 
 #include "playlist.hpp"
 #include "player.hpp"
-#include "keyboard_io.hpp"
+#include "keyboard_control.hpp"
 
 INITIALIZE_EASYLOGGINGPP
 
