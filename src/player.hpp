@@ -34,6 +34,8 @@ private:
 
     bool on_bus_message(const Glib::RefPtr<Gst::Bus>& bus, const Glib::RefPtr<Gst::Message>& message);
     void set_stream(Glib::ustring url);
+    void set_buffer_size(int size);
+    void play_next_stream();
 };
 
 } // namespace radiotray

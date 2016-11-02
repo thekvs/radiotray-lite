@@ -16,7 +16,7 @@ Player::init(int argc, char **argv)
         LOG(ERROR) << "The playbin2 element could not be created.";
         return false;
     }
-    playbin->property_buffer_size() = 1024 * 100;
+    set_buffer_size(1024 * 100);
 
     mainloop = Glib::MainLoop::create();
     Glib::RefPtr<Gst::Bus> bus = playbin->get_bus();
@@ -41,7 +41,7 @@ Player::play(Glib::ustring data_url)
     }
 
     Glib::ustring stream_url = streams.front();
-    next_stream = std::next(streams.begin());
+    next_stream = std::next(std::begin(streams));
 
     stop();
     set_stream(stream_url);
@@ -72,9 +72,70 @@ Player::set_stream(Glib::ustring url)
     playbin->property_uri() = url;
 }
 
+void
+Player::set_buffer_size(int size)
+{
+    playbin->property_buffer_size() = size;
+}
+
+void
+Player::play_next_stream()
+{
+    auto stream_found = false;
+
+    stop();
+
+    while (next_stream != std::end(streams) and (not stream_found)) {
+        auto u = *next_stream;
+        next_stream++;
+
+        if (gst_uri_is_valid(u.c_str())) {
+            LOG(DEBUG) << "Trying to play stream: " << u;
+
+            set_buffer_size(1024 * 100);
+            set_stream(u);
+            start();
+
+            stream_found = true;
+        }
+    }
+}
+
 bool
 Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr<Gst::Message>& message)
 {
+    auto message_type = message->get_message_type();
+
+    if (message_type == Gst::MESSAGE_EOS) {
+        play_next_stream();
+    } else if (message_type == Gst::MESSAGE_ERROR) {
+        Glib::RefPtr<Gst::MessageError> error_msg = Glib::RefPtr<Gst::MessageError>::cast_dynamic(message);
+
+        if (error_msg) {
+            Glib::Error err = error_msg->parse();
+            LOG(ERROR) << "Error: " << err.what();
+        } else {
+            LOG(ERROR) << "Error.";
+        }
+
+        play_next_stream();
+    } else if (message_type == Gst::MESSAGE_TAG) {
+        Glib::RefPtr<Gst::MessageTag> msg_tag = Glib::RefPtr<Gst::MessageTag>::cast_dynamic(message);
+        Gst::TagList tag_list;
+        Glib::RefPtr<Gst::Pad> pad;
+        msg_tag->parse(pad, tag_list);
+        if (tag_list.exists("title") && tag_list.size("title") > 0) {
+            std::string v;
+            auto ok = tag_list.get("title", v);
+            if (ok) {
+                std::cerr << "Playing: " << v << std::endl;
+            }
+        }
+    }
+
+    return true;
+
+#if 0
     switch (message->get_message_type()) {
     case Gst::MESSAGE_EOS:
         std::cout << std::endl
@@ -136,6 +197,7 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
     }
 
     return true;
+#endif
 }
 
 } // namespace radiotray
