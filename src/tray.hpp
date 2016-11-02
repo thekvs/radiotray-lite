@@ -8,6 +8,10 @@
 #include <gtkmm.h>
 #include <libappindicator/app-indicator.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
 #include "pugixml/pugixml.hpp"
 
 namespace radiotray {
@@ -64,6 +68,7 @@ private:
     void rebuild_menu();
     void clear_menu();
     bool parse_bookmarks_file();
+    void search_for_bookmarks_file();
 
     Glib::ustring mk_name(Glib::ustring base_name); // TODO: for debug, remove.
 };

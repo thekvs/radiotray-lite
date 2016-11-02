@@ -62,9 +62,7 @@ RadioTrayLite::RadioTrayLite(int argc, char** argv)
     app_indicator_set_attention_icon(indicator, "radiotray_on");
     app_indicator_set_menu(indicator, menu->gobj());
 
-    if (argc > 1) {
-        bookmarks_file = argv[1];
-    }
+    search_for_bookmarks_file();
 }
 
 RadioTrayLite::~RadioTrayLite()
@@ -201,6 +199,38 @@ RadioTrayLite::parse_bookmarks_file()
     }
 
     return status;
+}
+
+void
+RadioTrayLite::search_for_bookmarks_file()
+{
+    std::vector<std::string> paths;
+
+    auto home = getenv("HOME");
+    if (home != nullptr) {
+        auto dir = std::string(home) + "/.config/" + kAppDirName + "/" + kBookmarksFileName;
+        paths.push_back(dir);
+        dir = std::string(home) + "/.local/share/" + kAppDirName + "/" + kBookmarksFileName;
+        paths.push_back(dir);
+    }
+
+    // default bookmarks file
+    paths.push_back(std::string("/usr/share/") + kAppDirName + "/" + kBookmarksFileName);
+
+    auto file_exists = [](const std::string& fname) -> bool
+    {
+        struct stat st;
+        auto rc = stat(fname.c_str(), &st);
+        if (rc == 0 and S_ISREG(st.st_mode)) {
+            return true;
+        }
+        return false;
+    };
+
+    auto result = std::find_if(std::begin(paths), std::end(paths), file_exists);
+    if (result != std::end(paths)) {
+        bookmarks_file = *result;
+    }
 }
 
 Glib::ustring

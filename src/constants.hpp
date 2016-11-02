@@ -5,6 +5,8 @@
 
 namespace radiotray {
 
+const char* kAppDirName = "radiotray";
+const char* kBookmarksFileName = "bookmarks.xml";
 const char* kImagePath = "/usr/share/radiotray/images/";
 
 } // namespace radiotray
