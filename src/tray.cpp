@@ -55,11 +55,11 @@ RadioTrayLite::RadioTrayLite(int argc, char** argv)
 {
     app = Gtk::Application::create(argc, argv, "github.com.thekvs.radiotray-lite");
     menu = std::make_shared<Gtk::Menu>();
-    indicator = app_indicator_new_with_path("Radio Tray Lite", "radiotray_off",
+    indicator = app_indicator_new_with_path("Radio Tray Lite", kAppIndicatorIconOff,
         APP_INDICATOR_CATEGORY_APPLICATION_STATUS, kImagePath);
 
     app_indicator_set_status(indicator, APP_INDICATOR_STATUS_ACTIVE);
-    app_indicator_set_attention_icon(indicator, "radiotray_on");
+    app_indicator_set_attention_icon(indicator, kAppIndicatorIconOn);
     app_indicator_set_menu(indicator, menu->gobj());
 
     search_for_bookmarks_file();
