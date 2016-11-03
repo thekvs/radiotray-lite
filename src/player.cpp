@@ -109,7 +109,7 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
     if (message_type == Gst::MESSAGE_EOS) {
         play_next_stream();
     } else if (message_type == Gst::MESSAGE_ERROR) {
-        Glib::RefPtr<Gst::MessageError> error_msg = Glib::RefPtr<Gst::MessageError>::cast_dynamic(message);
+        auto error_msg = Glib::RefPtr<Gst::MessageError>::cast_dynamic(message);
 
         if (error_msg) {
             Glib::Error err = error_msg->parse();
@@ -120,7 +120,7 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
 
         play_next_stream();
     } else if (message_type == Gst::MESSAGE_TAG) {
-        Glib::RefPtr<Gst::MessageTag> msg_tag = Glib::RefPtr<Gst::MessageTag>::cast_dynamic(message);
+        auto msg_tag = Glib::RefPtr<Gst::MessageTag>::cast_dynamic(message);
         Gst::TagList tag_list;
         Glib::RefPtr<Gst::Pad> pad;
         msg_tag->parse(pad, tag_list);
@@ -131,6 +131,27 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
                 std::cerr << "Playing: " << v << std::endl;
             }
         }
+    } else if (message_type == Gst::MESSAGE_STATE_CHANGED) {
+        auto state_changed_msg = Glib::RefPtr<Gst::MessageStateChanged>::cast_dynamic(message);
+        Gst::State new_state = state_changed_msg->parse();
+        Gst::State old_state = state_changed_msg->parse_old();
+
+        auto print = [](Gst::State& state) -> std::string
+        {
+            if (state == Gst::State::STATE_PLAYING) {
+                return "STATE_PLAYING";
+            } else if (state == Gst::State::STATE_NULL) {
+                return "STATE_NULL";
+            } else if (state == Gst::State::STATE_READY) {
+                return "STATE_READY";
+            } else if (state == Gst::State::STATE_PAUSED) {
+                return "STATE_PAUSED";
+            } else if (state == Gst::State::STATE_VOID_PENDING) {
+                return "STATE_VOID_PENDING";
+            }
+            return "STATE_UNKNOWN";
+        };
+        std::cerr << "Type: Gst::MESSAGE_STATE_CHANGED." << " Old: " << print(old_state) << " New: " << print(new_state) << std::endl;
     }
 
     return true;
