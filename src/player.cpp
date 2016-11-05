@@ -26,6 +26,7 @@ Player::init(int argc, char **argv)
         mainloop->run();
         stop(); // cleanup
     });
+    mainloop_thr.detach();
 
     return true;
 }

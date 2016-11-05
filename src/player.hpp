@@ -2,6 +2,7 @@
 #define __PLAYER_HPP_INCLUDED__
 
 #include <thread>
+#include <memory>
 
 #include <gstreamermm.h>
 #include <glibmm.h>

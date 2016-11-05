@@ -1,5 +1,4 @@
 #include "tray.hpp"
-#include "constants.hpp"
 
 namespace radiotray {
 
@@ -55,9 +54,15 @@ RadioTrayLite::RadioTrayLite(int argc, char** argv)
 {
     app = Gtk::Application::create(argc, argv, "github.com.thekvs.radiotray-lite");
     menu = std::make_shared<Gtk::Menu>();
+
+    player = std::make_shared<Player>();
+    auto ok = player->init(argc, argv);
+    if (!ok) {
+        // TODO
+    }
+
     indicator = app_indicator_new_with_path("Radio Tray Lite", kAppIndicatorIconOff,
         APP_INDICATOR_CATEGORY_APPLICATION_STATUS, kImagePath);
-
     app_indicator_set_status(indicator, APP_INDICATOR_STATUS_ACTIVE);
     app_indicator_set_attention_icon(indicator, kAppIndicatorIconOn);
     app_indicator_set_menu(indicator, menu->gobj());
@@ -89,6 +94,7 @@ void
 RadioTrayLite::on_quit_button()
 {
     std::cout << "'Quit' button was pressed." << std::endl;
+    player->stop();
     gtk_main_quit();
 }
 
@@ -101,17 +107,31 @@ RadioTrayLite::on_about_button()
 void
 RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station_name, Glib::ustring station_url)
 {
+    auto mk_name = [](Glib::ustring name, bool turn_on)// -> Glib::ustring
+    {
+        std::stringstream ss;
+        if (turn_on) {
+            ss << "Turn On \"" << name << "\"";
+        } else {
+            ss << "Turn Off \"" << name << "\"";
+        }
+
+        return Glib::ustring(ss.str());
+    };
+
     current_station = station_name;
 
     if (current_station_menu_entry == nullptr) {
         auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
         menu->prepend(*separator_item);
-        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(current_station));
+        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_name(current_station, false)));
         menu->prepend(*current_station_menu_entry);
         menu->show_all();
     } else {
-        current_station_menu_entry->set_label(current_station);
+        current_station_menu_entry->set_label(mk_name(current_station, false));
     }
+
+    player->play(station_url);
 
     std::cout << "'" << station_url << "'" << "(group: " << group_name << ")" << " button was pressed." << std::endl;
 }

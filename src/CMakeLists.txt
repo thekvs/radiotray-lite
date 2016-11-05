@@ -10,9 +10,14 @@ add_executable(
     radiotray-lite
     radiotray-lite.cpp
     tray.cpp
+    player.cpp
+    playlist.cpp
+    m3u_playlist_decoder.cpp
+    pls_playlist_decoder.cpp
+    asx_playlist_decoder.cpp
     third_party/pugixml/pugixml.cpp
 )
-target_link_libraries(radiotray-lite ${GTKMM_LIBRARIES} ${APPINDICATOR_LIBRARIES})
+target_link_libraries(radiotray-lite ${GSTREAMERMM_LIBRARIES} ${GTKMM_LIBRARIES} ${CURL_LIBRARIES} ${APPINDICATOR_LIBRARIES})
 set_target_properties(radiotray-lite PROPERTIES COMPILE_FLAGS "-std=c++11")
 
 add_executable(

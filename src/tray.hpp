@@ -5,14 +5,17 @@
 #include <iostream>
 #include <memory>
 
-#include <gtkmm.h>
-#include <libappindicator/app-indicator.h>
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include <gtkmm.h>
+#include <libappindicator/app-indicator.h>
+
 #include "pugixml/pugixml.hpp"
+
+#include "player.hpp"
+#include "constants.hpp"
 
 namespace radiotray {
 
@@ -41,6 +44,8 @@ private:
     pugi::xml_document bookmarks_doc;
 
     Glib::ustring current_station;
+
+    std::shared_ptr<Player> player;
 
     int counter = 1; // TODO: for debug, remove.
 
