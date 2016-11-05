@@ -46,6 +46,7 @@ private:
     Glib::ustring current_station;
 
     std::shared_ptr<Player> player;
+    std::shared_ptr<EventManager> em;
 
     int counter = 1; // TODO: for debug, remove.
 
@@ -74,6 +75,9 @@ private:
     void clear_menu();
     bool parse_bookmarks_file();
     void search_for_bookmarks_file();
+
+    void on_station_changed_signal(Glib::ustring station, StationState state);
+    void on_music_info_changed_signal(Glib::ustring station, Glib::ustring info);
 
     Glib::ustring mk_name(Glib::ustring base_name); // TODO: for debug, remove.
 };

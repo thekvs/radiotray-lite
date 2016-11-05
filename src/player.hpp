@@ -8,6 +8,7 @@
 #include <glibmm.h>
 
 #include "playlist.hpp"
+#include "event_manager.hpp"
 
 namespace radiotray {
 
@@ -18,10 +19,12 @@ public:
     Player(const Player&) = delete;
 
     bool init(int argc, char **argv);
-    void play(Glib::ustring url);
+    void play(Glib::ustring url, Glib::ustring station = Glib::ustring());
     void stop();
     void start();
     Glib::RefPtr<Gst::PlayBin2> get_playbin();
+
+    std::shared_ptr<EventManager> em;
 
 private:
     Glib::RefPtr<Glib::MainLoop> mainloop;
@@ -30,6 +33,8 @@ private:
     Playlist playlist;
     MediaStreams streams;
     MediaStreams::iterator next_stream;
+
+    Glib::ustring current_station;
 
     std::thread mainloop_thr;
 

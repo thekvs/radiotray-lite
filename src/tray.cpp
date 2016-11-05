@@ -61,6 +61,11 @@ RadioTrayLite::RadioTrayLite(int argc, char** argv)
         // TODO
     }
 
+    em = std::make_shared<EventManager>();
+    em->state_changed.connect(sigc::mem_fun(*this, &RadioTrayLite::on_station_changed_signal));
+
+    player->em = em;
+
     indicator = app_indicator_new_with_path("Radio Tray Lite", kAppIndicatorIconOff,
         APP_INDICATOR_CATEGORY_APPLICATION_STATUS, kImagePath);
     app_indicator_set_status(indicator, APP_INDICATOR_STATUS_ACTIVE);
@@ -107,6 +112,7 @@ RadioTrayLite::on_about_button()
 void
 RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station_name, Glib::ustring station_url)
 {
+#if 0
     auto mk_name = [](Glib::ustring name, bool turn_on)// -> Glib::ustring
     {
         std::stringstream ss;
@@ -118,9 +124,11 @@ RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station
 
         return Glib::ustring(ss.str());
     };
+#endif
 
     current_station = station_name;
 
+#if 0
     if (current_station_menu_entry == nullptr) {
         auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
         menu->prepend(*separator_item);
@@ -130,8 +138,9 @@ RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station
     } else {
         current_station_menu_entry->set_label(mk_name(current_station, false));
     }
+#endif
 
-    player->play(station_url);
+    player->play(station_url, current_station);
 
     std::cout << "'" << station_url << "'" << "(group: " << group_name << ")" << " button was pressed." << std::endl;
 }
@@ -251,6 +260,49 @@ RadioTrayLite::search_for_bookmarks_file()
     if (result != std::end(paths)) {
         bookmarks_file = *result;
     }
+}
+
+void
+RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState state)
+{
+    if (state == em->state and station == current_station) {
+        return;
+    }
+
+    auto mk_menu_entry = [](Glib::ustring name, bool turn_on)
+    {
+        std::stringstream ss;
+        if (turn_on) {
+            ss << "Turn On \"" << name << "\"";
+        } else {
+            ss << "Turn Off \"" << name << "\"";
+        }
+
+        return Glib::ustring(ss.str());
+    };
+
+    auto turn_on = (state == StationState::PLAYING ? false : true);
+
+    if (current_station_menu_entry == nullptr) {
+        auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
+        menu->prepend(*separator_item);
+        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_menu_entry(current_station, turn_on)));
+        menu->prepend(*current_station_menu_entry);
+        menu->show_all();
+    } else {
+        current_station_menu_entry->set_label(mk_menu_entry(current_station, turn_on));
+    }
+
+    if (state == StationState::PLAYING) {
+        app_indicator_set_icon(indicator, kAppIndicatorIconOn);
+    } else {
+        app_indicator_set_icon(indicator, kAppIndicatorIconOff);
+    }
+}
+
+void
+RadioTrayLite::on_music_info_changed_signal(Glib::ustring station, Glib::ustring info)
+{
 }
 
 Glib::ustring

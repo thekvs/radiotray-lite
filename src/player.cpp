@@ -32,7 +32,7 @@ Player::init(int argc, char **argv)
 }
 
 void
-Player::play(Glib::ustring data_url)
+Player::play(Glib::ustring data_url, Glib::ustring station)
 {
     bool ok;
     std::tie(ok, streams) = playlist.get_streams(data_url);
@@ -43,6 +43,8 @@ Player::play(Glib::ustring data_url)
 
     Glib::ustring stream_url = streams.front();
     next_stream = std::next(std::begin(streams));
+
+    current_station = station;
 
     stop();
     set_stream(stream_url);
@@ -136,6 +138,16 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
         auto state_changed_msg = Glib::RefPtr<Gst::MessageStateChanged>::cast_dynamic(message);
         Gst::State new_state = state_changed_msg->parse();
         Gst::State old_state = state_changed_msg->parse_old();
+
+        StationState st;
+        if (new_state == Gst::State::STATE_PLAYING) {
+            st = StationState::PLAYING;
+        } else {
+            st = StationState::IDLE;
+        }
+
+        em->state_changed(current_station, st);
+        em->state = st;
 
         auto print = [](Gst::State& state) -> std::string
         {
