@@ -289,10 +289,11 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
         menu->prepend(*separator_item);
         current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_menu_entry(current_station, turn_on)));
         menu->prepend(*current_station_menu_entry);
-        menu->show_all();
     } else {
         current_station_menu_entry->set_label(mk_menu_entry(current_station, turn_on));
     }
+
+    menu->show_all();
 
     if (state == StationState::PLAYING) {
         app_indicator_set_icon(indicator, kAppIndicatorIconOn);
