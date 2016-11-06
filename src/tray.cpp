@@ -99,7 +99,7 @@ RadioTrayLite::on_quit_button()
 {
     LOG(DEBUG) << "'Quit' button was pressed.";
 
-    player->quit();
+    player->stop();
     gtk_main_quit();
 }
 

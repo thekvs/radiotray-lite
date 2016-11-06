@@ -24,7 +24,7 @@ public:
     void pause();
     void stop();
     void start();
-    void quit();
+    // void quit();
     Glib::ustring get_station();
     Glib::RefPtr<Gst::PlayBin2> get_playbin();
 

@@ -252,13 +252,13 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
 #endif
 }
 
-void
-Player::quit()
-{
-    stop();
-    // mainloop->quit();
-    std::this_thread::sleep_for(std::chrono::milliseconds(500)); // FIXME: remove this hack
-}
+// void
+// Player::quit()
+// {
+//     stop();
+//     // mainloop->quit();
+//     // std::this_thread::sleep_for(std::chrono::milliseconds(500)); // FIXME: remove this hack
+// }
 
 Glib::ustring
 Player::get_station()
