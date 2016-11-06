@@ -19,6 +19,7 @@ add_executable(
 )
 target_link_libraries(radiotray-lite ${GSTREAMERMM_LIBRARIES} ${GTKMM_LIBRARIES} ${CURL_LIBRARIES} ${APPINDICATOR_LIBRARIES})
 set_target_properties(radiotray-lite PROPERTIES COMPILE_FLAGS "-std=c++11")
+target_compile_definitions(radiotray-lite PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_HANDLING)
 
 add_executable(
     radiotray-lite-cli
