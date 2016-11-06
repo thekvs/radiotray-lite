@@ -11,6 +11,7 @@ add_executable(
     radiotray-lite.cpp
     tray.cpp
     player.cpp
+    about.cpp
     playlist.cpp
     m3u_playlist_decoder.cpp
     pls_playlist_decoder.cpp

@@ -107,6 +107,9 @@ void
 RadioTrayLite::on_about_button()
 {
     LOG(DEBUG) << "'About' button was pressed.";
+
+    AboutDialog about;
+    about.run();
 }
 
 void

@@ -15,6 +15,7 @@
 #include "pugixml/pugixml.hpp"
 
 #include "player.hpp"
+#include "about.hpp"
 #include "constants.hpp"
 
 namespace radiotray {
