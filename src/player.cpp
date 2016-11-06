@@ -181,7 +181,7 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
             }
             return "STATE_UNKNOWN";
         };
-        std::cerr << "Type: Gst::MESSAGE_STATE_CHANGED." << " Old: " << print(old_state) << " New: " << print(new_state) << " Source: " << state_changed_msg->get_source()->get_name() << std::endl;
+        LOG(DEBUG) << "Type: Gst::MESSAGE_STATE_CHANGED." << " Old: " << print(old_state) << " New: " << print(new_state) << " Source: " << state_changed_msg->get_source()->get_name();
     }
 
     return true;

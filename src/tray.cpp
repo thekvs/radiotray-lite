@@ -33,7 +33,7 @@ RadioTrayLite::BookmarksWalker::for_each(pugi::xml_node& node)
         menu_item->set_submenu(*submenu);
         menus.push(submenu);
         level = depth();
-        std::cout << "Group: " << group_name << ", depth: " << depth() << std::endl;
+        LOG(DEBUG) << "Group: " << group_name << ", depth: " << depth();
     } else if (is_bookmark and (!attr_url.empty())) {
         auto station_name = attr_name.as_string();
         auto station_group_name = node.parent().attribute("name").as_string();
@@ -42,10 +42,8 @@ RadioTrayLite::BookmarksWalker::for_each(pugi::xml_node& node)
         sub_item->signal_activate().connect(sigc::bind<Glib::ustring, Glib::ustring, Glib::ustring>(
                 sigc::mem_fun(radiotray, &RadioTrayLite::on_station_button), station_group_name, station_name, station_url));
         menus.top()->append(*sub_item);
-        std::cout << "Bookmark depth: " << depth() << ", level: " << level << ", #menus: " << menus.size() <<  ", station: " << station_name << ", group: " << station_group_name << std::endl;
+        LOG(DEBUG) << "Bookmark depth: " << depth() << ", level: " << level << ", #menus: " << menus.size() <<  ", station: " << station_name << ", group: " << station_group_name;
     }
-
-    std::cout.flush();
 
     return true; // continue traversal
 }
@@ -99,7 +97,7 @@ RadioTrayLite::run()
 void
 RadioTrayLite::on_quit_button()
 {
-    std::cout << "'Quit' button was pressed." << std::endl;
+    LOG(DEBUG) << "'Quit' button was pressed.";
 
     player->quit();
     gtk_main_quit();
@@ -108,7 +106,7 @@ RadioTrayLite::on_quit_button()
 void
 RadioTrayLite::on_about_button()
 {
-    std::cout << "'About' button was pressed." << std::endl;
+    LOG(DEBUG) << "'About' button was pressed.";
 }
 
 void
@@ -140,14 +138,13 @@ RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station
 
     player->play(station_url, station_name);
 
-    std::cout << "'" << station_url << "'" << "(group: " << group_name << ", station: " << station_name << ")"
-        << " button was pressed." << std::endl;
+    LOG(DEBUG) << "'" << station_url << "'" << "(group: " << group_name << ", station: " << station_name << ")" << " button was pressed.";
 }
 
 void
 RadioTrayLite::on_reload_button()
 {
-    std::cout << "'Reload'" << " button was pressed" << std::endl;
+    LOG(DEBUG) << "'Reload'" << " button was pressed";
     rebuild_menu();
 }
 
@@ -359,7 +356,7 @@ RadioTrayLite::on_music_info_changed_signal(Glib::ustring station, Glib::ustring
     std::stringstream ss;
 
     ss << player->get_station() << ": " << info;
-    std::cerr << ss.str() << std::endl;
+    LOG(DEBUG) << ss.str();
 }
 
 Glib::ustring
