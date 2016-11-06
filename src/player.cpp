@@ -63,6 +63,12 @@ Player::play()
 }
 
 void
+Player::pause()
+{
+    playbin->set_state(Gst::STATE_PAUSED);
+}
+
+void
 Player::stop()
 {
     playbin->set_state(Gst::STATE_NULL);
@@ -175,7 +181,7 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
             }
             return "STATE_UNKNOWN";
         };
-        std::cerr << "Type: Gst::MESSAGE_STATE_CHANGED." << " Old: " << print(old_state) << " New: " << print(new_state) << std::endl;
+        std::cerr << "Type: Gst::MESSAGE_STATE_CHANGED." << " Old: " << print(old_state) << " New: " << print(new_state) << " Source: " << state_changed_msg->get_source()->get_name() << std::endl;
     }
 
     return true;

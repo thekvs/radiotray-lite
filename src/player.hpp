@@ -21,6 +21,7 @@ public:
     bool init(int argc, char **argv);
     void play(Glib::ustring url, Glib::ustring station = Glib::ustring());
     void play();
+    void pause();
     void stop();
     void start();
     void quit();

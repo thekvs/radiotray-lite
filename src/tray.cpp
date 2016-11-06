@@ -152,6 +152,19 @@ RadioTrayLite::on_reload_button()
 }
 
 void
+RadioTrayLite::on_current_station_button()
+{
+    if (em->state == StationState::PLAYING) {
+        player->pause();
+        // player->stop();
+        // em->state_changed(player->get_station(), StationState::IDLE);
+        // player->em->state = StationState::IDLE;
+    } else if (em->state == StationState::IDLE) {
+        player->play();
+    }
+}
+
+void
 RadioTrayLite::build_menu()
 {
     auto bookmarks_parsed = parse_bookmarks_file();
@@ -288,6 +301,7 @@ RadioTrayLite::make_current_station_menu_entry(bool turn_on)
             auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
             menu->prepend(*separator_item);
             current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_menu_entry(player->get_station(), turn_on)));
+            current_station_menu_entry->signal_activate().connect(sigc::mem_fun(*this, &RadioTrayLite::on_current_station_button));
             menu->prepend(*current_station_menu_entry);
         } else {
             current_station_menu_entry->set_label(mk_menu_entry(player->get_station(), turn_on));

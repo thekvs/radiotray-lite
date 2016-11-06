@@ -68,6 +68,8 @@ private:
     void on_about_button();
     void on_station_button(Glib::ustring group_name, Glib::ustring station_name, Glib::ustring station_url);
     void on_reload_button();
+    void on_current_station_button();
+
     void build_menu();
     void rebuild_menu();
     void clear_menu();
