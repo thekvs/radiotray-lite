@@ -297,6 +297,7 @@ RadioTrayLite::make_current_station_menu_entry(bool turn_on)
         if (current_station_menu_entry == nullptr) {
             auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
             menu->prepend(*separator_item);
+
             current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_menu_entry(player->get_station(), turn_on)));
             current_station_menu_entry->signal_activate().connect(sigc::mem_fun(*this, &RadioTrayLite::on_current_station_button));
             menu->prepend(*current_station_menu_entry);

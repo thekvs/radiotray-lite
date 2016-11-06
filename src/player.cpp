@@ -18,15 +18,16 @@ Player::init(int argc, char **argv)
     }
     set_buffer_size(1024 * 100);
 
-    mainloop = Glib::MainLoop::create();
+    // mainloop = Glib::MainLoop::create();
     Glib::RefPtr<Gst::Bus> bus = playbin->get_bus();
     bus->add_watch(sigc::mem_fun(*this, &Player::on_bus_message));
 
-    mainloop_thr = std::thread([this](){
-        mainloop->run();
-        stop(); // cleanup
-    });
-    mainloop_thr.detach();
+    // mainloop_thr = std::thread([this]()
+    // {
+    //     mainloop->run();
+    //     stop(); // cleanup
+    // });
+    // mainloop_thr.detach();
 
     return true;
 }
@@ -255,7 +256,7 @@ void
 Player::quit()
 {
     stop();
-    mainloop->quit();
+    // mainloop->quit();
     std::this_thread::sleep_for(std::chrono::milliseconds(500)); // FIXME: remove this hack
 }
 
@@ -264,6 +265,13 @@ Player::get_station()
 {
     return current_station;
 }
+
+// void
+// Player::gstreamer_loop()
+// {
+//     mainloop->run();
+//     stop(); // cleanup
+// }
 
 } // namespace radiotray
 
