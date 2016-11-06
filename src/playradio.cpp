@@ -38,15 +38,19 @@ main(int argc, char** argv)
     }
 
     auto player = std::make_shared<Player>();
+    player->em = std::make_shared<EventManager>(); // FIXME: EventManager should be part of Player?
     auto ok = player->init(argc, argv);
 
     if (ok) {
         KeyboardControl keyboard(player, stations);
         std::thread t(std::ref(keyboard));
 
-        while (true) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        }
+        auto mainloop = Glib::MainLoop::create();
+        mainloop->run();
+
+        // while (true) {
+        //     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        // }
     }
 
     return EXIT_SUCCESS;
