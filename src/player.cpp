@@ -139,10 +139,10 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
         Glib::RefPtr<Gst::Pad> pad;
         msg_tag->parse(pad, tag_list);
         if (tag_list.exists("title") && tag_list.size("title") > 0) {
-            std::string v;
-            auto ok = tag_list.get("title", v);
+            Glib::ustring title;
+            auto ok = tag_list.get("title", title);
             if (ok) {
-                std::cerr << "Playing: " << v << std::endl;
+                em->music_info_changed(current_station, title);
             }
         }
     } else if (message_type == Gst::MESSAGE_STATE_CHANGED) {
