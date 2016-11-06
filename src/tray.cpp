@@ -99,7 +99,8 @@ void
 RadioTrayLite::on_quit_button()
 {
     std::cout << "'Quit' button was pressed." << std::endl;
-    player->stop();
+
+    player->quit();
     gtk_main_quit();
 }
 

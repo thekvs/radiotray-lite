@@ -37,14 +37,25 @@ Player::play(Glib::ustring data_url, Glib::ustring station)
     bool ok;
     std::tie(ok, streams) = playlist.get_streams(data_url);
     if ((not ok) or streams.empty()) {
+        // TODO: D-Bus message
         LOG(ERROR) << "Couldn't get audio streams!";
+        return;
+    }
+
+    current_station = station;
+
+    play();
+}
+
+void
+Player::play()
+{
+    if (streams.empty()) {
         return;
     }
 
     Glib::ustring stream_url = streams.front();
     next_stream = std::next(std::begin(streams));
-
-    current_station = station;
 
     stop();
     set_stream(stream_url);
@@ -232,6 +243,13 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
 
     return true;
 #endif
+}
+
+void
+Player::quit()
+{
+    stop();
+    mainloop->quit();
 }
 
 } // namespace radiotray

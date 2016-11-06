@@ -20,8 +20,10 @@ public:
 
     bool init(int argc, char **argv);
     void play(Glib::ustring url, Glib::ustring station = Glib::ustring());
+    void play();
     void stop();
     void start();
+    void quit();
     Glib::RefPtr<Gst::PlayBin2> get_playbin();
 
     std::shared_ptr<EventManager> em;
