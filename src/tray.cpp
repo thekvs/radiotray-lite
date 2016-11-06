@@ -182,6 +182,10 @@ RadioTrayLite::build_menu()
     menu_item->signal_activate().connect(sigc::mem_fun(*this, &RadioTrayLite::on_quit_button));
     menu->append(*menu_item);
 
+    auto turn_on = (em->state == StationState::PLAYING ? false : true);
+    make_current_station_menu_entry(turn_on);
+
+#if 0
     if (not player->get_station().empty()) {
         auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
         menu->prepend(*separator_item);
@@ -190,6 +194,7 @@ RadioTrayLite::build_menu()
     }
 
     menu->show_all();
+#endif
 }
 
 void
@@ -208,6 +213,8 @@ RadioTrayLite::clear_menu()
         menu->remove(*e);
         delete e;
     }
+
+    current_station_menu_entry = nullptr;
 }
 
 bool
@@ -262,12 +269,45 @@ RadioTrayLite::search_for_bookmarks_file()
 }
 
 void
+RadioTrayLite::make_current_station_menu_entry(bool turn_on)
+{
+    if (not player->get_station().empty()) {
+        auto mk_menu_entry = [](Glib::ustring name, bool turn_on)
+        {
+            std::stringstream ss;
+            if (turn_on) {
+                ss << "Turn On \"" << name << "\"";
+            } else {
+                ss << "Turn Off \"" << name << "\"";
+            }
+
+            return Glib::ustring(ss.str());
+        };
+
+        if (current_station_menu_entry == nullptr) {
+            auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
+            menu->prepend(*separator_item);
+            current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_menu_entry(player->get_station(), turn_on)));
+            menu->prepend(*current_station_menu_entry);
+        } else {
+            current_station_menu_entry->set_label(mk_menu_entry(player->get_station(), turn_on));
+        }
+    }
+
+    menu->show_all();
+}
+
+void
 RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState state)
 {
     if (state == em->state) {
         return;
     }
 
+    auto turn_on = (state == StationState::PLAYING ? false : true);
+    make_current_station_menu_entry(turn_on);
+
+#if 0
     auto mk_menu_entry = [](Glib::ustring name, bool turn_on)
     {
         std::stringstream ss;
@@ -280,8 +320,6 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
         return Glib::ustring(ss.str());
     };
 
-    auto turn_on = (state == StationState::PLAYING ? false : true);
-
     if (current_station_menu_entry == nullptr) {
         auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
         menu->prepend(*separator_item);
@@ -292,6 +330,7 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
     }
 
     menu->show_all();
+#endif
 
     if (state == StationState::PLAYING) {
         app_indicator_set_icon(indicator, kAppIndicatorIconOn);
