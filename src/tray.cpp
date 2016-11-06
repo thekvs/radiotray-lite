@@ -125,11 +125,7 @@ RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station
 
         return Glib::ustring(ss.str());
     };
-#endif
 
-    current_station = station_name;
-
-#if 0
     if (current_station_menu_entry == nullptr) {
         auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
         menu->prepend(*separator_item);
@@ -141,9 +137,10 @@ RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station
     }
 #endif
 
-    player->play(station_url, current_station);
+    player->play(station_url, station_name);
 
-    std::cout << "'" << station_url << "'" << "(group: " << group_name << ")" << " button was pressed." << std::endl;
+    std::cout << "'" << station_url << "'" << "(group: " << group_name << ", station: " << station_name << ")"
+        << " button was pressed." << std::endl;
 }
 
 void
@@ -184,10 +181,10 @@ RadioTrayLite::build_menu()
     menu_item->signal_activate().connect(sigc::mem_fun(*this, &RadioTrayLite::on_quit_button));
     menu->append(*menu_item);
 
-    if (not current_station.empty()) {
+    if (not player->get_station().empty()) {
         auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
         menu->prepend(*separator_item);
-        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(current_station));
+        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(player->get_station()));
         menu->prepend(*current_station_menu_entry);
     }
 
@@ -266,7 +263,7 @@ RadioTrayLite::search_for_bookmarks_file()
 void
 RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState state)
 {
-    if (state == em->state and station == current_station) {
+    if (state == em->state) {
         return;
     }
 
@@ -287,10 +284,10 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
     if (current_station_menu_entry == nullptr) {
         auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
         menu->prepend(*separator_item);
-        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_menu_entry(current_station, turn_on)));
+        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_menu_entry(player->get_station(), turn_on)));
         menu->prepend(*current_station_menu_entry);
     } else {
-        current_station_menu_entry->set_label(mk_menu_entry(current_station, turn_on));
+        current_station_menu_entry->set_label(mk_menu_entry(player->get_station(), turn_on));
     }
 
     menu->show_all();

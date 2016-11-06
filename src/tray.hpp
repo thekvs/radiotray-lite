@@ -43,8 +43,6 @@ private:
     std::string bookmarks_file;
     pugi::xml_document bookmarks_doc;
 
-    Glib::ustring current_station;
-
     std::shared_ptr<Player> player;
     std::shared_ptr<EventManager> em;
 

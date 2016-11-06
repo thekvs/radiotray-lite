@@ -24,6 +24,7 @@ public:
     void stop();
     void start();
     void quit();
+    Glib::ustring get_station();
     Glib::RefPtr<Gst::PlayBin2> get_playbin();
 
     std::shared_ptr<EventManager> em;
