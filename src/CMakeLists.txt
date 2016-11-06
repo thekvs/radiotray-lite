@@ -21,7 +21,7 @@ target_link_libraries(radiotray-lite ${GSTREAMERMM_LIBRARIES} ${GTKMM_LIBRARIES}
 set_target_properties(radiotray-lite PROPERTIES COMPILE_FLAGS "-std=c++11")
 
 add_executable(
-    playradio
+    radiotray-lite-cli
     playradio.cpp
     player.cpp
     playlist.cpp
@@ -29,6 +29,6 @@ add_executable(
     pls_playlist_decoder.cpp
     asx_playlist_decoder.cpp
 )
-target_link_libraries(playradio ${GSTREAMERMM_LIBRARIES} ${CURL_LIBRARIES})
-set_target_properties(playradio PROPERTIES COMPILE_FLAGS "-std=c++11")
-target_compile_definitions(playradio PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_HANDLING)
+target_link_libraries(radiotray-lite-cli ${GSTREAMERMM_LIBRARIES} ${CURL_LIBRARIES})
+set_target_properties(radiotray-lite-cli PROPERTIES COMPILE_FLAGS "-std=c++11")
+target_compile_definitions(radiotray-lite-cli PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_HANDLING)
