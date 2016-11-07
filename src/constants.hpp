@@ -25,6 +25,8 @@ const char* const kAppVersion = "0.1.0";
 const char* const kAppName = "Radio Tray Lite";
 const char* const kWebSite = "https://github.com/thekvs/radiotray-lite/";
 const char* const kAuthor = "Konstantin Sorokin <kvs@sigterm.ru>";
+const char* const kCopyrightYear = "2016";
+const char* const kCopyrightTmpl = "%s - Copyright (c) %s\n %s";
 
 } // namespace radiotray
 
