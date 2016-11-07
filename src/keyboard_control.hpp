@@ -10,7 +10,8 @@
 
 #include <gstreamermm.h>
 
-namespace radiotray {
+namespace radiotray
+{
 
 class Player;
 
@@ -74,16 +75,17 @@ private:
 
     bool paused = false;
 
-    int getch()
+    int
+    getch()
     {
         static struct termios oldt, newt;
         tcgetattr(STDIN_FILENO, &oldt); // save old settings
         newt = oldt;
-        newt.c_lflag &= ~(ICANON);               // disable buffering
-        newt.c_lflag &= ~(ECHO);                 // disable echo
+        newt.c_lflag &= ~(ICANON); // disable buffering
+        newt.c_lflag &= ~(ECHO); // disable echo
         tcsetattr(STDIN_FILENO, TCSANOW, &newt); // apply new settings
 
-        int c = getchar();                       // read character
+        int c = getchar(); // read character
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt); // restore old settings
 
         return c;

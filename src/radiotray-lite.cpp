@@ -5,7 +5,7 @@ INITIALIZE_EASYLOGGINGPP
 using namespace radiotray;
 
 int
-main(int argc, char *argv[])
+main(int argc, char* argv[])
 {
     el::Configurations defaultConf;
     defaultConf.setToDefault();
@@ -19,4 +19,3 @@ main(int argc, char *argv[])
 
     return 0;
 }
-

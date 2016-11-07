@@ -10,15 +10,17 @@
 #include "playlist.hpp"
 #include "event_manager.hpp"
 
-namespace radiotray {
+namespace radiotray
+{
 
-class Player {
+class Player
+{
 public:
     Player();
 
     Player(const Player&) = delete;
 
-    bool init(int argc, char **argv);
+    bool init(int argc, char** argv);
     void play(Glib::ustring url, Glib::ustring station = Glib::ustring());
     void play();
     void pause();

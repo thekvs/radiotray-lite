@@ -4,7 +4,8 @@
 #include <gtkmm.h>
 #include "constants.hpp"
 
-namespace radiotray {
+namespace radiotray
+{
 
 class AboutDialog : public Gtk::AboutDialog
 {

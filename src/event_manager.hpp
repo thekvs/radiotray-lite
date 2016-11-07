@@ -9,8 +9,7 @@
 
 namespace radiotray
 {
-enum class Event
-{
+enum class Event {
     EMPTY,
     STATE_CHANGED,
     STATION_INFO_CHANGED,
@@ -21,21 +20,14 @@ enum class Event
     NOTIFICATION
 };
 
-enum class StationState
-{
-    UNKNOWN,
-    IDLE,
-    CONNECTING,
-    PLAYING
-};
+enum class StationState { UNKNOWN, IDLE, CONNECTING, PLAYING };
 
-using MusicInfoChangedSignal = sigc::signal<void, Glib::ustring/*station*/, Glib::ustring/*info*/>;
-using StateChangedSignal = sigc::signal<void, Glib::ustring/*station*/, StationState/*state*/>;
+using MusicInfoChangedSignal = sigc::signal<void, Glib::ustring /*station*/, Glib::ustring /*info*/>;
+using StateChangedSignal = sigc::signal<void, Glib::ustring /*station*/, StationState /*state*/>;
 
 class EventManager
 {
 public:
-
     EventManager() = default;
 
     StationState state = StationState::UNKNOWN;

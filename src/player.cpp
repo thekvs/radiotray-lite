@@ -1,13 +1,14 @@
 #include "player.hpp"
 
-namespace radiotray {
+namespace radiotray
+{
 
 Player::Player()
 {
 }
 
 bool
-Player::init(int argc, char **argv)
+Player::init(int argc, char** argv)
 {
     Gst::init(argc, argv);
 
@@ -167,8 +168,7 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
         em->state_changed(current_station, st);
         em->state = st;
 
-        auto print = [](Gst::State& state) -> std::string
-        {
+        auto print = [](Gst::State& state) -> std::string {
             if (state == Gst::State::STATE_PLAYING) {
                 return "STATE_PLAYING";
             } else if (state == Gst::State::STATE_NULL) {
@@ -182,7 +182,9 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
             }
             return "STATE_UNKNOWN";
         };
-        LOG(DEBUG) << "Type: Gst::MESSAGE_STATE_CHANGED." << " Old: " << print(old_state) << " New: " << print(new_state) << " Source: " << state_changed_msg->get_source()->get_name();
+        LOG(DEBUG) << "Type: Gst::MESSAGE_STATE_CHANGED."
+                   << " Old: " << print(old_state) << " New: " << print(new_state)
+                   << " Source: " << state_changed_msg->get_source()->get_name();
     }
 
     return true;
@@ -274,4 +276,3 @@ Player::get_station()
 // }
 
 } // namespace radiotray
-

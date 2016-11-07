@@ -1,6 +1,7 @@
 #include "about.hpp"
 
-namespace radiotray {
+namespace radiotray
+{
 
 AboutDialog::AboutDialog()
 {
@@ -26,4 +27,3 @@ AboutDialog::AboutDialog()
 }
 
 } // namespace radiotray
-

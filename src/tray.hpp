@@ -18,12 +18,12 @@
 #include "about.hpp"
 #include "constants.hpp"
 
-namespace radiotray {
+namespace radiotray
+{
 
 class RadioTrayLite
 {
 public:
-
     RadioTrayLite() = delete;
     RadioTrayLite(const RadioTrayLite&) = delete;
 

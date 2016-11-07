@@ -3,7 +3,8 @@
 
 #include <string>
 
-namespace radiotray {
+namespace radiotray
+{
 
 const char* const kAppDirName = "radiotray";
 const char* const kBookmarksFileName = "bookmarks.xml";

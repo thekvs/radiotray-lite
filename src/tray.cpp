@@ -1,6 +1,7 @@
 #include "tray.hpp"
 
-namespace radiotray {
+namespace radiotray
+{
 
 RadioTrayLite::BookmarksWalker::BookmarksWalker(RadioTrayLite& radiotray, Gtk::Menu* menu)
     : radiotray(radiotray)
@@ -40,9 +41,10 @@ RadioTrayLite::BookmarksWalker::for_each(pugi::xml_node& node)
         auto station_url = attr_url.as_string();
         auto sub_item = Gtk::manage(new Gtk::MenuItem(station_name));
         sub_item->signal_activate().connect(sigc::bind<Glib::ustring, Glib::ustring, Glib::ustring>(
-                sigc::mem_fun(radiotray, &RadioTrayLite::on_station_button), station_group_name, station_name, station_url));
+            sigc::mem_fun(radiotray, &RadioTrayLite::on_station_button), station_group_name, station_name, station_url));
         menus.top()->append(*sub_item);
-        LOG(DEBUG) << "Bookmark depth: " << depth() << ", level: " << level << ", #menus: " << menus.size() <<  ", station: " << station_name << ", group: " << station_group_name;
+        LOG(DEBUG) << "Bookmark depth: " << depth() << ", level: " << level << ", #menus: " << menus.size() << ", station: " << station_name
+                   << ", group: " << station_group_name;
     }
 
     return true; // continue traversal
@@ -65,8 +67,7 @@ RadioTrayLite::RadioTrayLite(int argc, char** argv)
 
     player->em = em;
 
-    indicator = app_indicator_new_with_path("Radio Tray Lite", kAppIndicatorIconOff,
-        APP_INDICATOR_CATEGORY_APPLICATION_STATUS, kImagePath);
+    indicator = app_indicator_new_with_path("Radio Tray Lite", kAppIndicatorIconOff, APP_INDICATOR_CATEGORY_APPLICATION_STATUS, kImagePath);
     app_indicator_set_status(indicator, APP_INDICATOR_STATUS_ACTIVE);
     app_indicator_set_attention_icon(indicator, kAppIndicatorIconOn);
     app_indicator_set_menu(indicator, menu->gobj());
@@ -141,13 +142,16 @@ RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station
 
     player->play(station_url, station_name);
 
-    LOG(DEBUG) << "'" << station_url << "'" << "(group: " << group_name << ", station: " << station_name << ")" << " button was pressed.";
+    LOG(DEBUG) << "'" << station_url << "'"
+               << "(group: " << group_name << ", station: " << station_name << ")"
+               << " button was pressed.";
 }
 
 void
 RadioTrayLite::on_reload_button()
 {
-    LOG(DEBUG) << "'Reload'" << " button was pressed";
+    LOG(DEBUG) << "'Reload'"
+               << " button was pressed";
     rebuild_menu();
 }
 
@@ -222,7 +226,7 @@ RadioTrayLite::rebuild_menu()
 void
 RadioTrayLite::clear_menu()
 {
-    for (auto &e : menu->get_children()) {
+    for (auto& e : menu->get_children()) {
         menu->remove(*e);
         delete e;
     }
@@ -265,8 +269,7 @@ RadioTrayLite::search_for_bookmarks_file()
     // default bookmarks file
     paths.push_back(std::string("/usr/share/") + kAppDirName + "/" + kBookmarksFileName);
 
-    auto file_exists = [](const std::string& fname) -> bool
-    {
+    auto file_exists = [](const std::string& fname) -> bool {
         struct stat st;
         auto rc = stat(fname.c_str(), &st);
         if (rc == 0 and S_ISREG(st.st_mode)) {
@@ -285,8 +288,7 @@ void
 RadioTrayLite::make_current_station_menu_entry(bool turn_on)
 {
     if (not player->get_station().empty()) {
-        auto mk_menu_entry = [](Glib::ustring name, bool turn_on)
-        {
+        auto mk_menu_entry = [](Glib::ustring name, bool turn_on) {
             std::stringstream ss;
             if (turn_on) {
                 ss << "Turn On \"" << name << "\"";
