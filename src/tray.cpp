@@ -202,10 +202,10 @@ RadioTrayLite::build_menu()
     separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
     menu->prepend(*separator_item);
 
-    make_current_broadcast_menu_entry();
+    set_current_broadcast();
 
     auto turn_on = (em->state == StationState::PLAYING ? false : true);
-    make_current_station_menu_entry(turn_on);
+    set_current_station(turn_on);
 
 #if 0
     if (not player->get_station().empty()) {
@@ -291,7 +291,7 @@ RadioTrayLite::search_for_bookmarks_file()
 }
 
 void
-RadioTrayLite::make_current_station_menu_entry(bool turn_on)
+RadioTrayLite::set_current_station(bool turn_on)
 {
     if (not player->get_station().empty()) {
         auto mk_menu_entry = [](Glib::ustring name, bool turn_on) {
@@ -318,10 +318,10 @@ RadioTrayLite::make_current_station_menu_entry(bool turn_on)
 }
 
 void
-RadioTrayLite::make_current_broadcast_menu_entry(Glib::ustring info)
+RadioTrayLite::set_current_broadcast(Glib::ustring info)
 {
     if (current_broadcast_menu_entry == nullptr) {
-        current_broadcast_menu_entry = Gtk::manage(new Gtk::MenuItem("Idle"));
+        current_broadcast_menu_entry = Gtk::manage(new Gtk::MenuItem(info));
         menu->prepend(*current_broadcast_menu_entry);
     } else {
         current_broadcast_menu_entry->set_label(info);
@@ -338,10 +338,10 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
     }
 
     auto turn_on = (state == StationState::PLAYING ? false : true);
-    make_current_station_menu_entry(turn_on);
+    set_current_station(turn_on);
 
     if (state == StationState::IDLE) {
-        make_current_broadcast_menu_entry("Idle");
+        set_current_broadcast();
     }
 
 #if 0
@@ -379,7 +379,7 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
 void
 RadioTrayLite::on_music_info_changed_signal(Glib::ustring station, Glib::ustring info)
 {
-    make_current_broadcast_menu_entry(info);
+    set_current_broadcast(info);
 
     LOG(DEBUG) << info;
 }

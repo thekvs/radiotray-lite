@@ -76,8 +76,8 @@ private:
     void clear_menu();
     bool parse_bookmarks_file();
     void search_for_bookmarks_file();
-    void make_current_station_menu_entry(bool turn_on);
-    void make_current_broadcast_menu_entry(Glib::ustring info = Glib::ustring());
+    void set_current_station(bool turn_on);
+    void set_current_broadcast(Glib::ustring info = Glib::ustring("Idle"));
 
     void on_station_changed_signal(Glib::ustring station, StationState state);
     void on_music_info_changed_signal(Glib::ustring station, Glib::ustring info);
