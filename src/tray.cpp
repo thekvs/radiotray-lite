@@ -199,6 +199,11 @@ RadioTrayLite::build_menu()
     menu_item->signal_activate().connect(sigc::mem_fun(*this, &RadioTrayLite::on_quit_button));
     menu->append(*menu_item);
 
+    separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
+    menu->prepend(*separator_item);
+
+    make_current_broadcast_menu_entry();
+
     auto turn_on = (em->state == StationState::PLAYING ? false : true);
     make_current_station_menu_entry(turn_on);
 
@@ -232,6 +237,7 @@ RadioTrayLite::clear_menu()
     }
 
     current_station_menu_entry = nullptr;
+    current_broadcast_menu_entry = nullptr;
 }
 
 bool
@@ -300,9 +306,6 @@ RadioTrayLite::make_current_station_menu_entry(bool turn_on)
         };
 
         if (current_station_menu_entry == nullptr) {
-            auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
-            menu->prepend(*separator_item);
-
             current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_menu_entry(player->get_station(), turn_on)));
             current_station_menu_entry->signal_activate().connect(sigc::mem_fun(*this, &RadioTrayLite::on_current_station_button));
             menu->prepend(*current_station_menu_entry);
@@ -315,6 +318,19 @@ RadioTrayLite::make_current_station_menu_entry(bool turn_on)
 }
 
 void
+RadioTrayLite::make_current_broadcast_menu_entry(Glib::ustring info)
+{
+    if (current_broadcast_menu_entry == nullptr) {
+        current_broadcast_menu_entry = Gtk::manage(new Gtk::MenuItem("Idle"));
+        menu->prepend(*current_broadcast_menu_entry);
+    } else {
+        current_broadcast_menu_entry->set_label(info);
+    }
+
+    current_broadcast_menu_entry->set_sensitive(false);
+}
+
+void
 RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState state)
 {
     if (state == em->state) {
@@ -323,6 +339,10 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
 
     auto turn_on = (state == StationState::PLAYING ? false : true);
     make_current_station_menu_entry(turn_on);
+
+    if (state == StationState::IDLE) {
+        make_current_broadcast_menu_entry("Idle");
+    }
 
 #if 0
     auto mk_menu_entry = [](Glib::ustring name, bool turn_on)
@@ -359,10 +379,9 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
 void
 RadioTrayLite::on_music_info_changed_signal(Glib::ustring station, Glib::ustring info)
 {
-    std::stringstream ss;
+    make_current_broadcast_menu_entry(info);
 
-    ss << player->get_station() << ": " << info;
-    LOG(DEBUG) << ss.str();
+    LOG(DEBUG) << info;
 }
 
 Glib::ustring

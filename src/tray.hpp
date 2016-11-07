@@ -37,7 +37,7 @@ private:
     std::shared_ptr<Gtk::Menu> menu;
 
     Gtk::MenuItem* current_station_menu_entry = nullptr;
-    Gtk::MenuItem* current_composition_menu_entry = nullptr;
+    Gtk::MenuItem* current_broadcast_menu_entry = nullptr;
 
     AppIndicator* indicator = nullptr;
 
@@ -77,6 +77,7 @@ private:
     bool parse_bookmarks_file();
     void search_for_bookmarks_file();
     void make_current_station_menu_entry(bool turn_on);
+    void make_current_broadcast_menu_entry(Glib::ustring info = Glib::ustring());
 
     void on_station_changed_signal(Glib::ustring station, StationState state);
     void on_music_info_changed_signal(Glib::ustring station, Glib::ustring info);
