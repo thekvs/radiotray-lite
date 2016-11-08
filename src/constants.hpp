@@ -22,7 +22,7 @@ const char* const kAppIndicatorIconOff = "radiotray_off";
 const char* const kAppIndicatorIconConnecting = "radiotray_connecting";
 
 // Application info
-const char* const kAppVersion = "0.1.0";
+const char* const kAppVersion = APP_VERSION;
 const char* const kAppName = "Radio Tray Lite";
 const char* const kWebSite = "https://github.com/thekvs/radiotray-lite/";
 const char* const kAuthor = "Konstantin Sorokin <kvs@sigterm.ru>";
