@@ -8,6 +8,8 @@ include_directories(${CURL_INCLUDE_DIRS})
 include_directories(${LIBNOTIFY_INCLUDE_DIRS})
 include_directories(third_party)
 
+add_definitions(-Wno-deprecated-declarations)
+
 add_executable(
     radiotray-lite
     radiotray-lite.cpp
