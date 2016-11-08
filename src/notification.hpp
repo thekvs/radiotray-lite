@@ -16,6 +16,9 @@ class Notification
 {
 public:
     Notification() = delete;
+    Notification(const Notification&) = delete;
+    Notification& operator=(const Notification&) = delete;
+
     Notification(const char* app_name);
 
     ~Notification();
