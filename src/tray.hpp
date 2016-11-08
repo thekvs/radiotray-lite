@@ -14,9 +14,10 @@
 
 #include "pugixml/pugixml.hpp"
 
+#include "constants.hpp"
 #include "player.hpp"
 #include "about.hpp"
-#include "constants.hpp"
+#include "notification.hpp"
 
 namespace radiotray
 {
@@ -46,6 +47,7 @@ private:
 
     std::shared_ptr<Player> player;
     std::shared_ptr<EventManager> em;
+    std::shared_ptr<Notification> notifier;
 
     int counter = 1; // TODO: for debug, remove.
 

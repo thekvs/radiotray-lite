@@ -6,6 +6,7 @@ include(CheckCXXCompilerFlag)
 include(CheckCCompilerFlag)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
 add_compile_options(-Wall)
 add_compile_options(-Wextra)
@@ -19,6 +20,8 @@ check_cxx_compiler_flag("-std=c++11" COMPILER_SUPPORTS_CXX11)
 if(NOT COMPILER_SUPPORTS_CXX11)
     message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support.")
 endif()
+
+find_package(LibNotify REQUIRED)
 
 pkg_check_modules(LIBXML2 REQUIRED libxml-2.0)
 pkg_check_modules(GLIB2 REQUIRED glib-2.0)
