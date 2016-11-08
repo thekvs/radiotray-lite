@@ -29,6 +29,11 @@ Notification::init()
 void
 Notification::on_music_info_changed_signal(Glib::ustring station, Glib::ustring info)
 {
+    if (not notify_is_initted()) {
+        LOG(WARNING) << "libnotify is not initialized!";
+        return;
+    }
+
     std::stringstream ss;
 
     ss << notify_get_app_name() << " - " << station;

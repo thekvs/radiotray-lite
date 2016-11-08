@@ -7,6 +7,8 @@
 #include <gtkmm.h>
 #include <libnotify/notify.h>
 
+#include "easyloggingpp/easylogging++.h"
+
 namespace radiotray
 {
 
