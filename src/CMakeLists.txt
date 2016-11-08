@@ -1,3 +1,4 @@
+include_directories(${GLIB2_INCLUDE_DIRS})
 include_directories(${LIBXML2_INCLUDE_DIRS})
 include_directories(${APPINDICATOR_INCLUDE_DIRS})
 include_directories(${GTK3_INCLUDE_DIRS})
@@ -25,6 +26,7 @@ add_executable(
 )
 target_link_libraries(
     radiotray-lite
+    ${LIBXML2_LIBRARIES}
     ${GSTREAMERMM_LIBRARIES}
     ${GTKMM_LIBRARIES}
     ${CURL_LIBRARIES}
@@ -46,8 +48,10 @@ add_executable(
 )
 target_link_libraries(
     radiotray-lite-cli
+    ${LIBXML2_LIBRARIES}
     ${GSTREAMERMM_LIBRARIES}
     ${CURL_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
 )
 set_target_properties(radiotray-lite-cli PROPERTIES COMPILE_FLAGS "-std=c++11")
 target_compile_definitions(radiotray-lite-cli PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_HANDLING)

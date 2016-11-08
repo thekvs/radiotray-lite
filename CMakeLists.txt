@@ -22,6 +22,7 @@ if(NOT COMPILER_SUPPORTS_CXX11)
     message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support.")
 endif()
 
+find_package(Threads REQUIRED)
 find_package(LibNotify REQUIRED)
 
 pkg_check_modules(LIBXML2 REQUIRED libxml-2.0)

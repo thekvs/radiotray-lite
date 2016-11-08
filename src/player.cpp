@@ -12,9 +12,9 @@ Player::init(int argc, char** argv)
 {
     Gst::init(argc, argv);
 
-    playbin = Gst::PlayBin2::create();
+    playbin = PlayBin::create();
     if (!playbin) {
-        LOG(ERROR) << "The playbin2 element could not be created.";
+        LOG(ERROR) << "The PlayBin element could not be created.";
         return false;
     }
     set_buffer_size(1024 * 100);
@@ -82,7 +82,7 @@ Player::start()
     playbin->set_state(Gst::STATE_PLAYING);
 }
 
-Glib::RefPtr<Gst::PlayBin2>
+Glib::RefPtr<PlayBin>
 Player::get_playbin()
 {
     return playbin;
@@ -131,7 +131,7 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
     if (message_type == Gst::MESSAGE_EOS) {
         play_next_stream();
     } else if (message_type == Gst::MESSAGE_ERROR) {
-        auto error_msg = Glib::RefPtr<Gst::MessageError>::cast_dynamic(message);
+        auto error_msg = Glib::RefPtr<Gst::MessageError>::cast_static(message);
 
         if (error_msg) {
             Glib::Error err = error_msg->parse();
@@ -142,10 +142,14 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
 
         play_next_stream();
     } else if (message_type == Gst::MESSAGE_TAG) {
-        auto msg_tag = Glib::RefPtr<Gst::MessageTag>::cast_dynamic(message);
+        auto msg_tag = Glib::RefPtr<Gst::MessageTag>::cast_static(message);
         Gst::TagList tag_list;
+#if GST_VERSION_MAJOR >= 1
+        msg_tag->parse(tag_list);
+#else
         Glib::RefPtr<Gst::Pad> pad;
         msg_tag->parse(pad, tag_list);
+#endif
         if (tag_list.exists("title") && tag_list.size("title") > 0) {
             Glib::ustring title;
             auto ok = tag_list.get("title", title);
@@ -154,7 +158,7 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
             }
         }
     } else if (message_type == Gst::MESSAGE_STATE_CHANGED) {
-        auto state_changed_msg = Glib::RefPtr<Gst::MessageStateChanged>::cast_dynamic(message);
+        auto state_changed_msg = Glib::RefPtr<Gst::MessageStateChanged>::cast_static(message);
         Gst::State new_state = state_changed_msg->parse();
         Gst::State old_state = state_changed_msg->parse_old();
 

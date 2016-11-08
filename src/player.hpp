@@ -4,7 +4,13 @@
 #include <thread>
 #include <memory>
 
+#include <glib.h>
+
+#include <gst/gstversion.h>
+
 #include <gstreamermm.h>
+#include <gstreamermm/playbin.h>
+
 #include <glibmm.h>
 
 #include "playlist.hpp"
@@ -12,6 +18,11 @@
 
 namespace radiotray
 {
+#if GST_VERSION_MAJOR >= 1
+    typedef Gst::PlayBin PlayBin;
+#else
+    typedef Gst::PlayBin2 PlayBin;
+#endif
 
 class Player
 {
@@ -28,13 +39,13 @@ public:
     void start();
     // void quit();
     Glib::ustring get_station();
-    Glib::RefPtr<Gst::PlayBin2> get_playbin();
+    Glib::RefPtr<PlayBin> get_playbin();
 
     std::shared_ptr<EventManager> em;
 
 private:
     // Glib::RefPtr<Glib::MainLoop> mainloop;
-    Glib::RefPtr<Gst::PlayBin2> playbin;
+    Glib::RefPtr<PlayBin> playbin;
 
     Playlist playlist;
     MediaStreams streams;
