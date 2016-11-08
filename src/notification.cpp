@@ -5,6 +5,7 @@ namespace radiotray
 Notification::Notification(const char* app_name)
     : app_name(app_name)
 {
+    logo_path = std::string(kImagePath) + std::string(kAppIcon);
 }
 
 Notification::~Notification()
@@ -22,8 +23,9 @@ bool
 Notification::init()
 {
     bool initialized = notify_init(app_name.c_str());
+    logo = Gdk::Pixbuf::create_from_file(logo_path);
 
-    return initialized;
+    return (initialized and bool(logo));
 }
 
 void
@@ -49,11 +51,13 @@ Notification::on_music_info_changed_signal(Glib::ustring station, Glib::ustring 
         if (notification != nullptr) {
             notify_notification_set_timeout(notification, NOTIFY_EXPIRES_DEFAULT);
             notify_notification_set_urgency(notification, NOTIFY_URGENCY_LOW);
+            notify_notification_set_icon_from_pixbuf(notification, logo->gobj());
             notify_notification_show(notification, nullptr);
         }
     } else {
         auto rc = notify_notification_update(notification, summary.c_str(), text.c_str(), nullptr);
         if (rc) {
+            notify_notification_set_icon_from_pixbuf(notification, logo->gobj());
             notify_notification_show(notification, nullptr);
         }
     }

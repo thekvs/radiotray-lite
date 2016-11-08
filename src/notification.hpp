@@ -7,6 +7,7 @@
 #include <gtkmm.h>
 #include <libnotify/notify.h>
 
+#include "constants.hpp"
 #include "easyloggingpp/easylogging++.h"
 
 namespace radiotray
@@ -31,6 +32,9 @@ private:
     NotifyNotification* notification = nullptr;
 
     Glib::ustring last_text;
+    std::string logo_path;
+    Glib::RefPtr<Gdk::Pixbuf> logo;
+
 };
 
 } // namespace radiotray
