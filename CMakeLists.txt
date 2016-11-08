@@ -4,6 +4,7 @@ project(radiotray_lite)
 include(FindPkgConfig)
 include(CheckCXXCompilerFlag)
 include(CheckCCompilerFlag)
+include(CPack)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
@@ -48,3 +49,12 @@ install(
 install(
     FILES data/bookmarks.xml DESTINATION share/radiotray-lite/
 )
+
+if(NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
+    set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
+endif()
+
+set(CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+
+string(TIMESTAMP BUILDTIME "%Y%m%d%H%M%S")
+configure_file(${PROJECT_SOURCE_DIR}/cmake/CPackConfig.cmake.in CPackConfig.cmake @ONLY)
