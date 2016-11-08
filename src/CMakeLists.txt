@@ -1,3 +1,4 @@
+include_directories(${LIBXML2_INCLUDE_DIRS})
 include_directories(${APPINDICATOR_INCLUDE_DIRS})
 include_directories(${GTK3_INCLUDE_DIRS})
 include_directories(${GTKMM_INCLUDE_DIRS})
