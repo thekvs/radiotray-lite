@@ -280,7 +280,8 @@ RadioTrayLite::search_for_bookmarks_file()
     }
 
     // default bookmarks file
-    paths.push_back(std::string("/usr/share/") + kAppDirName + "/" + kBookmarksFileName);
+    auto base_dir = INSTALL_PREFIX"/share/";
+    paths.push_back(std::string(base_dir) + kAppDirName + "/" + kBookmarksFileName);
 
     auto file_exists = [](const std::string& fname) -> bool {
         struct stat st;

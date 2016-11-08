@@ -10,7 +10,7 @@ const char* const kAppDirName = "radiotray";
 const char* const kBookmarksFileName = "bookmarks.xml";
 
 // Images
-const char* const kImagePath = "/usr/share/radiotray/images/";
+const char* const kImagePath = INSTALL_PREFIX"/share/radiotray-lite/images/";
 
 const char* const kAppIcon = "radiotray.png";
 const char* const kAppIconOn = "radiotray_on.png";

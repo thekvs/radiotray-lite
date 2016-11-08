@@ -41,3 +41,10 @@ if (NOT GSTREAMERMM_FOUND)
 endif()
 
 add_subdirectory(src)
+
+install(
+    DIRECTORY data/images DESTINATION share/radiotray-lite/
+)
+install(
+    FILES data/bookmarks.xml DESTINATION share/radiotray-lite/
+)

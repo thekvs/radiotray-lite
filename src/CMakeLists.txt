@@ -30,6 +30,7 @@ target_link_libraries(
 )
 set_target_properties(radiotray-lite PROPERTIES COMPILE_FLAGS "-std=c++11")
 target_compile_definitions(radiotray-lite PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_HANDLING)
+target_compile_definitions(radiotray-lite PRIVATE -DINSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
 
 add_executable(
     radiotray-lite-cli
@@ -47,3 +48,10 @@ target_link_libraries(
 )
 set_target_properties(radiotray-lite-cli PROPERTIES COMPILE_FLAGS "-std=c++11")
 target_compile_definitions(radiotray-lite-cli PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_HANDLING)
+target_compile_definitions(radiotray-lite-cli PRIVATE -DINSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
+
+install(
+    TARGETS radiotray-lite radiotray-lite-cli
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+)
