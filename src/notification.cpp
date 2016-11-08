@@ -29,7 +29,7 @@ Notification::init()
 }
 
 void
-Notification::on_music_info_changed_signal(Glib::ustring station, Glib::ustring info)
+Notification::on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustring info)
 {
     if (not notify_is_initted()) {
         LOG(WARNING) << "libnotify is not initialized!";

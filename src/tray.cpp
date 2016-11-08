@@ -69,8 +69,8 @@ RadioTrayLite::RadioTrayLite(int argc, char** argv)
 
     em = std::make_shared<EventManager>();
     em->state_changed.connect(sigc::mem_fun(*this, &RadioTrayLite::on_station_changed_signal));
-    em->music_info_changed.connect(sigc::mem_fun(*this, &RadioTrayLite::on_music_info_changed_signal));
-    em->music_info_changed.connect(sigc::mem_fun(*notifier, &Notification::on_music_info_changed_signal));
+    em->broadcast_info_changed.connect(sigc::mem_fun(*this, &RadioTrayLite::on_broadcast_info_changed_signal));
+    em->broadcast_info_changed.connect(sigc::mem_fun(*notifier, &Notification::on_broadcast_info_changed_signal));
 
     player->em = em;
 
@@ -384,7 +384,7 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
 }
 
 void
-RadioTrayLite::on_music_info_changed_signal(Glib::ustring /*station*/, Glib::ustring info)
+RadioTrayLite::on_broadcast_info_changed_signal(Glib::ustring /*station*/, Glib::ustring info)
 {
     set_current_broadcast(info);
 

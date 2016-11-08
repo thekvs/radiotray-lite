@@ -25,7 +25,7 @@ public:
     ~Notification();
 
     bool init();
-    void on_music_info_changed_signal(Glib::ustring station, Glib::ustring info);
+    void on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustring info);
 
 private:
     std::string app_name;

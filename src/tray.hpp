@@ -82,7 +82,7 @@ private:
     void set_current_broadcast(Glib::ustring info = Glib::ustring("Idle"));
 
     void on_station_changed_signal(Glib::ustring station, StationState state);
-    void on_music_info_changed_signal(Glib::ustring station, Glib::ustring info);
+    void on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustring info);
 
     Glib::ustring mk_name(Glib::ustring base_name); // TODO: for debug, remove.
 };

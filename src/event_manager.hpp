@@ -22,7 +22,7 @@ enum class Event {
 
 enum class StationState { UNKNOWN, IDLE, CONNECTING, PLAYING };
 
-using MusicInfoChangedSignal = sigc::signal<void, Glib::ustring /*station*/, Glib::ustring /*info*/>;
+using BroadcastInfoChangedSignal = sigc::signal<void, Glib::ustring /*station*/, Glib::ustring /*info*/>;
 using StateChangedSignal = sigc::signal<void, Glib::ustring /*station*/, StationState /*state*/>;
 
 class EventManager
@@ -32,7 +32,7 @@ public:
 
     StationState state = StationState::UNKNOWN;
 
-    MusicInfoChangedSignal music_info_changed;
+    BroadcastInfoChangedSignal broadcast_info_changed;
     StateChangedSignal state_changed;
 };
 

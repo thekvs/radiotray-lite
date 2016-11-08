@@ -150,7 +150,7 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
             Glib::ustring title;
             auto ok = tag_list.get("title", title);
             if (ok) {
-                em->music_info_changed(current_station, title);
+                em->broadcast_info_changed(current_station, title);
             }
         }
     } else if (message_type == Gst::MESSAGE_STATE_CHANGED) {
