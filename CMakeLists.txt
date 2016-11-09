@@ -56,6 +56,10 @@ install(
     FILES data/bookmarks.xml DESTINATION share/radiotray-lite/
 )
 
+install(
+    FILES data/radiotray-lite.desktop DESTINATION share/applications/
+)
+
 if(NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
     set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
 endif()
