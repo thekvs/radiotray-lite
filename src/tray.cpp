@@ -301,7 +301,7 @@ RadioTrayLite::set_current_broadcast(Glib::ustring info)
 }
 
 void
-RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState state)
+RadioTrayLite::on_station_changed_signal(Glib::ustring /*station*/, StationState state)
 {
     if (state == em->state) {
         return;
