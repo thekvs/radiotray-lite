@@ -123,30 +123,6 @@ RadioTrayLite::on_about_button()
 void
 RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station_name, Glib::ustring station_url)
 {
-#if 0
-    auto mk_name = [](Glib::ustring name, bool turn_on)// -> Glib::ustring
-    {
-        std::stringstream ss;
-        if (turn_on) {
-            ss << "Turn On \"" << name << "\"";
-        } else {
-            ss << "Turn Off \"" << name << "\"";
-        }
-
-        return Glib::ustring(ss.str());
-    };
-
-    if (current_station_menu_entry == nullptr) {
-        auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
-        menu->prepend(*separator_item);
-        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_name(current_station, false)));
-        menu->prepend(*current_station_menu_entry);
-        menu->show_all();
-    } else {
-        current_station_menu_entry->set_label(mk_name(current_station, false));
-    }
-#endif
-
     player->play(station_url, station_name);
 
     LOG(DEBUG) << "'" << station_url << "'"
@@ -167,9 +143,6 @@ RadioTrayLite::on_current_station_button()
 {
     if (em->state == StationState::PLAYING) {
         player->pause();
-        // player->stop();
-        // em->state_changed(player->get_station(), StationState::IDLE);
-        // player->em->state = StationState::IDLE;
     } else if (em->state == StationState::IDLE) {
         player->play();
     }
@@ -213,17 +186,6 @@ RadioTrayLite::build_menu()
 
     auto turn_on = (em->state == StationState::PLAYING ? false : true);
     set_current_station(turn_on);
-
-#if 0
-    if (not player->get_station().empty()) {
-        auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
-        menu->prepend(*separator_item);
-        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(player->get_station()));
-        menu->prepend(*current_station_menu_entry);
-    }
-
-    menu->show_all();
-#endif
 }
 
 void
@@ -351,31 +313,6 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
     if (state == StationState::IDLE) {
         set_current_broadcast();
     }
-
-#if 0
-    auto mk_menu_entry = [](Glib::ustring name, bool turn_on)
-    {
-        std::stringstream ss;
-        if (turn_on) {
-            ss << "Turn On \"" << name << "\"";
-        } else {
-            ss << "Turn Off \"" << name << "\"";
-        }
-
-        return Glib::ustring(ss.str());
-    };
-
-    if (current_station_menu_entry == nullptr) {
-        auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
-        menu->prepend(*separator_item);
-        current_station_menu_entry = Gtk::manage(new Gtk::MenuItem(mk_menu_entry(player->get_station(), turn_on)));
-        menu->prepend(*current_station_menu_entry);
-    } else {
-        current_station_menu_entry->set_label(mk_menu_entry(player->get_station(), turn_on));
-    }
-
-    menu->show_all();
-#endif
 
     if (state == StationState::PLAYING) {
         app_indicator_set_icon(indicator, kAppIndicatorIconOn);

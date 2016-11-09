@@ -37,14 +37,12 @@ public:
     void pause();
     void stop();
     void start();
-    // void quit();
     Glib::ustring get_station();
     Glib::RefPtr<PlayBin> get_playbin();
 
     std::shared_ptr<EventManager> em;
 
 private:
-    // Glib::RefPtr<Glib::MainLoop> mainloop;
     Glib::RefPtr<PlayBin> playbin;
 
     Playlist playlist;
@@ -59,7 +57,6 @@ private:
     void set_stream(Glib::ustring url);
     void set_buffer_size(int size);
     void play_next_stream();
-    // void gstreamer_loop();
 };
 
 } // namespace radiotray
