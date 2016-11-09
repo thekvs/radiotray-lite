@@ -16,6 +16,12 @@ INITIALIZE_EASYLOGGINGPP
 
 using namespace radiotray;
 
+void
+on_broadcast_info_changed_signal(Glib::ustring /*station*/, Glib::ustring info)
+{
+    std::cout << "playing: " << info << std::endl;
+}
+
 int
 main(int argc, char** argv)
 {
@@ -39,6 +45,7 @@ main(int argc, char** argv)
 
     auto player = std::make_shared<Player>();
     player->em = std::make_shared<EventManager>(); // FIXME: EventManager should be part of Player?
+    player->em->broadcast_info_changed.connect(sigc::ptr_fun(on_broadcast_info_changed_signal));
     auto ok = player->init(argc, argv);
 
     if (ok) {
@@ -47,10 +54,6 @@ main(int argc, char** argv)
 
         auto mainloop = Glib::MainLoop::create();
         mainloop->run();
-
-        // while (true) {
-        //     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        // }
     }
 
     return EXIT_SUCCESS;
