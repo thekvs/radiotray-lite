@@ -164,7 +164,7 @@ RadioTrayLite::build_menu()
     auto separator_item = Gtk::manage(new Gtk::SeparatorMenuItem());
     menu->append(*separator_item);
 
-    name = mk_name("Reload Bookmarks");
+    name = "Reload Bookmarks";
     auto menu_item = Gtk::manage(new Gtk::MenuItem(name));
     menu_item->signal_activate().connect(sigc::mem_fun(*this, &RadioTrayLite::on_reload_button));
     menu->append(*menu_item);
@@ -191,8 +191,6 @@ RadioTrayLite::build_menu()
 void
 RadioTrayLite::rebuild_menu()
 {
-    counter++;
-
     clear_menu();
     build_menu();
 }
@@ -327,17 +325,5 @@ RadioTrayLite::on_broadcast_info_changed_signal(Glib::ustring /*station*/, Glib:
     set_current_broadcast(info);
 
     LOG(DEBUG) << info;
-}
-
-Glib::ustring
-RadioTrayLite::mk_name(Glib::ustring base_name)
-{
-    Glib::ustring result;
-    char c[64];
-
-    snprintf(c, sizeof(c), "%i", counter);
-    result = base_name + " " + c;
-
-    return result;
 }
 } // namespace radiotray
