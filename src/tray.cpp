@@ -235,7 +235,7 @@ RadioTrayLite::search_for_bookmarks_file()
     if (home != nullptr) {
         auto dir = std::string(home) + "/.config/" + kAppDirName + "/" + kBookmarksFileName;
         paths.push_back(dir);
-        dir = std::string(home) + "/.local/share/" + kAppDirName + "/" + kBookmarksFileName;
+        dir = std::string(home) + "/.local/share/" + kRadioTrayAppDirName + "/" + kBookmarksFileName;
         paths.push_back(dir);
     }
 

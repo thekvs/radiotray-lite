@@ -6,7 +6,8 @@
 namespace radiotray
 {
 
-const char* const kAppDirName = "radiotray";
+const char* const kRadioTrayAppDirName = "radiotray";
+const char* const kAppDirName = "radiotray-lite";
 const char* const kBookmarksFileName = "bookmarks.xml";
 
 // Images
