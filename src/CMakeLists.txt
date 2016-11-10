@@ -40,7 +40,7 @@ target_compile_definitions(radiotray-lite PRIVATE -DAPP_VERSION="${APP_VERSION}"
 
 add_executable(
     radiotray-lite-cli
-    playradio.cpp
+    radiotray-lite-cli.cpp
     player.cpp
     playlist.cpp
     m3u_playlist_decoder.cpp
