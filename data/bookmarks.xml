@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <bookmarks>
   <group name="root">
     <group name="Modern">
@@ -8,6 +7,9 @@
         <bookmark name="Rock 181" url="http://listen.181fm.com/181-rock_64k.aac"/>
         <bookmark name="Rock Antenne" url="http://www.rockantenne.de/webradio/rockantenne.aac.pls"/>
         <bookmark name=".977 Classic Rock" url="http://www.977music.com/tunein/web/classicrock.asx"/>
+      </group>
+      <group name="Jazz">
+        <bookmark name=".977 Smooth Jazz" url="http://www.977music.com/itunes/jazz.pls"/>
       </group>
     </group>
     <group name="Classical">
