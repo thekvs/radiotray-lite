@@ -81,6 +81,8 @@ private:
 
     void on_station_changed_signal(Glib::ustring station, StationState state);
     void on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustring info);
+
+    void copy_default_config(std::string src);
 };
 
 } // namespace radiotray

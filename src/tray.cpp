@@ -255,6 +255,11 @@ RadioTrayLite::search_for_bookmarks_file()
     auto result = std::find_if(std::begin(paths), std::end(paths), file_exists);
     if (result != std::end(paths)) {
         bookmarks_file = *result;
+
+        // This is the last search path i.e. bookmarks.xml which comes with distribution
+        if (*result == paths.back()) {
+            copy_default_config(*result);
+        }
     }
 }
 
@@ -326,4 +331,28 @@ RadioTrayLite::on_broadcast_info_changed_signal(Glib::ustring /*station*/, Glib:
 
     LOG(DEBUG) << info;
 }
+
+void
+RadioTrayLite::copy_default_config(std::string src_file)
+{
+    auto home = getenv("HOME");
+
+    if (home != nullptr) {
+        std::string path = home;
+        path.append("/.config/").append(kAppDirName).append("/");
+
+        auto rc = mkdir(path.c_str(), S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+        if (rc == 0) {
+            auto dst_file = path + kBookmarksFileName;
+
+            std::ifstream src(src_file, std::ios::binary);
+            std::ofstream dst(dst_file, std::ios::binary);
+
+            dst << src.rdbuf();
+        } else {
+            LOG(WARNING) << "Couldn't create '" << path << "': " << strerror(errno);
+        }
+    }
+}
+
 } // namespace radiotray
