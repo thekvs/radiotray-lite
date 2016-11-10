@@ -1,6 +1,8 @@
 #### About
 ```radiotray-lite``` is a lightweight clone of the original [Radio Tray](http://radiotray.sourceforge.net/) online radio streaming player rewritten in C++.
 
+![Screenshot](images/radiotray-lite.png)
+
 #### Build
 For a while this project is only tested on Ubuntu (14.04 and 16.04 versions). In order to build it you need to have
 installed ```-dev``` versions of the following packages:
