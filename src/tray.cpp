@@ -293,11 +293,33 @@ RadioTrayLite::set_current_station(bool turn_on)
 void
 RadioTrayLite::set_current_broadcast(Glib::ustring info)
 {
+    auto split = [](const Glib::ustring& info, size_t size) {
+        if (info.size() <= size) {
+            return info;
+        }
+
+        std::string original = info;
+        std::string result;
+
+        size_t chunk = 0;
+        for (auto& ch : original) {
+            if (std::isspace(ch) and chunk >= size) {
+                result += "\n";
+                chunk = 0;
+            } else {
+                result += ch;
+            }
+            chunk++;
+        }
+
+        return Glib::ustring(result);
+    };
+
     if (current_broadcast_menu_entry == nullptr) {
-        current_broadcast_menu_entry = Gtk::manage(new Gtk::MenuItem(info));
+        current_broadcast_menu_entry = Gtk::manage(new Gtk::MenuItem(split(info, 30)));
         menu->prepend(*current_broadcast_menu_entry);
     } else {
-        current_broadcast_menu_entry->set_label(info);
+        current_broadcast_menu_entry->set_label(split(info, 30));
     }
 
     current_broadcast_menu_entry->set_sensitive(false);
