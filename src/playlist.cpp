@@ -15,6 +15,7 @@ Playlist::Playlist()
     decoders.push_back(std::make_shared<M3UPlaylistDecoder>());
     decoders.push_back(std::make_shared<PlsPlaylistDecoder>());
     decoders.push_back(std::make_shared<AsxPlaylistDecoder>());
+    decoders.push_back(std::make_shared<RamPlaylistDecoder>());
 }
 
 Playlist::~Playlist()

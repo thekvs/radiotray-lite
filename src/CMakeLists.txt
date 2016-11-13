@@ -11,6 +11,14 @@ include_directories(third_party)
 
 add_definitions(-Wno-deprecated-declarations)
 
+set(
+    PLAYLIST_DECODERS
+    m3u_playlist_decoder.cpp
+    pls_playlist_decoder.cpp
+    asx_playlist_decoder.cpp
+    ram_playlist_decoder.cpp
+)
+
 add_executable(
     radiotray-lite
     radiotray-lite.cpp
@@ -19,9 +27,7 @@ add_executable(
     about.cpp
     playlist.cpp
     notification.cpp
-    m3u_playlist_decoder.cpp
-    pls_playlist_decoder.cpp
-    asx_playlist_decoder.cpp
+    ${PLAYLIST_DECODERS}
     third_party/pugixml/pugixml.cpp
 )
 target_link_libraries(
@@ -43,9 +49,7 @@ add_executable(
     radiotray-lite-cli.cpp
     player.cpp
     playlist.cpp
-    m3u_playlist_decoder.cpp
-    pls_playlist_decoder.cpp
-    asx_playlist_decoder.cpp
+    ${PLAYLIST_DECODERS}
 )
 target_link_libraries(
     radiotray-lite-cli
