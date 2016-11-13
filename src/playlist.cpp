@@ -3,7 +3,7 @@
 namespace radiotray
 {
 
-static const char* kUserAgent = "PlayRadio";
+static const char* kUserAgent = "Radio Tray Lite (+https://github.com/thekvs/radiotray-lite)";
 static const bool kOnlyHeaders = true;
 static const long kHTTPRequestTimeout = 5 * 1000;
 
