@@ -13,10 +13,10 @@ Playlist::Playlist()
     curl_easy_setopt(handle, CURLOPT_ERRORBUFFER, errbuffer);
 
     decoders.push_back(std::make_shared<M3UPlaylistDecoder>());
-    decoders.push_back(std::make_shared<PlsPlaylistDecoder>());
-    decoders.push_back(std::make_shared<AsxPlaylistDecoder>());
-    decoders.push_back(std::make_shared<RamPlaylistDecoder>());
-    decoders.push_back(std::make_shared<XspfPlaylistDecoder>());
+    decoders.push_back(std::make_shared<PLSPlaylistDecoder>());
+    decoders.push_back(std::make_shared<ASXPlaylistDecoder>());
+    decoders.push_back(std::make_shared<RAMPlaylistDecoder>());
+    decoders.push_back(std::make_shared<XSPFPlaylistDecoder>());
 }
 
 Playlist::~Playlist()

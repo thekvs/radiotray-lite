@@ -7,10 +7,10 @@
 
 namespace radiotray
 {
-class PlsPlaylistDecoder : public PlaylistDecoder
+class PLSPlaylistDecoder : public PlaylistDecoder
 {
 public:
-    ~PlsPlaylistDecoder() = default;
+    ~PLSPlaylistDecoder() = default;
 
     bool is_valid(const std::string& content_type) const override;
     MediaStreams extract_media_streams(const std::string& data) override;

@@ -4,7 +4,7 @@ namespace radiotray
 {
 
 bool
-PlsPlaylistDecoder::is_valid(const std::string& content_type) const
+PLSPlaylistDecoder::is_valid(const std::string& content_type) const
 {
     bool result = false;
 
@@ -16,7 +16,7 @@ PlsPlaylistDecoder::is_valid(const std::string& content_type) const
 }
 
 MediaStreams
-PlsPlaylistDecoder::extract_media_streams(const std::string& data)
+PLSPlaylistDecoder::extract_media_streams(const std::string& data)
 {
     MediaStreams streams;
 
@@ -46,7 +46,7 @@ PlsPlaylistDecoder::extract_media_streams(const std::string& data)
 }
 
 std::string
-PlsPlaylistDecoder::desc() const
+PLSPlaylistDecoder::desc() const
 {
     return std::string("PLS playlist decoder");
 }

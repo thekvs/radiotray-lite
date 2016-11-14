@@ -4,7 +4,7 @@ namespace radiotray
 {
 
 bool
-XspfPlaylistDecoder::is_valid(const std::string& content_type) const
+XSPFPlaylistDecoder::is_valid(const std::string& content_type) const
 {
     bool result = false;
 
@@ -16,7 +16,7 @@ XspfPlaylistDecoder::is_valid(const std::string& content_type) const
 }
 
 MediaStreams
-XspfPlaylistDecoder::extract_media_streams(const std::string& data)
+XSPFPlaylistDecoder::extract_media_streams(const std::string& data)
 {
     MediaStreams streams;
 
@@ -40,7 +40,7 @@ XspfPlaylistDecoder::extract_media_streams(const std::string& data)
 }
 
 std::string
-XspfPlaylistDecoder::desc() const
+XSPFPlaylistDecoder::desc() const
 {
     return std::string("XSPF playlist decoder");
 }

@@ -9,10 +9,10 @@
 
 namespace radiotray
 {
-class XspfPlaylistDecoder : public PlaylistDecoder
+class XSPFPlaylistDecoder : public PlaylistDecoder
 {
 public:
-    ~XspfPlaylistDecoder() = default;
+    ~XSPFPlaylistDecoder() = default;
 
     bool is_valid(const std::string& content_type) const override;
     MediaStreams extract_media_streams(const std::string& data) override;

@@ -8,10 +8,10 @@
 
 namespace radiotray
 {
-class RamPlaylistDecoder : public PlaylistDecoder
+class RAMPlaylistDecoder : public PlaylistDecoder
 {
 public:
-    ~RamPlaylistDecoder() = default;
+    ~RAMPlaylistDecoder() = default;
 
     bool is_valid(const std::string& content_type) const override;
     MediaStreams extract_media_streams(const std::string& data) override;

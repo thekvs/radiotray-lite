@@ -3,19 +3,19 @@
 namespace radiotray
 {
 
-AsxPlaylistDecoder::AsxPlaylistDecoder()
+ASXPlaylistDecoder::ASXPlaylistDecoder()
 {
     xmlInitParser();
     LIBXML_TEST_VERSION;
 }
 
-AsxPlaylistDecoder::~AsxPlaylistDecoder()
+ASXPlaylistDecoder::~ASXPlaylistDecoder()
 {
     xmlCleanupParser();
 }
 
 bool
-AsxPlaylistDecoder::is_valid(const std::string& content_type) const
+ASXPlaylistDecoder::is_valid(const std::string& content_type) const
 {
     bool result = false;
     auto npos = std::string::npos;
@@ -29,7 +29,7 @@ AsxPlaylistDecoder::is_valid(const std::string& content_type) const
 }
 
 MediaStreams
-AsxPlaylistDecoder::extract_media_streams(const std::string& data)
+ASXPlaylistDecoder::extract_media_streams(const std::string& data)
 {
     MediaStreams streams;
 
@@ -77,7 +77,7 @@ AsxPlaylistDecoder::extract_media_streams(const std::string& data)
 }
 
 std::string
-AsxPlaylistDecoder::desc() const
+ASXPlaylistDecoder::desc() const
 {
     return std::string("ASX playlist decoder");
 }
