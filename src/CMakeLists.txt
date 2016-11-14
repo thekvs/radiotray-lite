@@ -17,6 +17,7 @@ set(
     pls_playlist_decoder.cpp
     asx_playlist_decoder.cpp
     ram_playlist_decoder.cpp
+    xspf_playlist_decoder.cpp
 )
 
 add_executable(
@@ -50,6 +51,7 @@ add_executable(
     player.cpp
     playlist.cpp
     ${PLAYLIST_DECODERS}
+    third_party/pugixml/pugixml.cpp
 )
 target_link_libraries(
     radiotray-lite-cli

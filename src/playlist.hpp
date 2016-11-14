@@ -12,6 +12,7 @@
 #include "pls_playlist_decoder.hpp"
 #include "asx_playlist_decoder.hpp"
 #include "ram_playlist_decoder.hpp"
+#include "xspf_playlist_decoder.hpp"
 
 namespace radiotray
 {
