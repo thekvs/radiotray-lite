@@ -20,6 +20,11 @@ set(
     xspf_playlist_decoder.cpp
 )
 
+set(
+    THIRD_PARTY
+    third_party/pugixml/pugixml.cpp
+)
+
 add_executable(
     radiotray-lite
     radiotray-lite.cpp
@@ -28,8 +33,9 @@ add_executable(
     about.cpp
     playlist.cpp
     notification.cpp
+    config.cpp
     ${PLAYLIST_DECODERS}
-    third_party/pugixml/pugixml.cpp
+    ${THIRD_PARTY}
 )
 target_link_libraries(
     radiotray-lite
@@ -51,7 +57,7 @@ add_executable(
     player.cpp
     playlist.cpp
     ${PLAYLIST_DECODERS}
-    third_party/pugixml/pugixml.cpp
+    ${THIRD_PARTY}
 )
 target_link_libraries(
     radiotray-lite-cli

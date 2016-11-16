@@ -52,6 +52,8 @@ RadioTrayLite::BookmarksWalker::for_each(pugi::xml_node& node)
 
 RadioTrayLite::RadioTrayLite(int argc, char** argv)
 {
+    config = std::make_shared<Config>();
+
     app = Gtk::Application::create(argc, argv, "github.com.thekvs.radiotray-lite");
     menu = std::make_shared<Gtk::Menu>();
 
@@ -214,13 +216,13 @@ RadioTrayLite::parse_bookmarks_file()
 
     if (not bookmarks_file.empty()) {
         pugi::xml_parse_result result = bookmarks_doc.load_file(bookmarks_file.c_str());
-        if (!result) {
-            std::cerr << "XML parser failed: " << result.description() << std::endl;
-        } else {
+        if (result) {
             status = true;
+        } else {
+            LOG(ERROR) << "XML parser failed: " << result.description();
         }
     } else {
-        std::cerr << "Bookmarks file not specified!" << std::endl;
+        LOG(WARNING) << "Bookmarks file not specified!";
     }
 
     return status;
@@ -233,32 +235,40 @@ RadioTrayLite::search_for_bookmarks_file()
 
     auto home = getenv("HOME");
     if (home != nullptr) {
-        auto dir = std::string(home) + "/.config/" + kAppDirName + "/" + kBookmarksFileName;
+        auto dir = std::string(home) + "/.config/" + kAppDirName + "/";
         paths.push_back(dir);
-        dir = std::string(home) + "/.local/share/" + kRadioTrayAppDirName + "/" + kBookmarksFileName;
+        dir = std::string(home) + "/.local/share/" + kRadioTrayAppDirName + "/";
         paths.push_back(dir);
     }
 
     // default bookmarks file
     auto base_dir = INSTALL_PREFIX"/share/";
-    paths.push_back(std::string(base_dir) + kAppDirName + "/" + kBookmarksFileName);
+    paths.push_back(std::string(base_dir) + kAppDirName + "/");
 
-    auto file_exists = [](const std::string& fname) -> bool {
+    auto file_exists = [](const std::string& dir, const std::string& file) -> bool {
+        std::string full_name = dir + file;
         struct stat st;
-        auto rc = stat(fname.c_str(), &st);
+        auto rc = stat(full_name.c_str(), &st);
         if (rc == 0 and S_ISREG(st.st_mode)) {
             return true;
         }
         return false;
     };
 
-    auto result = std::find_if(std::begin(paths), std::end(paths), file_exists);
+    auto bookmarks_file_exists = std::bind(file_exists, std::placeholders::_1, kBookmarksFileName);
+    auto result = std::find_if(std::begin(paths), std::end(paths), bookmarks_file_exists);
     if (result != std::end(paths)) {
-        bookmarks_file = *result;
+        bookmarks_file = *result + kBookmarksFileName;
 
         // This is the last search path i.e. bookmarks.xml which comes with distribution
         if (*result == paths.back()) {
-            copy_default_config(*result);
+            copy_default_bookmarks(bookmarks_file);
+        }
+
+        config->set_config_file(*result + kConfigFileName);
+
+        if (file_exists(*result, kConfigFileName)) {
+            config->load_config();
         }
     }
 }
@@ -332,6 +342,8 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
         return;
     }
 
+    config->last_station = station;
+
     auto turn_on = (state == StationState::PLAYING ? false : true);
     set_current_station(turn_on);
 
@@ -356,7 +368,7 @@ RadioTrayLite::on_broadcast_info_changed_signal(Glib::ustring /*station*/, Glib:
 }
 
 void
-RadioTrayLite::copy_default_config(std::string src_file)
+RadioTrayLite::copy_default_bookmarks(std::string src_file)
 {
     auto home = getenv("HOME");
 

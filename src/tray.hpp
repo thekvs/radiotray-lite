@@ -4,6 +4,7 @@
 #include <stack>
 #include <iostream>
 #include <memory>
+#include <functional>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -18,6 +19,7 @@
 #include "player.hpp"
 #include "about.hpp"
 #include "notification.hpp"
+#include "config.hpp"
 
 namespace radiotray
 {
@@ -48,6 +50,7 @@ private:
     std::shared_ptr<Player> player;
     std::shared_ptr<EventManager> em;
     std::shared_ptr<Notification> notifier;
+    std::shared_ptr<Config> config;
 
     class BookmarksWalker : public pugi::xml_tree_walker
     {
@@ -82,7 +85,7 @@ private:
     void on_station_changed_signal(Glib::ustring station, StationState state);
     void on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustring info);
 
-    void copy_default_config(std::string src);
+    void copy_default_bookmarks(std::string src);
 };
 
 } // namespace radiotray

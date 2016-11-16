@@ -5,7 +5,6 @@ namespace radiotray
 
 static const char* kUserAgent = "Radio Tray Lite (+https://github.com/thekvs/radiotray-lite)";
 static const bool kOnlyHeaders = true;
-static const long kHTTPRequestTimeout = 5 * 1000;
 
 Playlist::Playlist()
 {
@@ -63,7 +62,7 @@ Playlist::prepare_playlist_request(std::string url, bool only_headers)
     curl_easy_reset(handle);
 
     curl_easy_setopt(handle, CURLOPT_NOSIGNAL, 1);
-    curl_easy_setopt(handle, CURLOPT_TIMEOUT_MS, kHTTPRequestTimeout);
+    curl_easy_setopt(handle, CURLOPT_TIMEOUT_MS, kDefaultHTTPRequestTimeout);
 
     curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1);
     curl_easy_setopt(handle, CURLOPT_MAXREDIRS, 7);

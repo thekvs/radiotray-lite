@@ -8,6 +8,7 @@
 
 #include <curl/curl.h>
 
+#include "constants.hpp"
 #include "m3u_playlist_decoder.hpp"
 #include "pls_playlist_decoder.hpp"
 #include "asx_playlist_decoder.hpp"

@@ -5,10 +5,13 @@
 
 namespace radiotray
 {
+const long kDefaultHTTPRequestTimeout = 5 * 1000;
+const int kDefaultGStreamerBufferSize = 1024 * 100;
 
 const char* const kRadioTrayAppDirName = "radiotray";
 const char* const kAppDirName = "radiotray-lite";
 const char* const kBookmarksFileName = "bookmarks.xml";
+const char* const kConfigFileName = "config.xml";
 
 // Images
 const char* const kImagePath = INSTALL_PREFIX"/share/radiotray-lite/images/";
