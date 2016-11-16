@@ -35,6 +35,11 @@ Config::set_config_file(const std::string& name)
 void
 Config::load_config()
 {
+    if (filename.empty()) {
+        LOG(WARNING) << "Name of a configuration file is not specified!";
+        return;
+    }
+
     pugi::xml_parse_result result = config.load_file(filename.c_str());
     if (result) {
         try {
@@ -43,7 +48,7 @@ Config::load_config()
                 last_station = node.node().attribute("value").as_string();
             }
         } catch (pugi::xpath_exception& exc) {
-            LOG(ERROR) << "Xpath error: " << exc.what();
+            LOG(ERROR) << "XPath query error: " << exc.what() << " File: " << filename;
         }
     } else {
         LOG(ERROR) << "Failed to parse configuration file: " << result.description();
