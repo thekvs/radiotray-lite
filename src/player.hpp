@@ -37,8 +37,12 @@ public:
     void pause();
     void stop();
     void start();
+
     Glib::ustring get_station();
+    bool has_station();
     Glib::RefPtr<PlayBin> get_playbin();
+
+    void init_streams(Glib::ustring data_url, Glib::ustring station);
 
     std::shared_ptr<EventManager> em;
 

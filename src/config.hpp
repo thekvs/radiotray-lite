@@ -22,6 +22,7 @@ public:
 
     void set_config_file(const std::string& name);
     void load_config();
+    bool has_last_station();
 
     Glib::ustring last_station;
     long url_timeout_ms = kDefaultHTTPRequestTimeout;

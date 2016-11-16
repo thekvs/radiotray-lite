@@ -145,7 +145,7 @@ RadioTrayLite::on_current_station_button()
 {
     if (em->state == StationState::PLAYING) {
         player->pause();
-    } else if (em->state == StationState::IDLE) {
+    } else if (em->state == StationState::IDLE or em->state == StationState::UNKNOWN) {
         player->play();
     }
 }
@@ -258,16 +258,17 @@ RadioTrayLite::search_for_bookmarks_file()
     auto bookmarks_file_exists = std::bind(file_exists, std::placeholders::_1, kBookmarksFileName);
     auto result = std::find_if(std::begin(paths), std::end(paths), bookmarks_file_exists);
     if (result != std::end(paths)) {
-        bookmarks_file = *result + kBookmarksFileName;
+        auto dir = *result;
+        bookmarks_file = dir + kBookmarksFileName;
 
         // This is the last search path i.e. bookmarks.xml which comes with distribution
-        if (*result == paths.back()) {
+        if (dir == paths.back()) {
             copy_default_bookmarks(bookmarks_file);
         }
 
-        config->set_config_file(*result + kConfigFileName);
+        config->set_config_file(dir + kConfigFileName);
 
-        if (file_exists(*result, kConfigFileName)) {
+        if (file_exists(dir, kConfigFileName)) {
             config->load_config();
         }
     }
@@ -276,7 +277,23 @@ RadioTrayLite::search_for_bookmarks_file()
 void
 RadioTrayLite::set_current_station(bool turn_on)
 {
-    if (not player->get_station().empty()) {
+    if ((not player->has_station()) and config->has_last_station()) {
+        try {
+            char xpath_query[1024];
+            memset(xpath_query, 0, sizeof(xpath_query));
+            snprintf(xpath_query, sizeof(xpath_query) - 1, "//bookmark[@name='%s']", config->last_station.c_str());
+
+            pugi::xpath_node node = bookmarks_doc.select_node(xpath_query);
+            if (not node.node().empty()) {
+                auto data_url = node.node().attribute("url").as_string();
+                player->init_streams(data_url, config->last_station);
+            }
+        } catch (pugi::xpath_exception& exc) {
+            LOG(WARNING) << "XPath error: " << exc.what();
+        }
+    }
+
+    if (player->has_station()) {
         auto mk_menu_entry = [](Glib::ustring name, bool turn_on) {
             std::stringstream ss;
             if (turn_on) {
