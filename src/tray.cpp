@@ -325,11 +325,10 @@ RadioTrayLite::set_current_broadcast(Glib::ustring info)
             return info;
         }
 
-        std::string original = info;
-        std::string result;
+        Glib::ustring result;
 
         size_t chunk = 0;
-        for (auto& ch : original) {
+        for (const auto& ch : info) {
             if (std::isspace(ch) and chunk >= size) {
                 result += "\n";
                 chunk = 0;
@@ -339,7 +338,7 @@ RadioTrayLite::set_current_broadcast(Glib::ustring info)
             chunk++;
         }
 
-        return Glib::ustring(result);
+        return result;
     };
 
     if (current_broadcast_menu_entry == nullptr) {
