@@ -2,6 +2,6 @@
 Name=Radio Tray Lite
 Terminal=false
 Exec=radiotray-lite
-Icon=radiotray
+Icon=radiotray-lite
 Type=Application
 Categories=AudioVideo;Audio;Player;GTK;

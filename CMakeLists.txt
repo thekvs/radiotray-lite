@@ -60,6 +60,10 @@ install(
     FILES data/radiotray-lite.desktop DESTINATION share/applications/
 )
 
+install(
+    FILES data/images/radiotray-lite.png DESTINATION share/pixmaps/
+)
+
 if(NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
     set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
 endif()

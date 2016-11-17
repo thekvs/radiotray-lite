@@ -16,7 +16,7 @@ const char* const kConfigFileName = "config.xml";
 // Images
 const char* const kImagePath = INSTALL_PREFIX"/share/radiotray-lite/images/";
 
-const char* const kAppIcon = "radiotray.png";
+const char* const kAppIcon = "radiotray-lite.png";
 const char* const kAppIconOn = "radiotray_on.png";
 const char* const kAppIconOff = "radiotray_off.png";
 const char* const kAppIconConnecting = "radiotray_connecting.gif";
