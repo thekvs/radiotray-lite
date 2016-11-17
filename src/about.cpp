@@ -17,6 +17,8 @@ AboutDialog::AboutDialog()
     std::vector<Glib::ustring> authors = { kAuthor };
     this->set_authors(authors);
 
+    this->set_license_type(Gtk::License::LICENSE_GPL_3_0);
+
     this->set_website(kWebSite);
     this->set_website_label("Project's website");
 
