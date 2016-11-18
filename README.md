@@ -19,5 +19,9 @@ To build Ubuntu package issue following (with obvious amendments) commands from 
 
 ```.deb``` archive will be located in the ```packages``` folder of the build directory.
 
+#### Configs
+Copy your existing ```bookmarks.xml``` from [Radio Tray](http://radiotray.sourceforge.net/) (which is usually located at
+```$HOME/.local/share/radiotray/bookmarks.xml```) into ```$HOME/.config/radiotray-lite/``` directory.
+
 #### Licensing
 See [LICENSE.md](LICENSE.md) file for license information.
