@@ -231,44 +231,33 @@ RadioTrayLite::parse_bookmarks_file()
 void
 RadioTrayLite::search_for_bookmarks_file()
 {
-    std::vector<std::string> paths;
+    std::string user_config_dir, dist_config_dir;
+    bool has_user_bookmarks = false;
 
     auto home = getenv("HOME");
     if (home != nullptr) {
-        auto dir = std::string(home) + "/.config/" + kAppDirName + "/";
-        paths.push_back(dir);
-        dir = std::string(home) + "/.local/share/" + kRadioTrayAppDirName + "/";
-        paths.push_back(dir);
+        user_config_dir = std::string(home) + "/.config/" + kAppDirName + "/";
     }
 
-    // default bookmarks file
-    auto base_dir = INSTALL_PREFIX"/share/";
-    paths.push_back(std::string(base_dir) + kAppDirName + "/");
+    dist_config_dir = std::string(INSTALL_PREFIX"/share/") + kAppDirName + "/";
 
-    auto file_exists = [](const std::string& dir, const std::string& file) -> bool {
-        std::string full_name = dir + file;
-        struct stat st;
-        auto rc = stat(full_name.c_str(), &st);
-        if (rc == 0 and S_ISREG(st.st_mode)) {
-            return true;
-        }
-        return false;
-    };
+    if (file_exists(user_config_dir, kBookmarksFileName)) {
+        bookmarks_file = user_config_dir + kBookmarksFileName;
+        has_user_bookmarks = true;
+    }
 
-    auto bookmarks_file_exists = std::bind(file_exists, std::placeholders::_1, kBookmarksFileName);
-    auto result = std::find_if(std::begin(paths), std::end(paths), bookmarks_file_exists);
-    if (result != std::end(paths)) {
-        auto dir = *result;
-        bookmarks_file = dir + kBookmarksFileName;
-
-        // This is the last search path i.e. bookmarks.xml which comes with distribution
-        if (dir == paths.back()) {
+    if (not has_user_bookmarks) {
+        if (file_exists(dist_config_dir, kBookmarksFileName)) {
+            bookmarks_file = dist_config_dir + kBookmarksFileName;
             copy_default_bookmarks(bookmarks_file);
+        } else {
+            LOG(WARNING) << "Distribution's bookmarks file doesn't exist in '" << dist_config_dir << "'";
         }
+    }
 
-        config->set_config_file(dir + kConfigFileName);
-
-        if (file_exists(dir, kConfigFileName)) {
+    if (dir_exists(user_config_dir)) {
+        config->set_config_file(user_config_dir + kConfigFileName);
+        if (file_exists(user_config_dir, kConfigFileName)) {
             config->load_config();
         }
     }
@@ -387,23 +376,66 @@ void
 RadioTrayLite::copy_default_bookmarks(std::string src_file)
 {
     auto home = getenv("HOME");
+    if (home == nullptr) {
+        return;
+    }
 
-    if (home != nullptr) {
-        std::string path = home;
-        path.append("/.config/").append(kAppDirName).append("/");
+    auto copy_file = [](const std::string& dst_dir, const std::string& src_file) {
+        auto dst_file = dst_dir + kBookmarksFileName;
 
+        std::ifstream src(src_file, std::ios::binary);
+        std::ofstream dst(dst_file, std::ios::binary);
+
+        dst << src.rdbuf();
+    };
+
+    std::string path = home;
+    path.append("/.config/").append(kAppDirName).append("/");
+
+    if (not dir_exists(path)) {
         auto rc = mkdir(path.c_str(), S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
         if (rc == 0) {
-            auto dst_file = path + kBookmarksFileName;
-
-            std::ifstream src(src_file, std::ios::binary);
-            std::ofstream dst(dst_file, std::ios::binary);
-
-            dst << src.rdbuf();
+            copy_file(path, src_file);
         } else {
             LOG(WARNING) << "Couldn't create '" << path << "': " << strerror(errno);
         }
+    } else {
+        copy_file(path, src_file);
     }
 }
+
+bool
+RadioTrayLite::file_exists(const std::string& dir, const std::string& file)
+{
+    if (dir.empty() or file.empty()) {
+        return false;
+    }
+
+    std::string full_name = dir + file;
+
+    struct stat st;
+    auto rc = stat(full_name.c_str(), &st);
+    if (rc == 0 and S_ISREG(st.st_mode)) {
+        return true;
+    }
+
+    return false;
+};
+
+bool
+RadioTrayLite::dir_exists(const std::string& dir)
+{
+    if (dir.empty()) {
+        return false;
+    }
+
+    struct stat st;
+    auto rc = stat(dir.c_str(), &st);
+    if (rc == 0 and S_ISDIR(st.st_mode)) {
+        return true;
+    }
+
+    return false;
+};
 
 } // namespace radiotray
