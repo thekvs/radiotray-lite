@@ -268,11 +268,10 @@ RadioTrayLite::set_current_station(bool turn_on)
 {
     if ((not player->has_station()) and config->has_last_station()) {
         try {
-            char xpath_query[1024];
-            memset(xpath_query, 0, sizeof(xpath_query));
-            snprintf(xpath_query, sizeof(xpath_query) - 1, "//bookmark[@name='%s']", config->last_station.c_str());
+            std::stringstream xpath_query;
+            xpath_query << "//bookmark[@name='" << config->last_station << "']";
 
-            pugi::xpath_node node = bookmarks_doc.select_node(xpath_query);
+            pugi::xpath_node node = bookmarks_doc.select_node(xpath_query.str().c_str());
             if (not node.node().empty()) {
                 auto data_url = node.node().attribute("url").as_string();
                 player->init_streams(data_url, config->last_station);
