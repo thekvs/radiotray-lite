@@ -1,9 +1,15 @@
-#### About
+### About
 ```radiotray-lite``` is a lightweight clone of the original [Radio Tray](http://radiotray.sourceforge.net/) online radio streaming player rewritten in C++.
 
 ![Screenshot](images/radiotray-lite.png)
 
-#### Build
+### Key features
+* Runs on a Linux system tray.
+* Has minimum interface possible.
+* Plays most media formats (it uses gstreamer).
+* Supports PLS, M3U, ASX, RAM, XSPF playlists.
+
+### Build
 For a while this project is only tested on Ubuntu (14.04 and 16.04 versions). In order to build it you need to have
 installed ```-dev``` versions of the following packages:
 * ```libgtkmm-3.0```
@@ -19,9 +25,9 @@ To build Ubuntu package issue following (with obvious amendments) commands from 
 
 ```.deb``` archive will be located in the ```packages``` folder of the build directory.
 
-#### Configs
+### Configs
 Copy your existing ```bookmarks.xml``` from [Radio Tray](http://radiotray.sourceforge.net/) (which is usually located at
 ```$HOME/.local/share/radiotray/bookmarks.xml```) into ```$HOME/.config/radiotray-lite/``` directory.
 
-#### Licensing
+### Licensing
 See [LICENSE.md](LICENSE.md) file for license information.
