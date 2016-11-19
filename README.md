@@ -18,12 +18,12 @@ installed ```-dev``` versions of the following packages:
 * ```libnotify4```
 * ```libappindicator3```
 
-To build Ubuntu package issue following (with obvious amendments) commands from build directory:
+To compile program run following (with obvious amendments) commands from build directory:
 * ```$ cmake /path/to/radiotray-lite/ -DCMAKE_INSTALL_PREFIX=/usr/```
 * ```$ make```
-* ```$ make package```
 
-```.deb``` archive will be located in the ```packages``` folder of the build directory.
+To create package in a ```.deb``` format issue following command while staying in your build directory:
+```$ cpack -G DEB```. Package will be created in the ```packages``` folder of the build directory.
 
 ### Configs
 Copy your existing ```bookmarks.xml``` from [Radio Tray](http://radiotray.sourceforge.net/) (which is usually located at
