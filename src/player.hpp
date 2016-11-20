@@ -19,9 +19,9 @@
 namespace radiotray
 {
 #if GST_VERSION_MAJOR >= 1
-    typedef Gst::PlayBin PlayBin;
+typedef Gst::PlayBin PlayBin;
 #else
-    typedef Gst::PlayBin2 PlayBin;
+typedef Gst::PlayBin2 PlayBin;
 #endif
 
 class Player

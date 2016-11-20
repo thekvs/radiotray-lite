@@ -34,7 +34,6 @@ private:
     Glib::ustring last_text;
     std::string logo_path;
     Glib::RefPtr<Gdk::Pixbuf> logo;
-
 };
 
 } // namespace radiotray

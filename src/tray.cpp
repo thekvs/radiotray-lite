@@ -239,7 +239,7 @@ RadioTrayLite::search_for_bookmarks_file()
         user_config_dir = std::string(home) + "/.config/" + kAppDirName + "/";
     }
 
-    dist_config_dir = std::string(INSTALL_PREFIX"/share/") + kAppDirName + "/";
+    dist_config_dir = std::string(INSTALL_PREFIX "/share/") + kAppDirName + "/";
 
     if (file_exists(user_config_dir, kBookmarksFileName)) {
         bookmarks_file = user_config_dir + kBookmarksFileName;

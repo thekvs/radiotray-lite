@@ -25,4 +25,3 @@ private:
 } // namespace radiotray
 
 #endif
-

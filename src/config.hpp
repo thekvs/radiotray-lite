@@ -16,7 +16,6 @@ namespace radiotray
 class Config
 {
 public:
-
     Config() = default;
     ~Config();
 
@@ -29,7 +28,6 @@ public:
     size_t buffer_size = kDefaultGStreamerBufferSize;
 
 private:
-
     std::string filename;
     pugi::xml_document config;
 };

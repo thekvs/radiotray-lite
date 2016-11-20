@@ -46,4 +46,3 @@ XSPFPlaylistDecoder::desc() const
 }
 
 } // namespace radiotray
-
