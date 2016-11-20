@@ -21,9 +21,9 @@ installed ```-dev``` versions of the following packages:
 To compile program run following (with obvious amendments) commands from build directory:
 * ```$ cmake /path/to/radiotray-lite/ -DCMAKE_INSTALL_PREFIX=/usr/```
 * ```$ make```
+* ```$ cpack -G DEB``` to create package in ```.deb``` format or ```$ cpack -G RPM``` to create package in ```.rpm``` format.
 
-To create package in a ```.deb``` format issue following command while staying in your build directory:
-```$ cpack -G DEB```. Package will be created in the ```packages``` folder of the build directory.
+Package will be created in the ```packages``` folder of the build directory.
 
 ### Configs
 Copy your existing ```bookmarks.xml``` from [Radio Tray](http://radiotray.sourceforge.net/) (which is usually located at

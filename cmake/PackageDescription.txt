@@ -1,0 +1,6 @@
+Online radio streaming player:
+ - Runs on a Linux system tray.
+ - Has minimum interface possible.
+ - Plays most media formats (it uses gstreamer).
+ - Supports PLS, M3U, ASX, RAM, XSPF playlists.
+
