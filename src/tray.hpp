@@ -27,15 +27,16 @@ namespace radiotray
 class RadioTrayLite
 {
 public:
-    RadioTrayLite() = delete;
+    RadioTrayLite() = default;
     RadioTrayLite(const RadioTrayLite&) = delete;
 
-    RadioTrayLite(int argc, char** argv);
     ~RadioTrayLite();
 
+    bool init(int argc, char** argv);
     void run();
 
 private:
+    bool initialized = false;
     Glib::RefPtr<Gtk::Application> app;
     std::shared_ptr<Gtk::Menu> menu;
 

@@ -15,7 +15,15 @@ main(int argc, char* argv[])
     // default logger uses default configurations
     el::Loggers::reconfigureLogger("default", defaultConf);
 
-    RadioTrayLite(argc, argv).run();
+    RadioTrayLite rtl;
+
+    auto ok = rtl.init(argc, argv);
+    if (not ok) {
+        LOG(ERROR) << "Initialization failed";
+        return EXIT_FAILURE;
+    }
+
+    rtl.run();
 
     return 0;
 }

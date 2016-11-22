@@ -50,23 +50,33 @@ RadioTrayLite::BookmarksWalker::for_each(pugi::xml_node& node)
     return true; // continue traversal
 }
 
-RadioTrayLite::RadioTrayLite(int argc, char** argv)
+RadioTrayLite::~RadioTrayLite()
+{
+    clear_menu();
+
+    if (indicator != nullptr) {
+        g_object_unref(G_OBJECT(indicator));
+    }
+}
+
+bool
+RadioTrayLite::init(int argc, char** argv)
 {
     config = std::make_shared<Config>();
 
     app = Gtk::Application::create(argc, argv, "github.com.thekvs.radiotray-lite");
     menu = std::make_shared<Gtk::Menu>();
-
     player = std::make_shared<Player>();
+
     auto ok = player->init(argc, argv);
-    if (!ok) {
-        // TODO
+    if (not ok) {
+        return false;
     }
 
     notifier = std::make_shared<Notification>(kAppName);
     ok = notifier->init();
-    if (!ok) {
-        // TODO
+    if (not ok) {
+        return false;
     }
 
     em = std::make_shared<EventManager>();
@@ -77,25 +87,26 @@ RadioTrayLite::RadioTrayLite(int argc, char** argv)
     player->em = em;
 
     indicator = app_indicator_new_with_path(kAppName, kAppIndicatorIconOff, APP_INDICATOR_CATEGORY_APPLICATION_STATUS, kImagePath);
+
     app_indicator_set_status(indicator, APP_INDICATOR_STATUS_ACTIVE);
     app_indicator_set_attention_icon(indicator, kAppIndicatorIconOn);
     app_indicator_set_menu(indicator, menu->gobj());
 
     search_for_bookmarks_file();
-}
 
-RadioTrayLite::~RadioTrayLite()
-{
-    clear_menu();
+    initialized = true;
 
-    if (indicator != nullptr) {
-        g_object_unref(G_OBJECT(indicator));
-    }
+    return true;
 }
 
 void
 RadioTrayLite::run()
 {
+    if (not initialized) {
+        LOG(ERROR) << "Application wasn't properly initialized!";
+        return;
+    }
+
     build_menu();
 
     // FIXME: WHY THIS DOESN'T RUN IN A LOOP?
