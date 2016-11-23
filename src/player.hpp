@@ -43,10 +43,12 @@ public:
     Glib::RefPtr<PlayBin> get_playbin();
 
     void init_streams(Glib::ustring data_url, Glib::ustring station);
+    void set_config(std::shared_ptr<Config> cfg);
 
     std::shared_ptr<EventManager> em;
 
 private:
+    std::shared_ptr<Config> config;
     Glib::RefPtr<PlayBin> playbin;
 
     Playlist playlist;

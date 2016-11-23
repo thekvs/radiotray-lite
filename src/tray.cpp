@@ -64,10 +64,13 @@ RadioTrayLite::init(int argc, char** argv)
 {
     config = std::make_shared<Config>();
 
+    load_configuration();
+
     app = Gtk::Application::create(argc, argv, "github.com.thekvs.radiotray-lite");
     menu = std::make_shared<Gtk::Menu>();
-    player = std::make_shared<Player>();
 
+    player = std::make_shared<Player>();
+    player->set_config(config);
     auto ok = player->init(argc, argv);
     if (not ok) {
         return false;
@@ -91,8 +94,6 @@ RadioTrayLite::init(int argc, char** argv)
     app_indicator_set_status(indicator, APP_INDICATOR_STATUS_ACTIVE);
     app_indicator_set_attention_icon(indicator, kAppIndicatorIconOn);
     app_indicator_set_menu(indicator, menu->gobj());
-
-    search_for_bookmarks_file();
 
     initialized = true;
 
@@ -240,7 +241,7 @@ RadioTrayLite::parse_bookmarks_file()
 }
 
 void
-RadioTrayLite::search_for_bookmarks_file()
+RadioTrayLite::load_configuration()
 {
     std::string user_config_dir, dist_config_dir;
     bool has_user_bookmarks = false;

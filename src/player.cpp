@@ -17,7 +17,7 @@ Player::init(int argc, char** argv)
         LOG(ERROR) << "The PlayBin element could not be created.";
         return false;
     }
-    set_buffer_size(1024 * 100);
+    set_buffer_size(config->buffer_size);
 
     Glib::RefPtr<Gst::Bus> bus = playbin->get_bus();
     bus->add_watch(sigc::mem_fun(*this, &Player::on_bus_message));
@@ -97,7 +97,7 @@ Player::play_next_stream()
         if (gst_uri_is_valid(u.c_str())) {
             LOG(DEBUG) << "Trying to play stream: " << u;
 
-            set_buffer_size(1024 * 100);
+            set_buffer_size(config->buffer_size);
             set_stream(u);
             start();
 
@@ -202,6 +202,13 @@ Player::init_streams(Glib::ustring data_url, Glib::ustring station)
     }
 
     current_station = station;
+}
+
+void
+Player::set_config(std::shared_ptr<Config> cfg)
+{
+    config = cfg;
+    playlist.set_config(cfg);
 }
 
 } // namespace radiotray

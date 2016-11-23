@@ -43,9 +43,13 @@ main(int argc, char** argv)
         stations.push_back(argv[i]);
     }
 
+    auto config = std::make_shared<Config>();
+
     auto player = std::make_shared<Player>();
     player->em = std::make_shared<EventManager>(); // FIXME: EventManager should be part of Player?
     player->em->broadcast_info_changed.connect(sigc::ptr_fun(on_broadcast_info_changed_signal));
+    player->set_config(config);
+
     auto ok = player->init(argc, argv);
 
     if (ok) {

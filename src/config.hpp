@@ -25,7 +25,7 @@ public:
 
     Glib::ustring last_station;
     long url_timeout_ms = kDefaultHTTPRequestTimeout;
-    size_t buffer_size = kDefaultGStreamerBufferSize;
+    int buffer_size = kDefaultGStreamerBufferSize;
 
 private:
     std::string filename;

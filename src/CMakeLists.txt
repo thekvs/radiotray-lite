@@ -56,6 +56,7 @@ add_executable(
     radiotray-lite-cli.cpp
     player.cpp
     playlist.cpp
+    config.cpp
     ${PLAYLIST_DECODERS}
     ${THIRD_PARTY}
 )

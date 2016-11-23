@@ -79,7 +79,7 @@ private:
     void rebuild_menu();
     void clear_menu();
     bool parse_bookmarks_file();
-    void search_for_bookmarks_file();
+    void load_configuration();
     void set_current_station(bool turn_on);
     void set_current_broadcast(Glib::ustring info = Glib::ustring("Idle"));
 

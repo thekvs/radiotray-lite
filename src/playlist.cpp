@@ -56,13 +56,19 @@ Playlist::get_streams(std::string url)
 }
 
 void
+Playlist::set_config(std::shared_ptr<Config> cfg)
+{
+    config = cfg;
+}
+
+void
 Playlist::prepare_playlist_request(std::string url, bool only_headers)
 {
     data.clear();
     curl_easy_reset(handle);
 
     curl_easy_setopt(handle, CURLOPT_NOSIGNAL, 1);
-    curl_easy_setopt(handle, CURLOPT_TIMEOUT_MS, kDefaultHTTPRequestTimeout);
+    curl_easy_setopt(handle, CURLOPT_TIMEOUT_MS, config->url_timeout_ms);
 
     curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1);
     curl_easy_setopt(handle, CURLOPT_MAXREDIRS, 7);

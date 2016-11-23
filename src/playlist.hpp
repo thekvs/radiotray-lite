@@ -9,6 +9,7 @@
 #include <curl/curl.h>
 
 #include "constants.hpp"
+#include "config.hpp"
 #include "m3u_playlist_decoder.hpp"
 #include "pls_playlist_decoder.hpp"
 #include "asx_playlist_decoder.hpp"
@@ -27,10 +28,13 @@ public:
     ~Playlist();
 
     std::tuple<bool, MediaStreams> get_streams(std::string url);
+    void set_config(std::shared_ptr<Config> cfg);
 
 private:
     CURL* handle = nullptr;
     char errbuffer[CURL_ERROR_SIZE];
+
+    std::shared_ptr<Config> config;
 
     bool abort_get_request = false;
     std::string data;
