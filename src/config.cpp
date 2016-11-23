@@ -20,6 +20,8 @@ Config::~Config()
                 node.node().attribute("value").set_value(last_station.c_str());
             }
         } catch (pugi::xpath_exception& exc) {
+            LOG(WARNING) << "XPath expression failed: " << exc.what();
+            return;
         }
     }
 
