@@ -26,8 +26,14 @@ Playlist::~Playlist()
 std::tuple<bool, MediaStreams>
 Playlist::get_streams(std::string url)
 {
-    bool status = false;
     MediaStreams streams;
+
+    if (has_prefix("mms://", url)) {
+        streams.push_back(url);
+        return std::make_tuple(true, streams);
+    }
+
+    bool status = false;
 
     prepare_playlist_request(url, kOnlyHeaders);
     auto rc = curl_easy_perform(handle);
@@ -151,6 +157,20 @@ Playlist::run_playlist_decoders(std::string url)
     }
 
     return streams;
+}
+
+bool
+Playlist::has_prefix(const std::string& prefix, const std::string& str)
+{
+    if (prefix.size() > str.size()) {
+        return false;
+    }
+
+    if (strncasecmp(str.c_str(), prefix.c_str(), prefix.size()) == 0) {
+        return true;
+    }
+
+    return false;
 }
 
 size_t

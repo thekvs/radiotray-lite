@@ -45,6 +45,7 @@ private:
     long get_http_status();
     std::string get_content_type();
     MediaStreams run_playlist_decoders(std::string url);
+    bool has_prefix(const std::string& prefix, const std::string& str);
 
     static size_t write_memory_cb(void* ptr, size_t size, size_t nmemb, void* data);
 };
