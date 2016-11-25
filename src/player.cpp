@@ -115,13 +115,15 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
         play_next_stream();
     } else if (message_type == Gst::MESSAGE_ERROR) {
         auto error_msg = Glib::RefPtr<Gst::MessageError>::cast_static(message);
+        Glib::ustring e = "Error";
 
         if (error_msg) {
             Glib::Error err = error_msg->parse();
-            LOG(ERROR) << "Error: " << err.what();
-        } else {
-            LOG(ERROR) << "Error.";
+            e.append(": ").append(err.what());
         }
+
+        LOG(ERROR) << e;
+        em->broadcast_info_changed(current_station, e);
 
         play_next_stream();
     } else if (message_type == Gst::MESSAGE_TAG) {
