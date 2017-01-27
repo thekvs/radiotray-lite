@@ -33,7 +33,7 @@ public:
     ~RadioTrayLite();
 
     bool init(int argc, char** argv);
-    void run();
+    int run();
 
 private:
     bool initialized = false;

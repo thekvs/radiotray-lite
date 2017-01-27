@@ -100,20 +100,20 @@ RadioTrayLite::init(int argc, char** argv)
     return true;
 }
 
-void
+int
 RadioTrayLite::run()
 {
     if (not initialized) {
         LOG(ERROR) << "Application wasn't properly initialized!";
-        return;
+        return -1;
     }
 
     build_menu();
 
-    // FIXME: WHY THIS DOESN'T RUN IN A LOOP?
-    // app->run();
+    app->hold();
+    auto rc = app->run();
 
-    gtk_main();
+    return rc;
 }
 
 void
@@ -122,7 +122,7 @@ RadioTrayLite::on_quit_button()
     LOG(DEBUG) << "'Quit' button was pressed.";
 
     player->stop();
-    gtk_main_quit();
+    app->release();
 }
 
 void

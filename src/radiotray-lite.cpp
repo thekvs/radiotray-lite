@@ -23,7 +23,7 @@ main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    rtl.run();
+    auto rc = rtl.run();
 
-    return 0;
+    return rc;
 }
