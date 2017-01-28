@@ -67,6 +67,12 @@ RadioTrayLite::init(int argc, char** argv)
     load_configuration();
 
     app = Gtk::Application::create(argc, argv, "github.com.thekvs.radiotray-lite");
+    app->register_application();
+    if (app->is_remote()) {
+        LOG(WARNING) << "This application is already running!";
+        return false;
+    }
+
     menu = std::make_shared<Gtk::Menu>();
 
     player = std::make_shared<Player>();
@@ -212,9 +218,11 @@ RadioTrayLite::rebuild_menu()
 void
 RadioTrayLite::clear_menu()
 {
-    for (auto& e : menu->get_children()) {
-        menu->remove(*e);
-        delete e;
+    if (menu) {
+        for (auto& e : menu->get_children()) {
+            menu->remove(*e);
+            delete e;
+        }
     }
 
     current_station_menu_entry = nullptr;
