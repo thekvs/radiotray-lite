@@ -51,29 +51,37 @@ target_compile_definitions(radiotray-lite PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_H
 target_compile_definitions(radiotray-lite PRIVATE -DINSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
 target_compile_definitions(radiotray-lite PRIVATE -DAPP_VERSION="${APP_VERSION}")
 
-add_executable(
-    radiotray-lite-cli
-    radiotray-lite-cli.cpp
-    player.cpp
-    playlist.cpp
-    config.cpp
-    ${PLAYLIST_DECODERS}
-    ${THIRD_PARTY}
-)
-target_link_libraries(
-    radiotray-lite-cli
-    ${LIBXML2_LIBRARIES}
-    ${GSTREAMERMM_LIBRARIES}
-    ${CURL_LIBRARIES}
-    ${CMAKE_THREAD_LIBS_INIT}
-)
-set_target_properties(radiotray-lite-cli PROPERTIES COMPILE_FLAGS "-std=c++11")
-target_compile_definitions(radiotray-lite-cli PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_HANDLING)
-target_compile_definitions(radiotray-lite-cli PRIVATE -DINSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
-target_compile_definitions(radiotray-lite-cli PRIVATE -DAPP_VERSION="${APP_VERSION}")
-
 install(
-    TARGETS radiotray-lite radiotray-lite-cli
+    TARGETS radiotray-lite
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
 )
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_executable(
+        radiotray-lite-cli
+        radiotray-lite-cli.cpp
+        player.cpp
+        playlist.cpp
+        config.cpp
+        ${PLAYLIST_DECODERS}
+        ${THIRD_PARTY}
+        )
+    target_link_libraries(
+        radiotray-lite-cli
+        ${LIBXML2_LIBRARIES}
+        ${GSTREAMERMM_LIBRARIES}
+        ${CURL_LIBRARIES}
+        ${CMAKE_THREAD_LIBS_INIT}
+        )
+    set_target_properties(radiotray-lite-cli PROPERTIES COMPILE_FLAGS "-std=c++11")
+    target_compile_definitions(radiotray-lite-cli PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_HANDLING)
+    target_compile_definitions(radiotray-lite-cli PRIVATE -DINSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
+    target_compile_definitions(radiotray-lite-cli PRIVATE -DAPP_VERSION="${APP_VERSION}")
+
+    install(
+        TARGETS radiotray-lite-cli
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        )
+endif()
