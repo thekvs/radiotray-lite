@@ -9,3 +9,4 @@ AllowShortFunctionsOnASingleLine: false
 AlwaysBreakTemplateDeclarations: true
 AlwaysBreakAfterDefinitionReturnType: true
 BinPackParameters: false
+SortIncludes: false
