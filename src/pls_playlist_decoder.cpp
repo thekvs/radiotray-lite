@@ -23,12 +23,8 @@ PLSPlaylistDecoder::extract_media_streams(const std::string& data)
     std::istringstream iss(data);
     std::string line;
 
-    while (!iss.eof()) {
-        line.clear();
-        iss >> line;
-
+    while (std::getline(iss, line)) {
         trim(line);
-
         if (!line.empty() and line.front() != '#') {
             auto eq_sign = std::find(std::begin(line), std::end(line), '=');
             if (eq_sign != std::end(line)) {

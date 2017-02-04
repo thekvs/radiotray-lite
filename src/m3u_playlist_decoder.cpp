@@ -23,10 +23,7 @@ M3UPlaylistDecoder::extract_media_streams(const std::string& data)
     std::istringstream iss(data);
     std::string line;
 
-    while (!iss.eof()) {
-        line.clear();
-        iss >> line;
-
+    while (std::getline(iss, line)) {
         trim(line);
         if (!line.empty() and line.front() != '#') {
             streams.push_back(line);
