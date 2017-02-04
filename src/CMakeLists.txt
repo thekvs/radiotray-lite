@@ -7,6 +7,7 @@ include_directories(${GSTREAMER_INCLUDE_DIRS})
 include_directories(${GSTREAMERMM_INCLUDE_DIRS})
 include_directories(${CURL_INCLUDE_DIRS})
 include_directories(${LIBNOTIFY_INCLUDE_DIRS})
+include_directories(${LIBMAGIC_INCLUDE_DIRS})
 include_directories(third_party)
 
 add_definitions(-Wno-deprecated-declarations)
@@ -45,6 +46,7 @@ target_link_libraries(
     ${CURL_LIBRARIES}
     ${APPINDICATOR_LIBRARIES}
     ${LIBNOTIFY_LIBRARIES}
+    ${LIBMAGIC_LIBRARIES}
 )
 set_target_properties(radiotray-lite PROPERTIES COMPILE_FLAGS "-std=c++11")
 target_compile_definitions(radiotray-lite PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_HANDLING)
@@ -73,6 +75,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         ${GSTREAMERMM_LIBRARIES}
         ${CURL_LIBRARIES}
         ${CMAKE_THREAD_LIBS_INIT}
+        ${LIBMAGIC_LIBRARIES}
         )
     set_target_properties(radiotray-lite-cli PROPERTIES COMPILE_FLAGS "-std=c++11")
     target_compile_definitions(radiotray-lite-cli PRIVATE -DELPP_DISABLE_DEFAULT_CRASH_HANDLING)

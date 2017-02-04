@@ -13,7 +13,7 @@ set(CPACK_DEBIAN_PACKAGE_SECTION "sound")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Konstantin Sorokin <kvs@sigterm.ru>")
 set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE @CPACK_DEBIAN_PACKAGE_ARCHITECTURE@)
 set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}_${APP_VERSION}_@CPACK_DEBIAN_PACKAGE_ARCHITECTURE@)
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libgtkmm-3.0-1 | libgtkmm-3.0-1v5 (>= 3.10.1), libgstreamermm-0.10-2 (>= 0.10.11) | libgstreamermm-1.0-0v5 (>= 1.4.3), gstreamer0.10-plugins-base (>= 0.10.36) | gstreamer1.0-plugins-base (>= 1.2.4), gstreamer0.10-plugins-good (>= 0.10.31) | gstreamer1.0-plugins-good (>= 1.2.4), gstreamer0.10-plugins-bad (>= 0.10.23) | gstreamer1.0-plugins-bad (>= 1.2.4), libcurl3 (>= 7.35.0), libnotify4 (>= 0.7.6), libappindicator3-1")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libgtkmm-3.0-1 | libgtkmm-3.0-1v5 (>= 3.10.1), libgstreamermm-0.10-2 (>= 0.10.11) | libgstreamermm-1.0-0v5 (>= 1.4.3), gstreamer0.10-plugins-base (>= 0.10.36) | gstreamer1.0-plugins-base (>= 1.2.4), gstreamer0.10-plugins-good (>= 0.10.31) | gstreamer1.0-plugins-good (>= 1.2.4), gstreamer0.10-plugins-bad (>= 0.10.23) | gstreamer1.0-plugins-bad (>= 1.2.4), libcurl3 (>= 7.35.0), libnotify4 (>= 0.7.6), libappindicator3-1, libmagic1")
 
 set(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "/usr/share/applications;/usr/share/pixmaps")
 set(CPACK_RPM_PACKAGE_URL "https://github.com/thekvs/radiotray-lite/")

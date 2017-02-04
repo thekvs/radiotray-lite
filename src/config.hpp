@@ -1,13 +1,13 @@
 #ifndef __CONFIG_HPP_INCLUDED__
 #define __CONFIG_HPP_INCLUDED__
 
-#include <string>
 #include <chrono>
+#include <string>
 
 #include <gtkmm.h>
 
-#include "pugixml/pugixml.hpp"
 #include "easyloggingpp/easylogging++.h"
+#include "pugixml/pugixml.hpp"
 
 #include "constants.hpp"
 

@@ -1,9 +1,9 @@
 #ifndef __M3U_PLAYLIST_DECODER_HPP_INCLUDED__
 #define __M3U_PLAYLIST_DECODER_HPP_INCLUDED__
 
-#include <sstream>
-#include <regex>
 #include <iomanip>
+#include <regex>
+#include <sstream>
 
 #include "playlist_decoder.hpp"
 

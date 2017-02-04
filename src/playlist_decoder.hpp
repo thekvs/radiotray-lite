@@ -1,20 +1,29 @@
 #ifndef __PLAYLIST_DECODER_HPP_INCLUDED__
 #define __PLAYLIST_DECODER_HPP_INCLUDED__
 
-#include <vector>
-#include <string>
-#include <iostream>
 #include <algorithm>
-#include <memory>
-#include <functional>
 #include <cctype>
+#include <functional>
+#include <iostream>
 #include <locale>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "easyloggingpp/easylogging++.h"
 
 namespace radiotray
 {
 using MediaStreams = std::vector<std::string>;
+
+enum class PlaylistDecoderType {
+    UNKNOWN_PLAYLIST_DECODER,
+    M3U_PLAYLIST_DECODER,
+    PLS_PLAYLIST_DECODER,
+    RAM_PLAYLIST_DECODER,
+    ASX_PLAYLIST_DECODER,
+    XSPF_PLAYLIST_DECODER
+};
 
 class PlaylistDecoder
 {

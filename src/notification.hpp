@@ -1,8 +1,8 @@
 #ifndef __NOTIFICATION_HPP_INCLUDED__
 #define __NOTIFICATION_HPP_INCLUDED__
 
-#include <string>
 #include <sstream>
+#include <string>
 
 #include <gtkmm.h>
 #include <libnotify/notify.h>

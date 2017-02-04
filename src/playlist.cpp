@@ -8,19 +8,41 @@ static const bool kOnlyHeaders = true;
 
 Playlist::Playlist()
 {
-    handle = curl_easy_init();
-    curl_easy_setopt(handle, CURLOPT_ERRORBUFFER, errbuffer);
-
-    decoders.push_back(std::make_shared<M3UPlaylistDecoder>());
-    decoders.push_back(std::make_shared<PLSPlaylistDecoder>());
-    decoders.push_back(std::make_shared<ASXPlaylistDecoder>());
-    decoders.push_back(std::make_shared<RAMPlaylistDecoder>());
-    decoders.push_back(std::make_shared<XSPFPlaylistDecoder>());
+    decoders.emplace(std::make_pair(PlaylistDecoderType::M3U_PLAYLIST_DECODER, std::make_shared<M3UPlaylistDecoder>()));
+    decoders.emplace(std::make_pair(PlaylistDecoderType::PLS_PLAYLIST_DECODER, std::make_shared<PLSPlaylistDecoder>()));
+    decoders.emplace(std::make_pair(PlaylistDecoderType::ASX_PLAYLIST_DECODER, std::make_shared<ASXPlaylistDecoder>()));
+    decoders.emplace(std::make_pair(PlaylistDecoderType::RAM_PLAYLIST_DECODER, std::make_shared<RAMPlaylistDecoder>()));
+    decoders.emplace(std::make_pair(PlaylistDecoderType::XSPF_PLAYLIST_DECODER, std::make_shared<XSPFPlaylistDecoder>()));
 }
 
 Playlist::~Playlist()
 {
     curl_easy_cleanup(handle);
+
+    if (mcookie) {
+        magic_close(mcookie);
+    }
+}
+
+bool
+Playlist::init()
+{
+    handle = curl_easy_init();
+    curl_easy_setopt(handle, CURLOPT_ERRORBUFFER, errbuffer);
+
+    mcookie = magic_open(MAGIC_NONE);
+    if (mcookie == nullptr) {
+        LOG(ERROR) << "Error opening libmagic database";
+        return false;
+    }
+
+    auto rc = magic_load(mcookie, NULL);
+    if (rc != 0) {
+        LOG(ERROR) << magic_error(mcookie);
+        return false;
+    }
+
+    return true;
 }
 
 std::tuple<bool, MediaStreams>
@@ -129,18 +151,19 @@ Playlist::run_playlist_decoders(std::string url)
     MediaStreams streams;
     bool extracted = false;
 
+    // First try to detect playlist's type by Content-Type header
     auto content_type = get_content_type();
 
-    if (!content_type.empty()) {
+    if (not content_type.empty()) {
         LOG(DEBUG) << "Content-Type: " << content_type;
         for (const auto& decoder : decoders) {
-            if (decoder->is_valid(content_type)) {
-                LOG(DEBUG) << "Matched " << decoder->desc();
+            if (decoder.second->is_valid(content_type)) {
+                LOG(DEBUG) << "Matched " << decoder.second->desc();
                 prepare_playlist_request(url, not kOnlyHeaders);
                 auto rc = curl_easy_perform(handle);
                 if (rc == CURLE_OK) {
                     LOG(DEBUG) << "Playlist: " << data;
-                    streams = decoder->extract_media_streams(data);
+                    streams = decoder.second->extract_media_streams(data);
                     for (auto& s : streams) {
                         LOG(DEBUG) << "Stream: " << s;
                     }
@@ -151,8 +174,23 @@ Playlist::run_playlist_decoders(std::string url)
         }
     }
 
+    // Try to infer playlist's type
+    abort_get_request = true;
+    prepare_playlist_request(url, not kOnlyHeaders);
+    auto rc = curl_easy_perform(handle);
+    abort_get_request = false;
+
+    if (rc == CURLE_OK or rc == CURLE_WRITE_ERROR /* it's ok, we've aborted reading */) {
+        auto type = guess_playlist_decoder_type();
+        if (type != PlaylistDecoderType::UNKNOWN_PLAYLIST_DECODER) {
+            const auto& decoder = decoders[type];
+            streams = decoder->extract_media_streams(data);
+            extracted = true;
+        }
+    }
+
     // No decoder found, consider url a media stream
-    if (streams.empty() && !extracted) {
+    if (streams.empty() and not extracted) {
         streams.push_back(url);
     }
 
@@ -171,6 +209,44 @@ Playlist::has_prefix(const std::string& prefix, const std::string& str)
     }
 
     return false;
+}
+
+PlaylistDecoderType
+Playlist::guess_playlist_decoder_type()
+{
+    auto desc = magic_buffer(mcookie, data.c_str(), data.size());
+    if (desc == nullptr) {
+        return PlaylistDecoderType::UNKNOWN_PLAYLIST_DECODER;
+    }
+
+    LOG(DEBUG) << "libmagic description: " << desc;
+
+    static const std::string kM3UPlaylistDesc = "M3U";
+    static const std::string kPLSPlaylistDesc = "PLS";
+    static const std::string kXSPFPlaylistDesc = "XML";
+
+    if (strncasecmp(desc, kM3UPlaylistDesc.c_str(), kM3UPlaylistDesc.size()) == 0) {
+        return PlaylistDecoderType::M3U_PLAYLIST_DECODER;
+    }
+
+    if (strncasecmp(desc, kPLSPlaylistDesc.c_str(), kPLSPlaylistDesc.size()) == 0) {
+        return PlaylistDecoderType::PLS_PLAYLIST_DECODER;
+    }
+
+    if (strncasecmp(desc, kXSPFPlaylistDesc.c_str(), kXSPFPlaylistDesc.size()) == 0) {
+        std::transform(data.begin(), data.end(), data.begin(), tolower);
+        auto pos = data.find("/xspf.org/");
+        if (pos != std::string::npos) {
+            return PlaylistDecoderType::XSPF_PLAYLIST_DECODER;
+        }
+    }
+
+    static const std::string kASXPlaylist = "<asx ";
+    if (strncasecmp(data.c_str(), kASXPlaylist.c_str(), kASXPlaylist.size()) == 0) {
+        return PlaylistDecoderType::ASX_PLAYLIST_DECODER;
+    }
+
+    return PlaylistDecoderType::UNKNOWN_PLAYLIST_DECODER;
 }
 
 size_t

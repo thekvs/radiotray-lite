@@ -31,6 +31,11 @@ add_compile_options(-Wextra)
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
 
+find_package(LibMagic REQUIRED)
+if (NOT LIBMAGIC_FOUND)
+    message(FATAL_ERROR "Couldn't find libmagic")
+endif(NOT LIBMAGIC_FOUND)
+
 find_package(Threads REQUIRED)
 find_package(LibNotify REQUIRED)
 
@@ -53,7 +58,7 @@ endif()
 
 set(TARGET_VERSION_MAJOR 0)
 set(TARGET_VERSION_MINOR 2)
-set(TARGET_VERSION_PATCH 12)
+set(TARGET_VERSION_PATCH 13)
 set(APP_VERSION "${TARGET_VERSION_MAJOR}.${TARGET_VERSION_MINOR}.${TARGET_VERSION_PATCH}")
 
 add_subdirectory(src)

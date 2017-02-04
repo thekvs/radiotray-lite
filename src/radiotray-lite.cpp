@@ -9,7 +9,7 @@ main(int argc, char* argv[])
 {
     el::Configurations easylogging_config;
     easylogging_config.setToDefault();
-    // Values are always std::string
+// Values are always std::string
 
 #ifndef NDEBUG
     easylogging_config.set(el::Level::Info, el::ConfigurationType::Format, "%datetime %level %loc %msg");

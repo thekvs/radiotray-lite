@@ -2,8 +2,8 @@
 #define __KEYBOARD_CONTROL_HPP_INCLUDED__
 
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <stdlib.h>
 #include <termios.h>
@@ -27,7 +27,8 @@ public:
     KeyboardControl() = delete;
     KeyboardControl(const KeyboardControl&) = delete;
 
-    void operator()()
+    void
+    operator()()
     {
         std::cout << "Press <space> to stop/resume playing." << std::endl;
         std::cout << "Press n/p to play next/previous station." << std::endl;

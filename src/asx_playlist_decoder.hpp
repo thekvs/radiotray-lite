@@ -1,8 +1,8 @@
 #ifndef __ASX_PLAYLIST_DECODER_HPP_INCLUDED__
 #define __ASX_PLAYLIST_DECODER_HPP_INCLUDED__
 
-#include <libxml/tree.h>
 #include <libxml/parser.h>
+#include <libxml/tree.h>
 #include <libxml/xpath.h>
 
 #include "playlist_decoder.hpp"

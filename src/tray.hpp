@@ -1,13 +1,13 @@
 #ifndef __TRAY_HPP_INCLUDED__
 #define __TRAY_HPP_INCLUDED__
 
-#include <stack>
+#include <functional>
 #include <iostream>
 #include <memory>
-#include <functional>
+#include <stack>
 
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include <gtkmm.h>
@@ -15,11 +15,11 @@
 
 #include "pugixml/pugixml.hpp"
 
-#include "constants.hpp"
-#include "player.hpp"
 #include "about.hpp"
-#include "notification.hpp"
 #include "config.hpp"
+#include "constants.hpp"
+#include "notification.hpp"
+#include "player.hpp"
 
 namespace radiotray
 {

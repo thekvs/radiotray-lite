@@ -1,8 +1,8 @@
 #ifndef __EVENT_MANAGER_HPP_INCLUDED__
 #define __EVENT_MANAGER_HPP_INCLUDED__
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include <gtkmm.h>
 #include <sigc++/sigc++.h>

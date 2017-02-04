@@ -1,8 +1,8 @@
 #ifndef __XSPF_PLAYLIST_DECODER_HPP_INCLUDED__
 #define __XSPF_PLAYLIST_DECODER_HPP_INCLUDED__
 
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
 #include "playlist_decoder.hpp"
 #include "pugixml/pugixml.hpp"

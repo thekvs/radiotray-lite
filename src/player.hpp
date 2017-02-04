@@ -1,8 +1,8 @@
 #ifndef __PLAYER_HPP_INCLUDED__
 #define __PLAYER_HPP_INCLUDED__
 
-#include <thread>
 #include <memory>
+#include <thread>
 
 #include <glib.h>
 
@@ -13,8 +13,8 @@
 
 #include <glibmm.h>
 
-#include "playlist.hpp"
 #include "event_manager.hpp"
+#include "playlist.hpp"
 
 namespace radiotray
 {

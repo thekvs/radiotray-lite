@@ -1,15 +1,15 @@
-#include <thread>
 #include <chrono>
 #include <iostream>
+#include <thread>
 
-#include <gstreamermm.h>
 #include <glibmm.h>
+#include <gstreamermm.h>
 
 #include <stdlib.h>
 #include <termios.h>
 
-#include "playlist.hpp"
 #include "player.hpp"
+#include "playlist.hpp"
 #include "keyboard_control.hpp"
 
 INITIALIZE_EASYLOGGINGPP

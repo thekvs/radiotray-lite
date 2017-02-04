@@ -22,6 +22,10 @@ Player::init(int argc, char** argv)
     Glib::RefPtr<Gst::Bus> bus = playbin->get_bus();
     bus->add_watch(sigc::mem_fun(*this, &Player::on_bus_message));
 
+    if (not playlist.init()) {
+        return false;
+    }
+
     return true;
 }
 
