@@ -122,7 +122,11 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
         Glib::ustring e = "Error";
 
         if (error_msg) {
+#if GSTREAMERMM_MAJOR_VERSION == 1 and GSTREAMERMM_MINOR_VERSION >= 8
+            Glib::Error err = error_msg->parse_error();
+#else
             Glib::Error err = error_msg->parse();
+#endif
             e.append(": ").append(err.what());
         }
 
@@ -134,7 +138,11 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
         auto msg_tag = Glib::RefPtr<Gst::MessageTag>::cast_static(message);
         Gst::TagList tag_list;
 #if GST_VERSION_MAJOR >= 1
+#if GSTREAMERMM_MAJOR_VERSION == 1 and GSTREAMERMM_MINOR_VERSION >= 8
+        tag_list = msg_tag->parse_tag_list();
+#else
         msg_tag->parse(tag_list);
+#endif
 #else
         Glib::RefPtr<Gst::Pad> pad;
         msg_tag->parse(pad, tag_list);
@@ -148,8 +156,14 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
         }
     } else if (message_type == Gst::MESSAGE_STATE_CHANGED) {
         auto state_changed_msg = Glib::RefPtr<Gst::MessageStateChanged>::cast_static(message);
+
+#if GSTREAMERMM_MAJOR_VERSION == 1 and GSTREAMERMM_MINOR_VERSION >= 8
+        Gst::State new_state = state_changed_msg->parse_new_state();
+        Gst::State old_state = state_changed_msg->parse_old_state();
+#else
         Gst::State new_state = state_changed_msg->parse();
         Gst::State old_state = state_changed_msg->parse_old();
+#endif
 
         StationState st;
         if (new_state == Gst::State::STATE_PLAYING) {
