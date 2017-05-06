@@ -289,12 +289,12 @@ RadioTrayLite::set_current_station(bool turn_on)
     if ((not player->has_station()) and config->has_last_station()) {
         try {
             std::stringstream xpath_query;
-            xpath_query << "//bookmark[@name='" << config->last_station << "']";
+            xpath_query << "//bookmark[@name='" << config->get_last_played_station() << "']";
 
             pugi::xpath_node node = bookmarks_doc.select_node(xpath_query.str().c_str());
             if (not node.node().empty()) {
                 auto data_url = node.node().attribute("url").as_string();
-                player->init_streams(data_url, config->last_station);
+                player->init_streams(data_url, config->get_last_played_station());
             }
         } catch (pugi::xpath_exception& exc) {
             LOG(WARNING) << "XPath error: " << exc.what();
@@ -366,7 +366,7 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
         return;
     }
 
-    config->last_station = station;
+    config->set_last_played_station(station);
 
     auto turn_on = (state == StationState::PLAYING ? false : true);
     set_current_station(turn_on);

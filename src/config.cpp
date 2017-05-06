@@ -4,44 +4,7 @@ namespace radiotray
 {
 Config::~Config()
 {
-    if (last_station.empty() or filename.empty()) {
-        return;
-    }
-
-    if (config.first_child().empty()) { // create new config
-        auto root = config.append_child("config");
-
-        {
-            auto option = root.append_child("option");
-            option.append_attribute("name").set_value("last_station");
-            option.append_attribute("value").set_value(last_station.c_str());
-        }
-
-        {
-            auto option = root.append_child("option");
-            option.append_attribute("name").set_value("buffer_size");
-            option.append_attribute("value").set_value(buffer_size);
-        }
-
-        {
-            auto option = root.append_child("option");
-            option.append_attribute("name").set_value("url_timeout");
-            option.append_attribute("value").set_value(static_cast<float>(url_timeout_ms) / 1000.f);
-        }
-    } else {
-        try {
-            pugi::xpath_node node = config.select_node("/config/option[@name='last_station']");
-            if (not node.node().empty()) {
-                // replace attribute's value
-                node.node().attribute("value").set_value(last_station.c_str());
-            }
-        } catch (pugi::xpath_exception& exc) {
-            LOG(ERROR) << "XPath expression failed: " << exc.what();
-            return;
-        }
-    }
-
-    config.save_file(filename.c_str(), "  ");
+    save_config();
 }
 
 void
@@ -87,6 +50,66 @@ bool
 Config::has_last_station()
 {
     return (last_station.empty() == false);
+}
+
+void
+Config::set_last_played_station(Glib::ustring station)
+{
+    last_station = station;
+    save_config();
+}
+
+Glib::ustring
+Config::get_last_played_station() const
+{
+    return last_station;
+}
+
+void
+Config::create_new_config()
+{
+    auto root = config.append_child("config");
+
+    {
+        auto option = root.append_child("option");
+        option.append_attribute("name").set_value("last_station");
+        option.append_attribute("value").set_value(last_station.c_str());
+    }
+
+    {
+        auto option = root.append_child("option");
+        option.append_attribute("name").set_value("buffer_size");
+        option.append_attribute("value").set_value(buffer_size);
+    }
+
+    {
+        auto option = root.append_child("option");
+        option.append_attribute("name").set_value("url_timeout");
+        option.append_attribute("value").set_value(static_cast<float>(url_timeout_ms) / 1000.f);
+    }
+}
+
+void
+Config::save_config()
+{
+    if (not config.first_child().empty()) {
+        try {
+            pugi::xpath_node node = config.select_node("/config/option[@name='last_station']");
+            if (not node.node().empty()) {
+                // replace attribute's value
+                node.node().attribute("value").set_value(last_station.c_str());
+            }
+        } catch (pugi::xpath_exception& exc) {
+            LOG(ERROR) << "XPath expression failed: " << exc.what();
+            return;
+        }
+    } else { // create new config
+        create_new_config();
+    }
+
+    if (not filename.empty()) {
+        config.save_file(filename.c_str(), "  ");
+    }
 }
 
 } // namespace radiotray
