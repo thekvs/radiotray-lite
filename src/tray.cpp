@@ -38,13 +38,20 @@ RadioTrayLite::BookmarksWalker::for_each(pugi::xml_node& node)
     } else if (is_bookmark and (!attr_url.empty())) {
         auto station_name = attr_name.as_string();
         auto station_group_name = node.parent().attribute("name").as_string();
-        auto station_url = attr_url.as_string();
-        auto sub_item = Gtk::manage(new Gtk::MenuItem(station_name));
-        sub_item->signal_activate().connect(sigc::bind<Glib::ustring, Glib::ustring, Glib::ustring>(
-            sigc::mem_fun(radiotray, &RadioTrayLite::on_station_button), station_group_name, station_name, station_url));
-        menus.top()->append(*sub_item);
+
+        if (strncasecmp(station_name, kSeparatorPrefix, kSeparatorPrefixLength) == 0) {
+            auto separator = Gtk::manage(new Gtk::SeparatorMenuItem());
+            menus.top()->append(*separator);
+        } else {
+            auto station_url = attr_url.as_string();
+            auto sub_item = Gtk::manage(new Gtk::MenuItem(station_name));
+            sub_item->signal_activate().connect(sigc::bind<Glib::ustring, Glib::ustring, Glib::ustring>(
+                    sigc::mem_fun(radiotray, &RadioTrayLite::on_station_button), station_group_name, station_name, station_url));
+            menus.top()->append(*sub_item);
+        }
+
         LOG(DEBUG) << "Bookmark depth: " << depth() << ", level: " << level << ", #menus: " << menus.size() << ", station: " << station_name
-                   << ", group: " << station_group_name;
+            << ", group: " << station_group_name;
     }
 
     return true; // continue traversal

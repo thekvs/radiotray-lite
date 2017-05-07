@@ -64,6 +64,9 @@ private:
         bool for_each(pugi::xml_node& node) override;
 
     private:
+        static constexpr char const* kSeparatorPrefix = "[separator-";
+        static const size_t kSeparatorPrefixLength = strlen(kSeparatorPrefix);
+
         RadioTrayLite& radiotray;
         std::stack<Gtk::Menu*> menus;
         int level = 0; // TODO: for debug, remove.
