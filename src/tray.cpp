@@ -46,12 +46,12 @@ RadioTrayLite::BookmarksWalker::for_each(pugi::xml_node& node)
             auto station_url = attr_url.as_string();
             auto sub_item = Gtk::manage(new Gtk::MenuItem(station_name));
             sub_item->signal_activate().connect(sigc::bind<Glib::ustring, Glib::ustring, Glib::ustring>(
-                    sigc::mem_fun(radiotray, &RadioTrayLite::on_station_button), station_group_name, station_name, station_url));
+                sigc::mem_fun(radiotray, &RadioTrayLite::on_station_button), station_group_name, station_name, station_url));
             menus.top()->append(*sub_item);
         }
 
         LOG(DEBUG) << "Bookmark depth: " << depth() << ", level: " << level << ", #menus: " << menus.size() << ", station: " << station_name
-            << ", group: " << station_group_name;
+                   << ", group: " << station_group_name;
     }
 
     return true; // continue traversal
