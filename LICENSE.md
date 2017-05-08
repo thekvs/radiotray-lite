@@ -1,4 +1,4 @@
-Copyright © 2016 Konstantin Sorokin <kvs@sigterm.ru>
+Copyright © 2016-2017 Konstantin Sorokin <kvs@sigterm.ru>
 
 Copyright © 2009 WooThemes
 
