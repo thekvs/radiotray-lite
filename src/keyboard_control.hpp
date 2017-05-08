@@ -27,8 +27,7 @@ public:
     KeyboardControl() = delete;
     KeyboardControl(const KeyboardControl&) = delete;
 
-    void
-    operator()()
+    void operator()()
     {
         std::cout << "Press <space> to stop/resume playing." << std::endl;
         std::cout << "Press n/p to play next/previous station." << std::endl;
@@ -76,8 +75,7 @@ private:
 
     bool paused = false;
 
-    int
-    getch()
+    int getch()
     {
         static struct termios oldt, newt;
         tcgetattr(STDIN_FILENO, &oldt); // save old settings
