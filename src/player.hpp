@@ -57,8 +57,6 @@ private:
 
     Glib::ustring current_station;
 
-    std::thread mainloop_thr;
-
     bool on_bus_message(const Glib::RefPtr<Gst::Bus>& bus, const Glib::RefPtr<Gst::Message>& message);
     void set_stream(Glib::ustring url);
     void set_buffer_size(int size);
