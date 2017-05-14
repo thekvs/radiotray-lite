@@ -35,6 +35,7 @@ add_executable(
     playlist.cpp
     notification.cpp
     config.cpp
+    options.cpp
     ${PLAYLIST_DECODERS}
     ${THIRD_PARTY}
 )
@@ -66,6 +67,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         player.cpp
         playlist.cpp
         config.cpp
+        options.cpp
         ${PLAYLIST_DECODERS}
         ${THIRD_PARTY}
         )

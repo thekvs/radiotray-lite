@@ -20,6 +20,7 @@
 #include "constants.hpp"
 #include "notification.hpp"
 #include "player.hpp"
+#include "options.hpp"
 
 namespace radiotray
 {
@@ -32,7 +33,7 @@ public:
 
     ~RadioTrayLite();
 
-    bool init(int argc, char** argv);
+    bool init(int argc, char** argv, std::shared_ptr<CmdLineOptions>& opts);
     int run();
 
 private:
@@ -52,6 +53,7 @@ private:
     std::shared_ptr<EventManager> em;
     std::shared_ptr<Notification> notifier;
     std::shared_ptr<Config> config;
+    std::shared_ptr<CmdLineOptions> cmd_line_options;
 
     class BookmarksWalker : public pugi::xml_tree_walker
     {
@@ -77,6 +79,8 @@ private:
     void on_station_button(Glib::ustring group_name, Glib::ustring station_name, Glib::ustring station_url);
     void on_reload_button();
     void on_current_station_button();
+
+    bool resume(bool resume_last_station);
 
     void build_menu();
     void rebuild_menu();

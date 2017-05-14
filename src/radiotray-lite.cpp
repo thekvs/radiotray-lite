@@ -1,4 +1,5 @@
 #include "tray.hpp"
+#include "options.hpp"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -26,9 +27,20 @@ main(int argc, char* argv[])
     // default logger uses default configurations
     el::Loggers::reconfigureLogger("default", easylogging_config);
 
+    auto opts = std::make_shared<CmdLineOptions>();
     RadioTrayLite rtl;
 
-    auto ok = rtl.init(argc, argv);
+    auto ok = opts->parse(argc, argv);
+    if (not ok) {
+        return EXIT_FAILURE;
+    }
+
+    if (opts->help) {
+        opts->show_help();
+        return EXIT_SUCCESS;
+    }
+
+    ok = rtl.init(argc, argv, opts);
     if (not ok) {
         LOG(ERROR) << "Initialization failed";
         return EXIT_FAILURE;

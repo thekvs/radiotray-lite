@@ -67,13 +67,15 @@ RadioTrayLite::~RadioTrayLite()
 }
 
 bool
-RadioTrayLite::init(int argc, char** argv)
+RadioTrayLite::init(int argc, char** argv, std::shared_ptr<CmdLineOptions>& opts)
 {
+    cmd_line_options = opts;
     config = std::make_shared<Config>();
 
     load_configuration();
 
-    app = Gtk::Application::create(argc, argv, "github.com.thekvs.radiotray-lite");
+    // app = Gtk::Application::create(argc, argv, "github.com.thekvs.radiotray-lite");
+    app = Gtk::Application::create("github.com.thekvs.radiotray-lite");
     app->register_application();
     if (app->is_remote()) {
         LOG(WARNING) << "This application is already running!";
@@ -124,6 +126,11 @@ RadioTrayLite::run()
     build_menu();
 
     app->hold();
+
+    // resume the last played staion in timer callback
+    sigc::slot<bool> resume_slot = sigc::bind(sigc::mem_fun(*this, &RadioTrayLite::resume), cmd_line_options->resume);
+    sigc::connection conn = Glib::signal_timeout().connect(resume_slot, 200);
+
     auto rc = app->run();
 
     return rc;
@@ -173,6 +180,34 @@ RadioTrayLite::on_current_station_button()
     } else if (em->state == StationState::IDLE or em->state == StationState::UNKNOWN) {
         player->play();
     }
+}
+
+bool
+RadioTrayLite::resume(bool resume_last_station)
+{
+    if (resume_last_station) {
+        if (config->has_last_station()) {
+            Glib::ustring data_url;
+            try {
+                std::stringstream xpath_query;
+                xpath_query << "//bookmark[@name='" << config->get_last_played_station() << "']";
+
+                pugi::xpath_node node = bookmarks_doc.select_node(xpath_query.str().c_str());
+                if (not node.node().empty()) {
+                    data_url = node.node().attribute("url").as_string();
+                }
+            } catch (pugi::xpath_exception& exc) {
+                LOG(WARNING) << "XPath error: " << exc.what();
+            }
+
+            LOG(DEBUG) << "Resuming the last played station: " << config->get_last_played_station() << " (stream url: " << data_url << ")";
+            player->play(data_url, config->get_last_played_station());
+        }
+    }
+
+    // When we return false from the timer callback it deletes itself automatically
+    // and won't be executed any more. So we have one time event here.
+    return false;
 }
 
 void
