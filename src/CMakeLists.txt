@@ -8,7 +8,8 @@ include_directories(${GSTREAMERMM_INCLUDE_DIRS})
 include_directories(${CURL_INCLUDE_DIRS})
 include_directories(${LIBNOTIFY_INCLUDE_DIRS})
 include_directories(${LIBMAGIC_INCLUDE_DIRS})
-include_directories(third_party)
+
+include_directories(SYSTEM third_party)
 
 add_definitions(-Wno-deprecated-declarations)
 
