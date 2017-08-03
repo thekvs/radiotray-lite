@@ -36,7 +36,7 @@ Configuration file is located in the same directory as bookmarks file. It has si
 * `last_station` -- name of the last played station. Automatically updated, you don't need to change it.
 * `buffer_size` -- size of the internal gstreamer's buffer.
 * `url_timeout` -- timeout in seconds for fetching playlist.
-* `notifications` -- if set to `false` disable desktop notification messages. Default is `true`.
+* `notifications` -- if set to `false` disables desktop notification messages. Default is `true`.
 
 Example:
 
