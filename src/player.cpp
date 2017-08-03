@@ -157,41 +157,45 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
     } else if (message_type == Gst::MESSAGE_STATE_CHANGED) {
         auto state_changed_msg = Glib::RefPtr<Gst::MessageStateChanged>::cast_static(message);
 
+        if (playbin->get_name() == state_changed_msg->get_source()->get_name()) {
+
 #if GSTREAMERMM_MAJOR_VERSION == 1 and GSTREAMERMM_MINOR_VERSION >= 8
-        Gst::State new_state = state_changed_msg->parse_new_state();
-        Gst::State old_state = state_changed_msg->parse_old_state();
+            Gst::State new_state = state_changed_msg->parse_new_state();
+            Gst::State old_state = state_changed_msg->parse_old_state();
 #else
-        Gst::State new_state = state_changed_msg->parse();
-        Gst::State old_state = state_changed_msg->parse_old();
+            Gst::State new_state = state_changed_msg->parse();
+            Gst::State old_state = state_changed_msg->parse_old();
 #endif
 
-        StationState st;
-        if (new_state == Gst::State::STATE_PLAYING) {
-            st = StationState::PLAYING;
-        } else {
-            st = StationState::IDLE;
-        }
-
-        em->state_changed(current_station, st);
-        em->state = st;
-
-        auto print = [](Gst::State& state) -> std::string {
-            if (state == Gst::State::STATE_PLAYING) {
-                return "STATE_PLAYING";
-            } else if (state == Gst::State::STATE_NULL) {
-                return "STATE_NULL";
-            } else if (state == Gst::State::STATE_READY) {
-                return "STATE_READY";
-            } else if (state == Gst::State::STATE_PAUSED) {
-                return "STATE_PAUSED";
-            } else if (state == Gst::State::STATE_VOID_PENDING) {
-                return "STATE_VOID_PENDING";
+            StationState st;
+            if (new_state == Gst::State::STATE_PLAYING) {
+                st = StationState::PLAYING;
+            } else {
+                st = StationState::IDLE;
             }
-            return "STATE_UNKNOWN";
-        };
-        LOG(DEBUG) << "Type: Gst::MESSAGE_STATE_CHANGED."
-                   << " Old: " << print(old_state) << " New: " << print(new_state)
-                   << " Source: " << state_changed_msg->get_source()->get_name();
+
+            em->state_changed(current_station, st);
+            em->state = st;
+
+            auto print = [](Gst::State& state) -> std::string {
+                if (state == Gst::State::STATE_PLAYING) {
+                    return "STATE_PLAYING";
+                } else if (state == Gst::State::STATE_NULL) {
+                    return "STATE_NULL";
+                } else if (state == Gst::State::STATE_READY) {
+                    return "STATE_READY";
+                } else if (state == Gst::State::STATE_PAUSED) {
+                    return "STATE_PAUSED";
+                } else if (state == Gst::State::STATE_VOID_PENDING) {
+                    return "STATE_VOID_PENDING";
+                }
+                return "STATE_UNKNOWN";
+            };
+
+            LOG(DEBUG) << "Type: Gst::MESSAGE_STATE_CHANGED."
+                       << " Old: " << print(old_state) << " New: " << print(new_state)
+                       << " Source: " << state_changed_msg->get_source()->get_name();
+        }
     }
 
     return true;
