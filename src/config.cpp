@@ -98,6 +98,12 @@ Config::create_new_config()
         option.append_attribute("name").set_value("url_timeout");
         option.append_attribute("value").set_value(static_cast<float>(url_timeout_ms) / 1000.f);
     }
+
+    {
+        auto option = root.append_child("option");
+        option.append_attribute("name").set_value("notifications");
+        option.append_attribute("value").set_value(notifications);
+    }
 }
 
 void
