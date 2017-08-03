@@ -3,11 +3,13 @@
 
 #include <sstream>
 #include <string>
+#include <memory>
 
 #include <gtkmm.h>
 #include <libnotify/notify.h>
 
 #include "constants.hpp"
+#include "config.hpp"
 #include "easyloggingpp/easylogging++.h"
 
 namespace radiotray
@@ -20,7 +22,7 @@ public:
     Notification(const Notification&) = delete;
     Notification& operator=(const Notification&) = delete;
 
-    Notification(const char* app_name);
+    Notification(const char* app_name, std::shared_ptr<Config>& cfg);
 
     ~Notification();
 
@@ -34,6 +36,7 @@ private:
     Glib::ustring last_text;
     std::string logo_path;
     Glib::RefPtr<Gdk::Pixbuf> logo;
+    std::shared_ptr<Config> config;
 };
 
 } // namespace radiotray

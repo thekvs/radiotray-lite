@@ -24,6 +24,7 @@ public:
     bool has_last_station();
     void set_last_played_station(Glib::ustring station);
     Glib::ustring get_last_played_station() const;
+    bool has_notifications() const;
 
     long url_timeout_ms = kDefaultHTTPRequestTimeout;
     int buffer_size = kDefaultGStreamerBufferSize;
@@ -32,6 +33,7 @@ private:
     std::string filename;
     pugi::xml_document config;
     Glib::ustring last_station;
+    bool notifications = true;
 
     void create_new_config();
     void save_config();

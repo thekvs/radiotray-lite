@@ -38,6 +38,11 @@ Config::load_config()
             if (not node.node().empty()) {
                 url_timeout_ms = node.node().attribute("value").as_float() * 1000; /* 'url_timeout' is in seconds */
             }
+
+            node = config.select_node("/config/option[@name='notifications']");
+            if (not node.node().empty()) {
+                notifications = node.node().attribute("value").as_bool();
+            }
         } catch (pugi::xpath_exception& exc) {
             LOG(ERROR) << "XPath query error: " << exc.what() << " File: " << filename;
         }
@@ -50,6 +55,12 @@ bool
 Config::has_last_station()
 {
     return (last_station.empty() == false);
+}
+
+bool
+Config::has_notifications() const
+{
+    return notifications;
 }
 
 void

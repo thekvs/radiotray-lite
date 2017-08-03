@@ -2,8 +2,9 @@
 
 namespace radiotray
 {
-Notification::Notification(const char* app_name)
+Notification::Notification(const char* app_name, std::shared_ptr<Config>& cfg)
     : app_name(app_name)
+    , config(cfg)
 {
     logo_path = std::string(kImagePath) + std::string(kAppIcon);
 }
@@ -33,6 +34,10 @@ Notification::on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustr
 {
     if (not notify_is_initted()) {
         LOG(WARNING) << "libnotify is not initialized!";
+        return;
+    }
+
+    if (not config->has_notifications()) {
         return;
     }
 

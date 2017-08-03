@@ -91,7 +91,7 @@ RadioTrayLite::init(int argc, char** argv, std::shared_ptr<CmdLineOptions>& opts
         return false;
     }
 
-    notifier = std::make_shared<Notification>(kAppName);
+    notifier = std::make_shared<Notification>(kAppName, config);
     ok = notifier->init();
     if (not ok) {
         return false;

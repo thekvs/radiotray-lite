@@ -26,9 +26,29 @@ To compile program run following (with obvious amendments) commands from build d
 
 Package will be created in the `packages` folder of the build directory.
 
-### Configs
+### Configuration
+#### Bookmarks
 Copy your existing `bookmarks.xml` from [Radio Tray](http://radiotray.sourceforge.net/) (which is usually located at
 `$HOME/.local/share/radiotray/bookmarks.xml`) into `$HOME/.config/radiotray-lite/` directory.
+
+#### Options
+Configuration file is located in the same directory as bookmarks file. It has simple XML format and following options are supported:
+* `last_station` -- name of the last played station. Automatically updated, you don't need to change it.
+* `buffer_size` -- size of the internal gstreamer's buffer.
+* `url_timeout` -- timeout in seconds for fetching playlist.
+* `notifications` -- if set to `false` disable desktop notification messages. Default is `true`.
+
+Example:
+
+```
+<?xml version="1.0"?>
+<config>
+  <option name="last_station" value="Rock 181" />
+  <option name="buffer_size" value="102400" />
+  <option name="url_timeout" value="5" />
+  <option name="notifications" value="false" />
+</config>
+```
 
 ### Licensing
 See [LICENSE.md](LICENSE.md) file for license information.
