@@ -220,12 +220,11 @@ Player::init_streams(Glib::ustring data_url, Glib::ustring station)
 
     std::tie(ok, streams) = playlist.get_streams(data_url);
     if ((not ok) or streams.empty()) {
-        // TODO: D-Bus message
+        em->broadcast_info_changed(current_station, "Error: couldn't get audio stream!");
         LOG(ERROR) << "Couldn't get audio streams!";
-        return;
+    } else {
+        current_station = station;
     }
-
-    current_station = station;
 }
 
 void
