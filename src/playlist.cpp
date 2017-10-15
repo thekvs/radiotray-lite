@@ -253,7 +253,7 @@ size_t
 Playlist::write_memory_cb(void* ptr, size_t size, size_t nmemb, void* data)
 {
     size_t realsize = 0;
-    Playlist* instance = static_cast<Playlist*>(data);
+    auto instance = static_cast<Playlist*>(data);
 
     if (instance) {
         realsize = size * nmemb;
