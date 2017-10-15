@@ -36,7 +36,7 @@ Playlist::init()
         return false;
     }
 
-    auto rc = magic_load(mcookie, NULL);
+    auto rc = magic_load(mcookie, nullptr);
     if (rc != 0) {
         LOG(ERROR) << magic_error(mcookie);
         return false;
@@ -135,7 +135,7 @@ Playlist::get_content_type()
     std::string content_type;
 
     auto rc = curl_easy_getinfo(handle, CURLINFO_CONTENT_TYPE, &content_type_data);
-    if (rc == CURLE_OK && content_type_data != NULL) {
+    if (rc == CURLE_OK && content_type_data != nullptr) {
         content_type = content_type_data;
         for (auto& v : content_type) {
             v = std::tolower(v);
