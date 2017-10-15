@@ -472,7 +472,7 @@ RadioTrayLite::file_exists(const std::string& dir, const std::string& file)
         return false;
     }
 
-    std::string full_name = dir + file;
+    auto full_name = dir + file;
 
     struct stat st = {};
     auto rc = stat(full_name.c_str(), &st);
