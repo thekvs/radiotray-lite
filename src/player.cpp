@@ -174,18 +174,20 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
             em->state = st;
 
             auto print = [](Gst::State& state) -> std::string {
-                if (state == Gst::State::STATE_PLAYING) {
+                switch (state) {
+                case Gst::State::STATE_PLAYING:
                     return "STATE_PLAYING";
-                } else if (state == Gst::State::STATE_NULL) {
+                case Gst::State::STATE_NULL:
                     return "STATE_NULL";
-                } else if (state == Gst::State::STATE_READY) {
+                case Gst::State::STATE_READY:
                     return "STATE_READY";
-                } else if (state == Gst::State::STATE_PAUSED) {
+                case Gst::State::STATE_PAUSED:
                     return "STATE_PAUSED";
-                } else if (state == Gst::State::STATE_VOID_PENDING) {
+                case Gst::State::STATE_VOID_PENDING:
                     return "STATE_VOID_PENDING";
+                default:
+                    return "STATE_UNKNOWN";
                 }
-                return "STATE_UNKNOWN";
             };
 
             LOG(DEBUG) << "Type: Gst::MESSAGE_STATE_CHANGED."
