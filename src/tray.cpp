@@ -347,9 +347,9 @@ RadioTrayLite::set_current_station(bool turn_on)
         auto mk_menu_entry = [](Glib::ustring name, bool turn_on) {
             std::stringstream ss;
             if (turn_on) {
-                ss << "Turn On \"" << name << "\"";
+                ss << R"(Turn On ")" << name << R"(")";
             } else {
-                ss << "Turn Off \"" << name << "\"";
+                ss << R"(Turn Off ")" << name << R"(")";
             }
 
             return Glib::ustring(ss.str());
