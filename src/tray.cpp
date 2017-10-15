@@ -410,7 +410,7 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
 
     config->set_last_played_station(station);
 
-    auto turn_on = (state == StationState::PLAYING ? false : true);
+    auto turn_on = not(state == StationState::PLAYING);
     set_current_station(turn_on);
 
     if (state == StationState::IDLE) {
