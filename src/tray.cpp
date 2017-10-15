@@ -379,7 +379,7 @@ RadioTrayLite::set_current_broadcast(Glib::ustring info)
 
         size_t chunk = 0;
         for (const auto& ch : info) {
-            if (std::isspace(ch) and chunk >= size) {
+            if (std::isspace(ch) != 0 and chunk >= size) {
                 result += "\n";
                 chunk = 0;
             } else {
