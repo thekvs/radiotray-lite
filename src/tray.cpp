@@ -246,7 +246,7 @@ RadioTrayLite::build_menu()
 
     set_current_broadcast();
 
-    auto turn_on = (em->state == StationState::PLAYING ? false : true);
+    auto turn_on = not(em->state == StationState::PLAYING);
     set_current_station(turn_on);
 }
 
