@@ -19,7 +19,7 @@ Playlist::~Playlist()
 {
     curl_easy_cleanup(handle);
 
-    if (mcookie) {
+    if (mcookie != nullptr) {
         magic_close(mcookie);
     }
 }
@@ -255,7 +255,7 @@ Playlist::write_memory_cb(void* ptr, size_t size, size_t nmemb, void* data)
     size_t realsize = 0;
     auto instance = static_cast<Playlist*>(data);
 
-    if (instance) {
+    if (instance != nullptr) {
         realsize = size * nmemb;
         instance->data.append(static_cast<char*>(ptr), realsize);
         if (instance->abort_get_request) {
