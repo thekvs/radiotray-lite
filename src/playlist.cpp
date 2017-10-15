@@ -204,11 +204,7 @@ Playlist::has_prefix(const std::string& prefix, const std::string& str)
         return false;
     }
 
-    if (strncasecmp(str.c_str(), prefix.c_str(), prefix.size()) == 0) {
-        return true;
-    }
-
-    return false;
+    return (strncasecmp(str.c_str(), prefix.c_str(), prefix.size()) == 0);
 }
 
 PlaylistDecoderType
