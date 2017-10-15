@@ -476,11 +476,8 @@ RadioTrayLite::file_exists(const std::string& dir, const std::string& file)
 
     struct stat st = {};
     auto rc = stat(full_name.c_str(), &st);
-    if (rc == 0 and S_ISREG(st.st_mode)) {
-        return true;
-    }
 
-    return false;
+    return (rc == 0 and S_ISREG(st.st_mode));
 };
 
 bool
@@ -492,11 +489,8 @@ RadioTrayLite::dir_exists(const std::string& dir)
 
     struct stat st = {};
     auto rc = stat(dir.c_str(), &st);
-    if (rc == 0 and S_ISDIR(st.st_mode)) {
-        return true;
-    }
 
-    return false;
+    return (rc == 0 and S_ISDIR(st.st_mode));
 };
 
 } // namespace radiotray
