@@ -27,8 +27,7 @@ typedef Gst::PlayBin2 PlayBin;
 class Player
 {
 public:
-    Player();
-
+    Player() = default;
     Player(const Player&) = delete;
 
     bool init(int argc, char** argv);

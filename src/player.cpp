@@ -3,10 +3,6 @@
 namespace radiotray
 {
 
-Player::Player()
-{
-}
-
 bool
 Player::init(int argc, char** argv)
 {
