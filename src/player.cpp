@@ -26,9 +26,9 @@ Player::init(int argc, char** argv)
 }
 
 void
-Player::play(Glib::ustring data_url, Glib::ustring station)
+Player::play(Glib::ustring url, Glib::ustring station)
 {
-    init_streams(data_url, station);
+    init_streams(url, station);
     play();
 }
 

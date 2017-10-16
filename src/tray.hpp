@@ -93,7 +93,7 @@ private:
     void on_station_changed_signal(Glib::ustring station, StationState state);
     void on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustring info);
 
-    void copy_default_bookmarks(std::string src);
+    void copy_default_bookmarks(std::string src_file);
 
     bool file_exists(const std::string& dir, const std::string& file);
     bool dir_exists(const std::string& dir);
