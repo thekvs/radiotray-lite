@@ -54,7 +54,7 @@ Config::load_config()
 bool
 Config::has_last_station()
 {
-    return (last_station.empty() == false);
+    return (!last_station.empty());
 }
 
 bool
