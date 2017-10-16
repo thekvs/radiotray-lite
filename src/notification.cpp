@@ -30,7 +30,7 @@ Notification::init()
 }
 
 void
-Notification::on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustring info)
+Notification::on_broadcast_info_changed_signal(const Glib::ustring& station, Glib::ustring info)
 {
     if (notify_is_initted() == 0) {
         LOG(WARNING) << "libnotify is not initialized!";
@@ -46,7 +46,7 @@ Notification::on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustr
     ss << notify_get_app_name() << " - " << station;
     auto summary = Glib::ustring(ss.str());
 
-    auto text = info;
+    const auto& text = info;
     if ((not last_text.empty()) and text == last_text) {
         return;
     }
