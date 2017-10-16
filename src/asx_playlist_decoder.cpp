@@ -58,7 +58,7 @@ ASXPlaylistDecoder::extract_media_streams(const std::string& data)
     }
 
     auto nodes = xpath_obj->nodesetval;
-    auto size = (nodes) ? nodes->nodeNr : 0;
+    auto size = (nodes != nullptr) ? nodes->nodeNr : 0;
 
     for (decltype(size) i = 0; i < size; ++i) {
         auto cur = nodes->nodeTab[i];

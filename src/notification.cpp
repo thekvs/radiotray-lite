@@ -15,7 +15,7 @@ Notification::~Notification()
         g_object_unref(G_OBJECT(notification));
     }
 
-    if (notify_is_initted()) {
+    if (notify_is_initted() != 0) {
         notify_uninit();
     }
 }
@@ -23,7 +23,7 @@ Notification::~Notification()
 bool
 Notification::init()
 {
-    bool initialized = notify_init(app_name.c_str());
+    auto initialized = (notify_init(app_name.c_str()) != 0);
     logo = Gdk::Pixbuf::create_from_file(logo_path);
 
     return (initialized and bool(logo));
@@ -32,7 +32,7 @@ Notification::init()
 void
 Notification::on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustring info)
 {
-    if (not notify_is_initted()) {
+    if (notify_is_initted() == 0) {
         LOG(WARNING) << "libnotify is not initialized!";
         return;
     }
@@ -61,7 +61,7 @@ Notification::on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustr
         }
     } else {
         auto rc = notify_notification_update(notification, summary.c_str(), text.c_str(), nullptr);
-        if (rc) {
+        if (rc != 0) {
             notify_notification_set_icon_from_pixbuf(notification, logo->gobj());
             notify_notification_show(notification, nullptr);
         }

@@ -94,7 +94,7 @@ Player::play_next_stream()
         auto u = *next_stream;
         next_stream++;
 
-        if (gst_uri_is_valid(u.c_str())) {
+        if (gst_uri_is_valid(u.c_str()) != 0) {
             LOG(DEBUG) << "Trying to play stream: " << u;
 
             set_buffer_size(config->buffer_size);
