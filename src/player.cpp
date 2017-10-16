@@ -204,7 +204,7 @@ Player::get_station()
 bool
 Player::has_station()
 {
-    return (current_station.empty() == false);
+    return (!current_station.empty());
 }
 
 void
