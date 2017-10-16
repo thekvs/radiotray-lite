@@ -5,9 +5,9 @@ namespace radiotray
 
 // clang-format off
 static const struct option longopts[] = {
-    { "resume", no_argument, NULL, 'r' },
-    { "help", no_argument, NULL, 'h' },
-    { NULL, 0, NULL, 0 }
+    { "resume", no_argument, nullptr, 'r' },
+    { "help", no_argument, nullptr, 'h' },
+    { nullptr, 0, nullptr, 0 }
 };
 // clang-format on
 
