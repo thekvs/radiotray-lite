@@ -26,7 +26,7 @@ XSPFPlaylistDecoder::extract_media_streams(const std::string& data)
             pugi::xpath_node_set nodes = playlist_doc.select_nodes("//track/location");
             for (auto& node : nodes) {
                 if (not node.node().text().empty()) {
-                    streams.push_back(node.node().text().as_string());
+                    streams.emplace_back(node.node().text().as_string());
                 }
             }
         } catch (pugi::xpath_exception& exc) {
