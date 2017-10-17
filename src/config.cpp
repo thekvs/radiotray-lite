@@ -64,7 +64,7 @@ Config::has_notifications() const
 }
 
 void
-Config::set_last_played_station(Glib::ustring station)
+Config::set_last_played_station(const Glib::ustring& station)
 {
     last_station = station;
     save_config();

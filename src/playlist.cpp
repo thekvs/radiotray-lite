@@ -46,7 +46,7 @@ Playlist::init()
 }
 
 std::tuple<bool, MediaStreams>
-Playlist::get_streams(std::string url)
+Playlist::get_streams(const std::string& url)
 {
     MediaStreams streams;
 
@@ -84,13 +84,13 @@ Playlist::get_streams(std::string url)
 }
 
 void
-Playlist::set_config(std::shared_ptr<Config> cfg)
+Playlist::set_config(const std::shared_ptr<Config>& cfg)
 {
     config = cfg;
 }
 
 void
-Playlist::prepare_playlist_request(std::string url, bool only_headers)
+Playlist::prepare_playlist_request(const std::string& url, bool only_headers)
 {
     data.clear();
     curl_easy_reset(handle);
@@ -146,7 +146,7 @@ Playlist::get_content_type()
 }
 
 MediaStreams
-Playlist::run_playlist_decoders(std::string url)
+Playlist::run_playlist_decoders(const std::string& url)
 {
     MediaStreams streams;
     bool extracted = false;

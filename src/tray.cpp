@@ -155,7 +155,7 @@ RadioTrayLite::on_about_button()
 }
 
 void
-RadioTrayLite::on_station_button(Glib::ustring group_name, Glib::ustring station_name, Glib::ustring station_url)
+RadioTrayLite::on_station_button(const Glib::ustring& group_name, const Glib::ustring& station_name, const Glib::ustring& station_url)
 {
     player->play(station_url, station_name);
 
@@ -368,7 +368,7 @@ RadioTrayLite::set_current_station(bool turn_on)
 }
 
 void
-RadioTrayLite::set_current_broadcast(Glib::ustring info)
+RadioTrayLite::set_current_broadcast(const Glib::ustring& info)
 {
     auto split = [](const Glib::ustring& info, size_t size) {
         if (info.size() <= size) {
@@ -402,7 +402,7 @@ RadioTrayLite::set_current_broadcast(Glib::ustring info)
 }
 
 void
-RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState state)
+RadioTrayLite::on_station_changed_signal(const Glib::ustring& station, StationState state)
 {
     if (state == em->state) {
         return;
@@ -426,7 +426,7 @@ RadioTrayLite::on_station_changed_signal(Glib::ustring station, StationState sta
 }
 
 void
-RadioTrayLite::on_broadcast_info_changed_signal(Glib::ustring /*station*/, Glib::ustring info)
+RadioTrayLite::on_broadcast_info_changed_signal(const Glib::ustring& /*station*/, const Glib::ustring& info)
 {
     set_current_broadcast(info);
 
@@ -434,7 +434,7 @@ RadioTrayLite::on_broadcast_info_changed_signal(Glib::ustring /*station*/, Glib:
 }
 
 void
-RadioTrayLite::copy_default_bookmarks(std::string src_file)
+RadioTrayLite::copy_default_bookmarks(const std::string& src_file)
 {
     auto home = getenv("HOME");
     if (home == nullptr) {

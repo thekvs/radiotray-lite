@@ -31,7 +31,7 @@ public:
     Player(const Player&) = delete;
 
     bool init(int argc, char** argv);
-    void play(Glib::ustring url, Glib::ustring station = Glib::ustring());
+    void play(const Glib::ustring& url, const Glib::ustring& station = Glib::ustring());
     void play();
     void pause();
     void stop();
@@ -41,8 +41,8 @@ public:
     bool has_station();
     Glib::RefPtr<PlayBin> get_playbin();
 
-    void init_streams(Glib::ustring data_url, Glib::ustring station);
-    void set_config(std::shared_ptr<Config> cfg);
+    void init_streams(const Glib::ustring& data_url, const Glib::ustring& station);
+    void set_config(const std::shared_ptr<Config>& cfg);
 
     std::shared_ptr<EventManager> em;
 
@@ -57,7 +57,7 @@ private:
     Glib::ustring current_station;
 
     bool on_bus_message(const Glib::RefPtr<Gst::Bus>& bus, const Glib::RefPtr<Gst::Message>& message);
-    void set_stream(Glib::ustring url);
+    void set_stream(const Glib::ustring& url);
     void set_buffer_size(int size);
     void play_next_stream();
 };

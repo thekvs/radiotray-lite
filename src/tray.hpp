@@ -76,7 +76,7 @@ private:
 
     void on_quit_button();
     void on_about_button();
-    void on_station_button(Glib::ustring group_name, Glib::ustring station_name, Glib::ustring station_url);
+    void on_station_button(const Glib::ustring& group_name, const Glib::ustring& station_name, const Glib::ustring& station_url);
     void on_reload_button();
     void on_current_station_button();
 
@@ -88,12 +88,12 @@ private:
     bool parse_bookmarks_file();
     void load_configuration();
     void set_current_station(bool turn_on);
-    void set_current_broadcast(Glib::ustring info = Glib::ustring("Idle"));
+    void set_current_broadcast(const Glib::ustring& info = Glib::ustring("Idle"));
 
-    void on_station_changed_signal(Glib::ustring station, StationState state);
-    void on_broadcast_info_changed_signal(Glib::ustring station, Glib::ustring info);
+    void on_station_changed_signal(const Glib::ustring& station, StationState state);
+    void on_broadcast_info_changed_signal(const Glib::ustring& station, const Glib::ustring& info);
 
-    void copy_default_bookmarks(std::string src_file);
+    void copy_default_bookmarks(const std::string& src_file);
 
     bool file_exists(const std::string& dir, const std::string& file);
     bool dir_exists(const std::string& dir);

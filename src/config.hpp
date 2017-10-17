@@ -22,7 +22,7 @@ public:
     void set_config_file(const std::string& name);
     void load_config();
     bool has_last_station();
-    void set_last_played_station(Glib::ustring station);
+    void set_last_played_station(const Glib::ustring& station);
     Glib::ustring get_last_played_station() const;
     bool has_notifications() const;
 

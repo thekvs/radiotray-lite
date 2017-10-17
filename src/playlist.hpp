@@ -30,8 +30,8 @@ public:
     ~Playlist();
 
     bool init();
-    std::tuple<bool, MediaStreams> get_streams(std::string url);
-    void set_config(std::shared_ptr<Config> cfg);
+    std::tuple<bool, MediaStreams> get_streams(const std::string& url);
+    void set_config(const std::shared_ptr<Config>& cfg);
 
 private:
     CURL* handle = nullptr;
@@ -46,10 +46,10 @@ private:
 
     std::map<PlaylistDecoderType, std::shared_ptr<PlaylistDecoder>> decoders;
 
-    void prepare_playlist_request(std::string url, bool only_headers);
+    void prepare_playlist_request(const std::string& url, bool only_headers);
     long get_http_status();
     std::string get_content_type();
-    MediaStreams run_playlist_decoders(std::string url);
+    MediaStreams run_playlist_decoders(const std::string& url);
     bool has_prefix(const std::string& prefix, const std::string& str);
     PlaylistDecoderType guess_playlist_decoder_type();
 

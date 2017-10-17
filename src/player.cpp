@@ -22,7 +22,7 @@ Player::init(int argc, char** argv)
 }
 
 void
-Player::play(Glib::ustring url, Glib::ustring station)
+Player::play(const Glib::ustring& url, const Glib::ustring& station)
 {
     init_streams(url, station);
     play();
@@ -68,7 +68,7 @@ Player::get_playbin()
 }
 
 void
-Player::set_stream(Glib::ustring url)
+Player::set_stream(const Glib::ustring& url)
 {
     playbin->property_uri() = url;
 }
@@ -208,7 +208,7 @@ Player::has_station()
 }
 
 void
-Player::init_streams(Glib::ustring data_url, Glib::ustring station)
+Player::init_streams(const Glib::ustring& data_url, const Glib::ustring& station)
 {
     bool ok;
 
@@ -222,7 +222,7 @@ Player::init_streams(Glib::ustring data_url, Glib::ustring station)
 }
 
 void
-Player::set_config(std::shared_ptr<Config> cfg)
+Player::set_config(const std::shared_ptr<Config>& cfg)
 {
     config = cfg;
     playlist.set_config(cfg);
