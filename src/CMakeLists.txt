@@ -37,6 +37,7 @@ add_executable(
     notification.cpp
     config.cpp
     options.cpp
+    event_manager.cpp
     ${PLAYLIST_DECODERS}
     ${THIRD_PARTY}
 )
@@ -69,6 +70,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         playlist.cpp
         config.cpp
         options.cpp
+        event_manager.cpp
         ${PLAYLIST_DECODERS}
         ${THIRD_PARTY}
         )

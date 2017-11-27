@@ -157,9 +157,10 @@ RadioTrayLite::on_about_button()
 void
 RadioTrayLite::on_station_button(const Glib::ustring& group_name, const Glib::ustring& station_name, const Glib::ustring& station_url)
 {
+    player->stop();
     player->play(station_url, station_name);
 
-    LOG(DEBUG) << "'" << station_url << "'"
+    LOG(DEBUG) << "'" << station_url << "' "
                << "(group: " << group_name << ", station: " << station_name << ")"
                << " button was pressed.";
 }
@@ -404,6 +405,9 @@ RadioTrayLite::set_current_broadcast(const Glib::ustring& info)
 void
 RadioTrayLite::on_station_changed_signal(const Glib::ustring& station, StationState state)
 {
+    LOG(DEBUG) << "Station changed: " << station << " state: " << get_station_state_desc(state)
+               << " e.m. state: " << get_station_state_desc(em->state);
+
     if (state == em->state) {
         return;
     }

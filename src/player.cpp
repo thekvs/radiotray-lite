@@ -24,21 +24,23 @@ Player::init(int argc, char** argv)
 void
 Player::play(const Glib::ustring& url, const Glib::ustring& station)
 {
-    init_streams(url, station);
-    play();
+    auto ok = init_streams(url, station);
+    if (ok) {
+        play();
+    }
 }
 
 void
 Player::play()
 {
     if (streams.empty()) {
+        LOG(DEBUG) << "Streams are empty!";
         return;
     }
 
     Glib::ustring stream_url = streams.front();
     next_stream = std::next(std::begin(streams));
 
-    stop();
     set_stream(stream_url);
     start();
 }
@@ -207,18 +209,25 @@ Player::has_station()
     return (!current_station.empty());
 }
 
-void
+bool
 Player::init_streams(const Glib::ustring& data_url, const Glib::ustring& station)
 {
     bool ok;
+    MediaStreams new_streams;
 
-    std::tie(ok, streams) = playlist.get_streams(data_url);
-    if ((not ok) or streams.empty()) {
+    std::tie(ok, new_streams) = playlist.get_streams(data_url);
+    if ((not ok) or new_streams.empty()) {
+        em->state_changed(current_station, StationState::IDLE);
+        em->state = StationState::IDLE;
         em->broadcast_info_changed(current_station, "Error: couldn't get audio stream!");
         LOG(ERROR) << "Couldn't get audio streams!";
+        return false;
     } else {
         current_station = station;
+        streams = new_streams;
     }
+
+    return true;
 }
 
 void

@@ -41,7 +41,7 @@ public:
     bool has_station();
     Glib::RefPtr<PlayBin> get_playbin();
 
-    void init_streams(const Glib::ustring& data_url, const Glib::ustring& station);
+    bool init_streams(const Glib::ustring& data_url, const Glib::ustring& station);
     void set_config(const std::shared_ptr<Config>& cfg);
 
     std::shared_ptr<EventManager> em;

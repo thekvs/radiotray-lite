@@ -36,6 +36,8 @@ public:
     StateChangedSignal state_changed;
 };
 
+std::string get_station_state_desc(StationState state);
+
 } // namespace radiotray
 
 #endif
