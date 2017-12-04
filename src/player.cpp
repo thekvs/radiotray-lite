@@ -41,6 +41,7 @@ Player::play()
     Glib::ustring stream_url = streams.front();
     next_stream = std::next(std::begin(streams));
 
+    stop();
     set_stream(stream_url);
     start();
 }
