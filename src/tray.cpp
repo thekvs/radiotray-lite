@@ -23,19 +23,28 @@ RadioTrayLite::BookmarksWalker::for_each(pugi::xml_node& node)
     auto is_group = strcasecmp(name, "group") == 0;
     auto is_bookmark = strcasecmp(name, "bookmark") == 0;
 
-    if (is_group) {
+    auto adjust_menu_level = [&]() {
         while (menus.size() >= static_cast<size_t>(depth())) {
             menus.pop();
         }
+    };
+
+    if (is_group) {
+        adjust_menu_level();
+
         auto group_name = attr_name.as_string();
         auto menu_item = Gtk::manage(new Gtk::MenuItem(group_name));
         auto submenu = Gtk::manage(new Gtk::Menu());
+
         menus.top()->append(*menu_item);
         menu_item->set_submenu(*submenu);
         menus.push(submenu);
         level = depth();
+
         LOG(DEBUG) << "Group: " << group_name << ", depth: " << depth();
     } else if (is_bookmark and (!attr_url.empty())) {
+        adjust_menu_level();
+
         auto station_name = attr_name.as_string();
         auto station_group_name = node.parent().attribute("name").as_string();
 
