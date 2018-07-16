@@ -3,4 +3,4 @@
 tags
 .ycm_extra_conf.*
 *.swp
-.Rhistory
+.vscode/
