@@ -35,6 +35,7 @@ Copy your existing `bookmarks.xml` from [Radio Tray](http://radiotray.sourceforg
 Configuration file is located in the same directory as bookmarks file. It has simple XML format and following options are supported:
 * `last_station` -- name of the last played station. Automatically updated, you don't need to change it.
 * `buffer_size` -- size of the internal gstreamer's buffer.
+* `buffer_duration` -- number of seconds to buffer.
 * `url_timeout` -- timeout in seconds for fetching playlist.
 * `notifications` -- if set to `false` disables desktop notification messages. Default is `true`.
 
@@ -45,6 +46,7 @@ Example:
 <config>
   <option name="last_station" value="Rock 181" />
   <option name="buffer_size" value="102400" />
+  <option name="buffer_duration" value="2" />
   <option name="url_timeout" value="5" />
   <option name="notifications" value="false" />
 </config>

@@ -55,10 +55,11 @@ private:
     MediaStreams::iterator next_stream;
 
     Glib::ustring current_station;
+    bool buffering = false;
 
     bool on_bus_message(const Glib::RefPtr<Gst::Bus>& bus, const Glib::RefPtr<Gst::Message>& message);
     void set_stream(const Glib::ustring& url);
-    void set_buffer_size(int size);
+    void set_buffer();
     void play_next_stream();
 };
 

@@ -28,6 +28,7 @@ public:
 
     long url_timeout_ms = kDefaultHTTPRequestTimeout;
     int buffer_size = kDefaultGStreamerBufferSize;
+    int64_t buffer_duration = kDefaultBufferDuration;
 
 private:
     std::string filename;

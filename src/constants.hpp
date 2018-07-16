@@ -2,11 +2,13 @@
 #define __CONSTANTS_HPP_INCLUDED__
 
 #include <string>
+#include <cstdint>
 
 namespace radiotray
 {
 const long kDefaultHTTPRequestTimeout = 5 * 1000;
-const int kDefaultGStreamerBufferSize = 1024 * 100;
+const int kDefaultGStreamerBufferSize = 320000;
+const int64_t kDefaultBufferDuration = 2;
 
 const char* const kRadioTrayAppDirName = "radiotray";
 const char* const kAppDirName = "radiotray-lite";

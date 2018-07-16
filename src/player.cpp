@@ -13,7 +13,7 @@ Player::init(int argc, char** argv)
         LOG(ERROR) << "The PlayBin element could not be created.";
         return false;
     }
-    set_buffer_size(config->buffer_size);
+    set_buffer();
 
     Glib::RefPtr<Gst::Bus> bus = playbin->get_bus();
     bus->add_watch(sigc::mem_fun(*this, &Player::on_bus_message));
@@ -77,9 +77,10 @@ Player::set_stream(const Glib::ustring& url)
 }
 
 void
-Player::set_buffer_size(int size)
+Player::set_buffer()
 {
-    playbin->property_buffer_size() = size;
+    playbin->property_buffer_size() = config->buffer_size * config->buffer_duration;
+    playbin->property_buffer_duration() = config->buffer_duration * GST_SECOND;
 }
 
 void
@@ -96,7 +97,7 @@ Player::play_next_stream()
         if (gst_uri_is_valid(u.c_str()) != 0) {
             LOG(DEBUG) << "Trying to play stream: " << u;
 
-            set_buffer_size(config->buffer_size);
+            set_buffer();
             set_stream(u);
             start();
 
@@ -192,6 +193,31 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
             LOG(DEBUG) << "Type: Gst::MESSAGE_STATE_CHANGED."
                        << " Old: " << print(old_state) << " New: " << print(new_state)
                        << " Source: " << state_changed_msg->get_source()->get_name();
+        }
+    } else if (message_type == Gst::MESSAGE_BUFFERING) {
+        auto buffering_msg = Glib::RefPtr<Gst::MessageBuffering>::cast_static(message);
+        auto percent = buffering_msg->parse();
+
+        if (percent == 100) {
+            buffering = false;
+            playbin->set_state(Gst::STATE_PLAYING);
+            LOG(DEBUG) << "buffering done";
+        } else {
+            buffering = true;
+
+            Gst::State state, pending;
+
+            playbin->get_state(state, pending, Gst::CLOCK_TIME_NONE);
+            if (state != Gst::STATE_PAUSED) {
+                playbin->set_state(Gst::STATE_PAUSED);
+            }
+
+            std::stringstream ss;
+
+            ss << "buffering " << percent << "%";
+            em->broadcast_info_changed(current_station, ss.str());
+
+            LOG(DEBUG) << "buffering: " << percent;
         }
     }
 

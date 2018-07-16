@@ -34,6 +34,11 @@ Config::load_config()
                 buffer_size = node.node().attribute("value").as_int();
             }
 
+            node = config.select_node("/config/option[@name='buffer_duration']");
+            if (not node.node().empty()) {
+                buffer_duration = node.node().attribute("value").as_int();
+            }
+
             node = config.select_node("/config/option[@name='url_timeout']");
             if (not node.node().empty()) {
                 url_timeout_ms = node.node().attribute("value").as_float() * 1000; /* 'url_timeout' is in seconds */
@@ -91,6 +96,12 @@ Config::create_new_config()
         auto option = root.append_child("option");
         option.append_attribute("name").set_value("buffer_size");
         option.append_attribute("value").set_value(buffer_size);
+    }
+
+    {
+        auto option = root.append_child("option");
+        option.append_attribute("name").set_value("buffer_duration");
+        option.append_attribute("value").set_value(buffer_duration);
     }
 
     {
