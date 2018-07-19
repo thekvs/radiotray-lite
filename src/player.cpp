@@ -196,7 +196,11 @@ Player::on_bus_message(const Glib::RefPtr<Gst::Bus>& /*bus*/, const Glib::RefPtr
         }
     } else if (message_type == Gst::MESSAGE_BUFFERING) {
         auto buffering_msg = Glib::RefPtr<Gst::MessageBuffering>::cast_static(message);
+#if GSTREAMERMM_MAJOR_VERSION == 1 and GSTREAMERMM_MINOR_VERSION >= 8
+        auto percent = buffering_msg->parse_buffering();
+#else
         auto percent = buffering_msg->parse();
+#endif
 
         if (percent == 100) {
             buffering = false;
