@@ -45,7 +45,7 @@ pkg_check_modules(LIBXML2 REQUIRED libxml-2.0)
 pkg_check_modules(GLIB2 REQUIRED glib-2.0)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
-pkg_check_modules(APPINDICATOR REQUIRED appindicator3-0.1>=12.10)
+pkg_check_modules(APPINDICATOR REQUIRED appindicator3-0.1)
 pkg_check_modules(CURL REQUIRED libcurl)
 
 pkg_check_modules(GSTREAMER QUIET gstreamer-1.0)
